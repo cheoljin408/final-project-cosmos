@@ -1,0 +1,25 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <h3>home</h3>
+    <a href="getMemberList">getMemberList</a>
+
+    <div th:if="${member} == null">
+        <a href="/oauth2/authorization/google" role="button">Google Login</a>
+        <a href="/oauth2/authorization/naver" role="button">Naver Login</a>
+    </div>
+    <div th:if="${member} != null">
+        <span th:text="${member.name}"></span>
+        <a href="/logout" role="button">Logout</a>
+        <span th:text="|session: ${session.member.name}|"></span>
+    </div>
+
+</body>
+</html>

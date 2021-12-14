@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.kosta.finalproject.model.mapper.MemberMapper">
+    <select id="findByEmail" parameterType="String" resultType="MemberDTO">
+        select email, name, picture, role from member where email=#{value}
+    </select>
+    <insert id="registerMember" parameterType="MemberDTO">
+        insert into member values(#{email}, #{name}, #{picture}, #{role})
+    </insert>
+    <update id="updateMember" parameterType="MemberDTO">
+        update member set name=#{name}, picture=#{picture} where email=#{email}
+    </update>
+</mapper>
