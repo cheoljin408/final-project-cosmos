@@ -10,4 +10,6 @@ public class StudyDTO {
     private String studyInfo;
     private String studyRegDate;
     private StudyStateDTO studyStateDTO;
+    private CategoryTypeDTO categoryTypeDTO;
+    private CategoryLangDTO categoryLangDTO;
 }
