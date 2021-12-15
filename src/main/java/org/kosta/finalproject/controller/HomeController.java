@@ -1,19 +1,25 @@
 package org.kosta.finalproject.controller;
 
-import lombok.RequiredArgsConstructor;
 import org.kosta.finalproject.config.auth.LoginUser;
 import org.kosta.finalproject.config.auth.dto.SessionMember;
+import org.kosta.finalproject.model.domain.StudyMemberDTO;
+import org.kosta.finalproject.service.StudyService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import javax.servlet.http.HttpSession;
+import java.util.List;
 
-@RequiredArgsConstructor
 @Controller
 public class HomeController {
 
-    private final HttpSession httpSession;
+    private final StudyService studyService;
+
+    @Autowired
+    public HomeController(StudyService studyService) {
+        this.studyService = studyService;
+    }
 
     @GetMapping("/")
     public String home(Model model, @LoginUser SessionMember member) {
@@ -22,6 +28,8 @@ public class HomeController {
             model.addAttribute("member", member);
         }
 
+        List<StudyMemberDTO> studyList = studyService.getStudyList3();
+        System.out.println(studyList);
         return "index";
     }
 }
