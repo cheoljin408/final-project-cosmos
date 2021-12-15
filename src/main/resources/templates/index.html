@@ -1,25 +1,75 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <div th:replace="fragments/html-head.html :: fragment-html-head"></div>
+    <style>
+        .image {
+            text-align: center;
+        }
+        /*p { margin: 20px 0px;}*/
+    </style>
 </head>
 <body>
-    <h3>home</h3>
-    <a href="getMemberList">getMemberList</a>
-
-    <div th:if="${member} == null">
-        <a href="/oauth2/authorization/google" role="button">Google Login</a>
-        <a href="/oauth2/authorization/naver" role="button">Naver Login</a>
+<div th:replace="fragments/header.html :: fragment-header"></div>
+<div class="container">
+    <h1>body</h1>
+    <div class="image">
+        <img th:src="@{images/main-image.png}"  width="900" height="506px;" />
+<!--        <img src="images/main-image.png" width="300">-->
     </div>
-    <div th:if="${member} != null">
-        <span th:text="${member.name}"></span>
-        <a href="/logout" role="button">Logout</a>
-        <span th:text="|session: ${session.member.name}|"></span>
-    </div>
+    &nbsp;
+    &nbsp;
+    <div class="row">
+        <div class="col-4">
+            <div class="card" style="width: 18rem;">
+                <div class="card-header">
+                    Quote
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Special title treatment</h5>
+                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </div>
 
+        <div class="col-4">
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">Special title treatment</h5>
+                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-4">
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">Special title treatment</h5>
+                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="fragments/footer.html :: fragment-footer"></div>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
