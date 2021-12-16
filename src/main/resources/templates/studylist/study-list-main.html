@@ -1,14 +1,44 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Study List</title>
+    <meta charset="utf-8">
+    <link th:href="@{/bootstrap.min.css}"
+          href="../css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <form action ="">
-
-
-    </form>
-
+<div class="container" style="max-width: 600px">
+    <div class="py-5 text-center">
+        <h2>스터디 리스트</h2>
+    </div>
+    <div class="row">
+        <div class="col">
+            <button class="btn btn-primary float-end"
+                    th:onclick="|location.href='@{/study}'|"
+                    onclick="location.href='addForm.html'" type="button">더 보기</button>
+        </div>
+    </div>
+    <hr class="my-4">
+    <div>
+        <table class="table">
+            <!--  -->
+            <thead>
+            <tr>
+                <th>스터디 번호</th>
+                <th>스터디 이름</th>
+                <th>스터디 설명</th>
+                <th>스터디 팀장</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="study : ${studyList}">
+                <td><a href="item.html" th:href="@{/study/}" th:text="${study.studyDTO.studyNo}">1</a></td>
+                <td><a href="item.html" th:href="@{/study/}" th:text="${study.studyDTO.studyName}">테스트 상품1</a></td>
+                <td th:text="${study.studyDTO.studyDesc}">지존스터디</td>
+                <td th:text="${study.memberDTO.name}">김수환</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div> <!-- /container -->
 </body>
 </html>
