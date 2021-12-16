@@ -4,6 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.kosta.finalproject.model.mapper.StudyMapper">
 
+    <!-- -->
     <resultMap id="studyMemberDTOMap" type="org.kosta.finalproject.model.domain.StudyMemberDTO">
         <association property="memberDTO" resultMap="memberDTOMap" columnPrefix="m_"/>
         <association property="studyDTO" resultMap="studyDTOMap" columnPrefix="s_"/>
