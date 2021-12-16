@@ -6,48 +6,47 @@
         .image {
             text-align: center;
         }
-        /*p { margin: 20px 0px;}*/
+
+        .modal {
+            text-align: center;
+        }
+
+        @media screen and (min-width: 768px) {
+            .modal:before {
+                display: inline-block;
+                vertical-align: middle;
+                content: " ";
+                height: 100%;
+            }
+        }
+
+        .modal-dialog {
+            display: inline-block;
+            text-align: left;
+            vertical-align: middle;
+        }
     </style>
 </head>
 <body>
 <div th:replace="fragments/header.html :: fragment-header"></div>
 <div class="container">
-    <h1>body</h1>
     <div class="image">
         <img th:src="@{images/main-image.png}"  width="900" height="506px;" />
-<!--        <img src="images/main-image.png" width="300">-->
     </div>
     &nbsp;
-    &nbsp;
-    <div class="row">
-        <div class="col-4">
+    <div class="row" >
+        <div th:each="study: ${studyList}" class="col-4">
             <div class="card" style="width: 18rem;">
                 <div class="card-header">
-                    Quote
+                    <p th:text="${study.studyDTO.studyName}"></p>
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title">Special title treatment</h5>
-                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-4">
-            <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title">Special title treatment</h5>
-                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-4">
-            <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title">Special title treatment</h5>
-                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    <p th:text="${study.studyDTO.studyDesc}" class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    <span th:text="${study.studyDTO.categoryTypeDTO.categoryType}"></span>
+                    <span th:text="${study.studyDTO.categoryLangDTO.categoryLang}"></span>
+                    <p th:text="${study.studyDTO.studyStateDTO.studyState}"></p>
+                    <span th:text="${study.memberDTO.name}"></span>
+                    <span th:text="${study.studyDTO.studyRegDate}"></span>
                     <a href="#" class="btn btn-primary">Go somewhere</a>
                 </div>
             </div>

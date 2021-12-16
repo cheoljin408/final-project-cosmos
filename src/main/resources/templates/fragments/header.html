@@ -7,8 +7,9 @@
             <a class="navbar-brand" href="/">home</a>
             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                 <div th:if="${member} == null">
-                    <a href="/oauth2/authorization/google" role="button">Google Login</a>
-                    <a href="/oauth2/authorization/naver" role="button">Naver Login</a>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                        LogIn
+                    </button>
                 </div>
                 <div th:if="${member} != null">
                     <span th:text="${member.name}"></span>
@@ -18,6 +19,27 @@
             </div>
         </div>
     </nav>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog model-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title adsasdfasdfasadfdsfasdf</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    .<a href="/oauth2/authorization/google" role="button">Google Login</a>
+                    <a href="/oauth2/authorization/naver" role="button">Naver Login</a>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 </html>

@@ -38,6 +38,7 @@ public class HomeController {
             System.out.println(studyList.get(i).getMemberDTO().getPicture());
         }
         System.out.println(studyList.size());
+        model.addAttribute("studyList", studyList);
         return "index";
     }
 }
