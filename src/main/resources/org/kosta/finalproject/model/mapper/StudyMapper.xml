@@ -17,7 +17,7 @@
         <id property="studyNo" column="study_no"/>
         <result property="studyName" column="study_name"/>
         <result property="studyDesc" column="study_desc"/>
-        <result property="studyRegDate" column="study_regdate"/>
+        <result property="studyRegdate" column="study_regdate"/>
         <association property="studyStateDTO" resultMap="studyStateDTOMap" columnPrefix="sst_"/>
         <association property="categoryTypeDTO" resultMap="categoryTypeDTOMap" columnPrefix="ctt_"/>
         <association property="categoryLangDTO" resultMap="categoryLangDTOMap" columnPrefix="clt_"/>
