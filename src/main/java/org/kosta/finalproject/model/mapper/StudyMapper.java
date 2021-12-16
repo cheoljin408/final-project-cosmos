@@ -1,12 +1,11 @@
 package org.kosta.finalproject.model.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.kosta.finalproject.model.domain.StudyMemberDTO;
 
 import java.util.List;
 
 @Mapper
 public interface StudyMapper {
-
-    List<String> getAllStudyList();
-
+    List<StudyMemberDTO> getAllStudyList();
 }
