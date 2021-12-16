@@ -28,8 +28,14 @@ public class HomeController {
             model.addAttribute("member", member);
         }
 
+        // List<Map<String, String>> studyList = studyService.getStudyList3();
         List<StudyMemberDTO> studyList = studyService.getStudyList3();
-        System.out.println(studyList);
+        for(int i=0; i<studyList.size(); i++) {
+            System.out.println(studyList.get(i).toString());
+            System.out.println(studyList.get(i).getMemberDTO().getName());
+            System.out.println(studyList.get(i).getMemberDTO().getPicture());
+        }
+        System.out.println(studyList.size());
         return "index";
     }
 }
