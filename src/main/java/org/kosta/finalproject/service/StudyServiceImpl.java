@@ -20,4 +20,14 @@ public class StudyServiceImpl implements StudyService{
     public List<StudyMemberDTO> getAllList() {
         return studyMapper.getAllStudyList();
     }
+
+    @Override
+    public List<StudyMemberDTO> getStudyListByCategory() {
+        return null;
+    }
+
+    @Override
+    public List<StudyMemberDTO> getStudyListByStudyNameAndDesc() {
+        return null;
+    }
 }

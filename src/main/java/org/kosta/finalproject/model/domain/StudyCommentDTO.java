@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class StudyCommentDTO {
     private int studyCommentNo;
     private String studyCommentContent;
-    private String StudyCommentRegdate;
+    private String StudyCommentdRegdate;
     private MemberDTO memberDTO;
     private StudyDTO studyDTO;
 }

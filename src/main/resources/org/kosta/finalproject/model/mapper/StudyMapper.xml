@@ -56,7 +56,6 @@
         and s.STUDY_STATE_CODE = sst.STUDY_STATE_CODE
         and s.category_lang_no = clt.category_lang_no
         and s.category_type_no = ctt.category_type_no
-        and <![CDATA[ROWNUM <= 3]]>
         order by s.STUDY_NO desc
     </select>
 </mapper>

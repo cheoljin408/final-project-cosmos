@@ -8,61 +8,136 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
-<body>
-    <div class = "container col-lg-10">
-        <div class="row gx-5">
-            <div th:each="study : ${studyList}">
-            <div class="col-lg-4 mb-3">
-                <div class="card h-100 shadow border-0" style="cursor: pointer;" onclick="location.href='/groups/7';">
-                    <div class="card-body p-4">
-                        <div class="row">
-                            <div class="col-8">
-                                <div class="badge bg-gradient rounded-pill mb-2" style="background-color :#21ad44" th:text="${study.studyDTO.categoryLangDTO.categoryLang}">
-                                    스터디언어 하드코딩
+<body class="d-flex flex-column h-100">
+    <main class="flex-shrink-0">
+        <section clss="py-3">
+            <div class = "container col-lg-15">
+                <!--검색창-->
+                <div class="row">
+                    <form name="search" th:action="@{/study/}">
+                        <h5 class="mb-5"> 🔎 원하는 스터디 그룹을 찾아보세요!</h5>
+                        <div class="card mb-2">
+                            <div class="card-body p-2 mt-1">
+                                <input type="hidden" name="page" value="0" id="page">
+                                <div class="form-row mb-2">
+                                    <div class="col-2 text-center">
+                                        <label class="col-form-label" for="firstCategory">
+                                            <h6 class="mb-0">카테고리</h6>
+                                        </label>
+                                    </div>
+                                    <div class="col-5">
+                                        <select id="firstCategory" name="firstCategory" class="form-control"><option value="">선택하세요.</option><option value="1">개발</option><option value="8">어학</option><option value="12">자격증</option><option value="13">재태크</option></select>
+                                    </div>
+                                    <div class="col-5">
+                                        <select id="categoryName" name="secondCategory" class="form-control" disabled=""><option>없음</option></select>
+                                    </div>
+                                </div>
+                                <div class="form-row mb-2">
+                                    <div class="col-2 text-center">
+                                        <label class="col-form-label" for="firstZone">
+                                            <h6 class="mb-0">지역</h6>
+                                        </label>
+                                    </div>
+                                    <div class="col-4">
+                                        <select id="firstZone" name="firstZone" class="form-control"><option value="">선택하세요.</option><option value="1">서울특별시</option><option value="2">부산광역시</option><option value="3">대구광역시</option><option value="4">인천광역시</option><option value="5">광주광역시</option><option value="6">대전광역시</option><option value="7">울산광역시</option><option value="8">강원도</option><option value="9">경기도</option><option value="10">경상남도</option><option value="11">경상북도</option><option value="12">전라남도</option><option value="13">전라북도</option><option value="14">충청남도</option><option value="15">충청북도</option><option value="17">제주특별자치도</option></select>
+                                    </div>
+                                    <div class="col-4">
+                                        <select id="secondZone" name="secondZone" class="form-control"><option value="">선택하세요.</option></select>
+                                    </div>
+                                    <div class="col-2">
+                                        <div class="form-check pl-0 py-1">
+                                            <input type="checkbox" name="online" id="online" class="form-check-inline mr-1" value="Y">
+                                            <input type="hidden" name="online" class="form-check-inline mr-1" value="N">
+                                            <label class="form-check-label" for="online">Online</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row mb-2">
+                                    <div class="col-2 text-center">
+                                        <label class="col-form-label" for="searchKeyword">
+                                            <h6 class="mb-0">검색어</h6>
+                                        </label>
+                                    </div>
+                                    <div class="col-5">
+                                        <input type="text" id="searchKeyword" class="form-control" placeholder="찾고있는 스터디를 검색해보세요." name="keyword" value="">
+                                    </div>
+                                    <div class="col-5">
+                                        <div class="form-check pl-0 py-1">
+                                            <input type="checkbox" name="draft" id="draft" class="form-check-inline mr-1" value="Y" checked="checked">
+                                            <input type="hidden" name="draft" class="form-check-inline mr-1" value="N">
+                                            <label class="form-check-label" for="draft">모집 중만 보기</label>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-4 text-end">
-                                <div class="badge bg-gradient rounded-pill mb-2 bg-primary" th:text="${study.studyDTO.studyStateDTO.studyState}">
-                                    모집중
+                        </div>
+                        <div class="row">
+                            <div class="col text-end">
+                                <button type="button" id="resetSearch" class="btn btn-secondary btn-sm">리셋</button>
+                                <button type="submit" class="btn btn-sm btn-primary btn-search">찾기</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+
+                <!-- 검색창-->
+
+
+                <div class="row gx-2"><!-- -->
+                    <div th:each="study : ${studyList}" class="col-lg-4 mb-3" th:width="30px">
+                        <div class="card h-100 shadow border-0" style="cursor: pointer;" onclick="location.href='/groups/7';">
+                            <div class="card-body p-4">
+                                <div class="row">
+                                    <div class="col-8">
+                                        <div class="badge bg-gradient rounded-pill mb-2" style="background-color :#21ad44" th:text="${study.studyDTO.categoryLangDTO.categoryLang}">
+                                            스터디언어 하드코딩
+                                        </div>
+                                    </div> <!-- LangType Category -->
+                                    <div class="col-4 text-end">
+                                        <div class="badge bg-gradient rounded-pill mb-2 bg-primary" th:text="${study.studyDTO.studyStateDTO.studyState}">
+                                            모집중
+                                        </div>
+                                    </div>
+                                </div> <!-- row  -->
+                                <div class="row">
+                                    <div class="col">
+                                        <a class="text-decoration-none link-dark stretched-link" href="/groups/7">
+                                            <div class="h4 card-title mb-0" th:href="@{/study/}" th:text="${study.studyDTO.studyName}" >아오지코딩수용소(acoso)</div>
+                                        </a>
+                                    </div>
+                                </div>  <!-- row : 스터디 name -->
+                                <p class="card-text mb-0 font-weight-light text-break"th:text="${study.studyDTO.studyDesc}" >풀스택 위주로 다루는 역사 있는 스터디입니다.</p>
+                                <div class="row">
+                                    <div class="col">
+                                        <h6 class="d-inline"><span class="badge badge-light text-dark mr-1 " th:text="${study.studyDTO.categoryTypeDTO.categoryType}">#c</span></h6>
+                                        <h6 class="d-inline"><span class="badge badge-light text-dark mr-1 " th:text="${study.studyDTO.categoryLangDTO.categoryLang}">#web</span></h6>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <h6 class="d-inline"><span class="badge badge-info mr-1"><i class="bi bi-geo-alt"></i>인천광역시</span></h6>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <a class="text-decoration-none link-dark stretched-link" href="/groups/7">
-                                    <div class="h4 card-title mb-0" th:href="@{/study/}" th:text="${study.studyDTO.studyName}" >아오지코딩수용소(acoso)</div>
-                                </a>
-                            </div>
-                        </div>
-                        <p class="card-text mb-0 font-weight-light text-break"th:text="${study.studyDTO.studyDesc}" >풀스택 위주로 다루는 역사 있는 스터디입니다.</p>
-                        <div class="row">
-                            <div class="col">
-                                <h6 class="d-inline"><span class="badge badge-light text-dark mr-1 " th:text="${study.studyDTO.categoryTypeDTO.categoryType}">#c</span></h6>
-                                <h6 class="d-inline"><span class="badge badge-light text-dark mr-1 " th:text="${study.studyDTO.categoryLangDTO.categoryLang}">#web</span></h6>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <h6 class="d-inline"><span class="badge badge-info mr-1"><i class="bi bi-geo-alt"></i>인천광역시</span></h6>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
-                        <div class="d-flex align-items-end justify-content-between">
-                            <div class="d-flex align-items-center">
-                                <img class="rounded-circle me-3" width="40" height="40" src="http://k.kakaocdn.net/dn/b2EZ3a/btrdd7fm9tx/PpRHmn1PWXcqVk9vkUlwF0/img_640x640.jpg" alt="...">
-                                <div class="small">
-                                    <div class="fw-bold" th:text="${study.memberDTO.name}">어둠사자</div>
-                                    <div class="text-muted" th:text="${study.studyDTO.studyRegdate}">2021-10-28 18:38:52</div>
+                            <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
+                                <div class="d-flex align-items-end justify-content-between">
+                                    <div class="d-flex align-items-center">
+                                        <img class="rounded-circle me-3" width="40" height="40" src="http://k.kakaocdn.net/dn/b2EZ3a/btrdd7fm9tx/PpRHmn1PWXcqVk9vkUlwF0/img_640x640.jpg" th:src="${study.memberDTO.picture}" alt="...">
+                                        <div class="small">
+                                            <div class="fw-bold" th:text="${study.memberDTO.name}">어둠사자</div>
+                                            <div class="text-muted" th:text="${study.studyDTO.studyRegdate}">2021-10-28 18:38:52</div>
+                                        </div>
+                                        <!--TODO Commet Count & Views-->
+                                    </div>
                                 </div>
-                                <!--TODO Commet Count & Views-->
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
+        </section>
+    </main>
 </body>
 </html>
             <!--<table class="table">

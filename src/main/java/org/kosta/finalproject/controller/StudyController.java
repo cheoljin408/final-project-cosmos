@@ -17,6 +17,13 @@ public class StudyController {
     @Resource
     private StudyService studyService;
 
+    /**
+     *  등록된 스터디 리스트를 조회해서 -> model 에 넣고 -> 페이지에 뿌려줌
+     *
+     * @param model <- List<StudyMemberDTO>
+     * @return : 스터디 리스트 조회 page
+     */
+
     @GetMapping("/list")
     public String studylistmain(Model model){
         List<StudyMemberDTO> result = studyService.getAllList();
