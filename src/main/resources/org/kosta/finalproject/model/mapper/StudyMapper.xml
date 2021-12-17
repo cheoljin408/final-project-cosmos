@@ -2,105 +2,23 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.kosta.finalproject.model.mapper.StudyMapper">
 
-    <!-- 카테고리 타입 리스트 조회 -->
-    <select id="getCategoryTypeList" resultType="CategoryTypeDTO">
-        select * from CATEGORY_TYPE_TABLE
-    </select>
-
-    <!-- 카테고리 언어 리스트 조회 -->
-    <select id="getCategoryLangList" resultType="CategoryLangDTO">
-        select * from CATEGORY_LANG_TABLE
-    </select>
-
-<!-- resultMap-->
-    <!-- studyMember -->
-    <resultMap id="studyMemberDTOMap" type="org.kosta.finalproject.model.domain.StudyMemberDTO">
-        <result property="studyMemberRole" column="studyMemberRoleMap"/>
-        <association property="memberDTO" resultMap="memberDTOMap" columnPrefix="m_"/>
-        <association property="studyDTO" resultMap="studyDTOMap" columnPrefix="s_"/>
-    </resultMap>
-
-    <!-- member -->
-    <resultMap id="memberDTOMap" type="org.kosta.finalproject.model.domain.MemberDTO">
-        <id property="email" column="email"/>
-        <result property="name" column="name"/>
-        <result property="picture" column="picture"/>
-        <result property="role" column="role"/>
-    </resultMap>
-
-    <!-- study -->
-    <resultMap id="studyDTOMap" type="org.kosta.finalproject.model.domain.StudyDTO">
-        <id property="studyNo" column="study_no"/>
-        <result property="studyName" column="study_name"/>
-        <result property="studyDesc" column="study_desc"/>
-        <result property="studyInfo" column="study_info"/>
-        <result property="studyRegdate" column="study_regdate"/>
-        <association property="studyStateDTO" resultMap="studyStateDTOMap" columnPrefix="sst_"/>
-        <association property="categoryTypeDTO" resultMap="categoryTypeDTOMap" columnPrefix="ctt_"/>
-        <association property="categoryLangDTO" resultMap="categoryLangDTOMap" columnPrefix="clt_"/>
-    </resultMap>
-
-    <!-- studyState -->
-    <resultMap id="studyStateDTOMap" type="org.kosta.finalproject.model.domain.StudyStateDTO">
-        <id property="studyStateCode" column="study_state_code"/>
-        <result property="studyState" column="study_state"/>
-    </resultMap>
-
-    <!-- categoryType -->
-    <resultMap id="categoryTypeDTOMap" type="org.kosta.finalproject.model.domain.CategoryTypeDTO">
-        <id property="categoryTypeNo" column="category_type_no"/>
-        <result property="categoryType" column="category_type"/>
-    </resultMap>
-
-    <!-- categoryLang -->
-    <resultMap id="categoryLangDTOMap" type="org.kosta.finalproject.model.domain.CategoryLangDTO">
-        <id property="categoryLangNo" column="category_lang_no"/>
-        <result property="categoryLang" column="category_lang"/>
-    </resultMap>
-<!-- end resultMap -->
-
     <!-- 스터디 등록 -->
     <insert id="registerStudy" parameterType="StudyDTO">
         insert into study(STUDY_NO, STUDY_NAME, STUDY_DESC, STUDY_INFO, STUDY_REGDATE, CATEGORY_LANG_NO, CATEGORY_TYPE_NO)
         values (STUDY_SEQ.nextval, #{studyName}, #{studyDesc}, #{studyInfo}, sysdate,
         #{categoryTypeDTO.categoryTypeNo}, #{categoryLangDTO.categoryLangNo})
-
         <selectKey keyProperty="studyNo" resultType="int" order="AFTER">
             SELECT STUDY_SEQ.CURRVAL FROM DUAL
         </selectKey>
     </insert>
+
     <!-- 스터디 등록 후 직책 등록 -->
     <insert id="registerStudyMemberRole" parameterType="String">
         insert into study_member
         values (#{value}, STUDY_SEQ.currval, '스터디리더')
     </insert>
 
-
-    <!--<update id="updateMember" parameterType="MemberDTO">
-        update member set name=#{name}, picture=#{picture} where email=#{email}
-    </update>-->
-
-
-    <!-- ERROR: Result Maps collection does not contain value -->
     <!--스터디 정보 조회 -->
-    <!-- ok
-    <select id="getStudyDetailByStudyNo" resultType="HashMap">
-        select s.STUDY_NO,
-            s.STUDY_NAME,
-            s.STUDY_DESC,
-            s.STUDY_REGDATE,
-            sst.STUDY_STATE,
-            ctt.category_type,
-            clt.category_lang
-        from STUDY s,
-            STUDY_STATE_TABLE sst,
-            category_type_table ctt,
-            category_lang_table clt
-        where s.STUDY_STATE_CODE = sst.STUDY_STATE_CODE
-            and s.category_lang_no = clt.category_lang_no
-            and s.category_type_no = ctt.category_type_no
-            and s.study_no = #{value}
-    </select>-->
     <select id="getStudyDetailByStudyNo" resultType="HashMap">
         select m.EMAIL,
             m.NAME,
@@ -109,7 +27,8 @@
             s.STUDY_NO,
             s.STUDY_NAME,
             s.STUDY_DESC,
-            s.STUDY_REGDATE,
+            DBMS_LOB.SUBSTR(s.STUDY_INFO, DBMS_LOB.GETLENGTH(s.STUDY_INFO)) AS STUDY_INFO,
+            to_char(s.STUDY_REGDATE, 'YYYY-MM-DD') AS STUDY_REGDATE,
             sst.STUDY_STATE,
             ctt.category_type,
             clt.category_lang
@@ -124,30 +43,15 @@
             and s.STUDY_STATE_CODE = sst.STUDY_STATE_CODE
             and s.category_lang_no = clt.category_lang_no
             and s.category_type_no = ctt.category_type_no
+            and sm.STUDY_MEMBER_ROLE = '스터디리더'
             and s.study_no = #{value}
     </select>
 
-    <!-- 스터디 리스트 조회 -->
-    <select id="getStudyList" resultMap="studyMemberDTOMap">
-        select m.name as m_name,
-        m.PICTURE as m_picture,
-        s.STUDY_NO as s_study_no,
-        s.STUDY_NAME as s_study_name,
-        s.STUDY_DESC as s_study_desc,
-        s.STUDY_REGDATE as s_study_regdate,
-        sst.STUDY_STATE as s_sst_study_state,
-        ctt.category_type as s_ctt_category_type,
-        clt.category_lang as s_clt_category_lang
-        from member m,
-        STUDY_MEMBER sm,
-        STUDY s,
-        STUDY_STATE_TABLE sst,
-        category_type_table ctt,
-        category_lang_table clt
-        where m.EMAIL = sm.EMAIL
-        and s.STUDY_NO = sm.STUDY_NO
-        and s.STUDY_STATE_CODE = sst.STUDY_STATE_CODE
-        and s.category_lang_no = clt.category_lang_no
-        and s.category_type_no = ctt.category_type_no
+    <select id="findStudyMemberRoleByStudyNo" resultType="String">
+        SELECT STUDY_MEMBER_ROLE
+        FROM STUDY_MEMBER
+        WHERE STUDY_NO = #{param1}
+        AND EMAIL = #{param2}
     </select>
+
 </mapper>

@@ -11,37 +11,42 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
-
+import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
-import java.util.Map;
 
 @Slf4j
 @Controller
 public class StudyController {
 
-    private StudyService studyService;
+    private final StudyService studyService;
 
     @Autowired
     public StudyController(StudyService studyService) {
         this.studyService = studyService;
     }
 
+    /**
+     * 스터디 등록 폼
+     */
     @GetMapping("registerStudy")
     public String registerStudy() {
         return "study/register-study";
     }
 
+    /**
+     * 스터디 등록
+     * 1. 사용자가 입력한 데이터를 StudyDTO로 set 한다
+     * 2. Service쪽 registerStudy()를 호출해 스터디 및 스터디리더 역할 등록
+     * @param member
+     * @param jsonData
+     */
     @Transactional
     @ResponseBody
-    @PostMapping("registerStudy")
-    public Map<String, Object> registerStudy(@LoginUser SessionMember member, @RequestBody HashMap<String, String> jsonData, Model model) {
-        /*log.info("jsonData = {}", jsonData);
-        log.info("studyName = {}", jsonData.get("studyName"));
-        log.info("categoryTypeNo = {}", jsonData.get("categoryTypeNo"));*/
+    @PostMapping("/registerStudy")
+    public int registerStudy(@LoginUser SessionMember member, @RequestBody HashMap<String, String> jsonData, Model model) {
+        // log.info("jsonData = {}", jsonData);
+        // log.info("studyName = {}", jsonData.get("studyName"));
+        // log.info("categoryTypeNo = {}", jsonData.get("categoryTypeNo"))
         StudyDTO studyDTO = new StudyDTO();
         studyDTO.setStudyName(jsonData.get("studyName"));
         studyDTO.setStudyDesc(jsonData.get("studyDesc"));
@@ -54,13 +59,32 @@ public class StudyController {
         studyDTO.setCategoryLangDTO(categoryLangDTO);
         // log.info("delivered study data:{}", studyDTO);
 
-        // 전달받은 스터디
         studyService.registerStudy(studyDTO);
         // log.info("email: {}", member.getEmail());
         studyService.registerStudyMemberRole(member.getEmail());
-        // 등록된 스터디 조회한 뒤 스터디 상세 페이지로 이동
-        Map<String, Object> studyDetailInfo = studyService.getStudyDetailByStudyNo(studyDTO.getStudyNo());
-        // log.info("study detail info :{}", studyDetailInfo);
-        return studyDetailInfo;
+        // model.addAttribute("studyNo", studyDTO.getStudyNo());
+        return studyDTO.getStudyNo();
+    }
+
+    /**
+     * @param member
+     * @param model
+     * @param studyNo
+     * studyNo를 제공받아 해당 스터디의 상세 정보를 조회한다
+     * 1. 해당 스터디의 스터디 리더는 수정, 삭제 버튼이 보인다
+     * 2. 스터디에 속하지 않은 사용자는 신청 버튼이 보인다
+     * 3. 스터디원은 어떠한 버튼도 보이지 않는다
+    */
+    @RequestMapping("/studyDetail")
+    public String studyDetail(@LoginUser SessionMember member, Model model, int studyNo) {
+        model.addAttribute("study", studyService.getStudyDetailByStudyNo(studyNo));
+        // log.info("studyInfo:{}", studyService.getStudyDetailByStudyNo(studyNo));
+        // 스터디원 or 스터디리더 or 둘 다 아닌지 판단
+        String role = studyService.findStudyMemberRoleByStudyNo(studyNo, member.getEmail());
+        if (role == null) {
+            role = "일반회원";
+        }
+        model.addAttribute("role", role);
+        return "study/study-detail";
     }
 }
