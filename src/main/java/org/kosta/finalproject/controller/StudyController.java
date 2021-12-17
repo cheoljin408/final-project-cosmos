@@ -34,7 +34,11 @@ public class StudyController {
      */
 
     @GetMapping("/list")
-    public String studylistmain(Model model){
+    public String studylistmain(@LoginUser SessionMember member, Model model){
+        if(member != null) {
+            model.addAttribute("member", member);
+            model.addAttribute("picture", member.getPicture());
+        }
         List<StudyMemberDTO> result = studyService.getAllList();
 
         model.addAttribute("studyList", result);
@@ -44,7 +48,11 @@ public class StudyController {
 
     @GetMapping("/getStudyListByStudyNameAndDesc")
     @ResponseBody
-    public List<Map<String, Object>> getStudyListByStudyNameAndDesc(@RequestParam String searchWord){
+    public List<Map<String, Object>> getStudyListByStudyNameAndDesc(@LoginUser SessionMember member, Model model, @RequestParam String searchWord){
+        if(member != null) {
+            model.addAttribute("member", member);
+            model.addAttribute("picture", member.getPicture());
+        }
         List<Map<String, Object>> result = studyService.getStudyListByStudyNameAndDesc(searchWord);
         System.out.println(result);
         return result;
@@ -55,7 +63,11 @@ public class StudyController {
      */
     @GetMapping("/getStudyListByCategory")
     @ResponseBody
-    public List<Map<String, Object>> getStudyListByCategory(@RequestParam String categoryVal){
+    public List<Map<String, Object>> getStudyListByCategory(@LoginUser SessionMember member, Model model, @RequestParam String categoryVal){
+        if(member != null) {
+            model.addAttribute("member", member);
+            model.addAttribute("picture", member.getPicture());
+        }
         System.out.println("StudyController.getStudyListByCategory");
         System.out.println("categoryVal = " + categoryVal);
         List<Map<String, Object>> result = studyService.getStudyListByCategory(categoryVal);
@@ -82,6 +94,10 @@ public class StudyController {
     @ResponseBody
     @PostMapping("/registerStudy")
     public int registerStudy(@LoginUser SessionMember member, @RequestBody HashMap<String, String> jsonData, Model model) {
+        if(member != null) {
+            model.addAttribute("member", member);
+            model.addAttribute("picture", member.getPicture());
+        }
         // log.info("jsonData = {}", jsonData);
         // log.info("studyName = {}", jsonData.get("studyName"));
         // log.info("categoryTypeNo = {}", jsonData.get("categoryTypeNo"))
@@ -115,6 +131,10 @@ public class StudyController {
      */
     @RequestMapping("/studyDetail")
     public String studyDetail(@LoginUser SessionMember member, Model model, int studyNo) {
+        if(member != null) {
+            model.addAttribute("member", member);
+            model.addAttribute("picture", member.getPicture());
+        }
         model.addAttribute("study", studyService.getStudyDetailByStudyNo(studyNo));
         // log.info("studyInfo:{}", studyService.getStudyDetailByStudyNo(studyNo));
         // 스터디원 or 스터디리더 or 둘 다 아닌지 판단
