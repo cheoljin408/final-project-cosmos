@@ -79,7 +79,10 @@
                         </div>
                     </form>
                 </div>
-
+                <form th:action="@{/study/getStudyListByStudyNameAndDesc}">
+                    <input type = "text" name = "searchWord" placeholder="검색어를 입력하세요">
+                    <button>검색</button>
+                </form>
 
                 <!-- 검색창-->
 
