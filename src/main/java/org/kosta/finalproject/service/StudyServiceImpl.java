@@ -27,7 +27,7 @@ public class StudyServiceImpl implements StudyService{
     }
 
     @Override
-    public List<StudyMemberDTO> getStudyListByStudyNameAndDesc() {
-        return null;
+    public List<StudyMemberDTO> getStudyListByStudyNameAndDesc(String searchWord) {
+        return studyMapper.getStudyListByStudyNameAndDesc(searchWord);
     }
 }
