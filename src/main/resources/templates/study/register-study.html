@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- tinyMCE -->
+    <!--<script src="https://cdn.tiny.cloud/1/xiv3353n2wkngqbmpjmdqt06r7h1lgs2c8rwyys9p665zey3/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>    <script>
+        tinymce.init({
+          selector: '#studyInfo'
+        });
+    </script>-->
+    <title>스터디 그룹 등록</title>
+</head>
+<body>
+    <div class="container pt-5">
+        <!-- 스터디 입력 양식 -->
+        <div>
+            <div>
+                <!--<label for="studyName">스터디명</label><br>-->
+                <input type="text" class="form-control" name="studyName" id="studyName" placeholder="스터디 그룹 이름" required="required">
+            </div>
+            <br>
+
+            <div class="form-group">
+                <select class="form-control" name="categoryTypeNo" id="categoryTypeNo" required="required">
+                    <option value="">스터디 유형</option>
+                    <option value="1">언어</option>
+                    <option value="2">면접</option>
+                    <option value="3">알고리즘</option>
+                    <option value="4">자격증</option>
+                </select>
+                <br>
+                <select class="form-control" name="categoryLangNo" id="categoryLangNo" required="required">
+                    <option value="">사용 언어</option>
+                    <option value="1">자바</option>
+                    <option value="2">C</option>
+                    <option value="3">파이썬</option>
+                    <option value="4">기타</option>
+                </select>
+            </div>
+            <br>
+
+            <div>
+                <!--<label for="studyDesc">간단한 소개</label>-->
+                <textarea class="form-control" rows="3" name="studyDesc" id="studyDesc" placeholder="스터디에 대한 간단한 소개를 해주세요" required="required"></textarea>
+            </div>
+            <br>
+            <!-- 스터디 상세 소개 -->
+            <div>
+                <textarea class="form-control" rows="10" name="studyInfo" id="studyInfo" placeholder="스터디 상세 소개" required="required"></textarea>
+            </div>
+            <br>
+            <button class="btn btn-info" id="studyRegister">등록</button>
+        </div>
+        <script>
+            $(document).ready(function(){
+                $("#studyRegister").click(function(){
+                    var jsonData = {
+                        studyName: $("#studyName").val(),
+                        categoryTypeNo: $("#categoryTypeNo").val(),
+                        categoryLangNo: $("#categoryLangNo").val(),
+                        studyDesc: $("#studyDesc").val(),
+                        studyInfo: $("#studyInfo").val()
+                    };
+                    console.log(jsonData);
+                    $.ajax({
+                        type:"post",
+                        url:"registerStudy",
+                        dataType:"json",
+                        data:JSON.stringify(jsonData),
+                        contentType:"application/json; charset=utf-8",
+                        success:function(result){
+                           <!-- alert("success");
+                            console.log("result");
+                            alert("result");-->
+                            location.replace("/");
+                        }
+                    });
+                });
+            });
+        </script>
+    </div>
+</body>
+</html>

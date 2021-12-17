@@ -6,7 +6,7 @@ import lombok.Data;
 public class StudyCommentDTO {
     private int studyCommentNo;
     private String studyCommentContent;
-    private String StudyCommentRegDate;
+    private String StudyCommentRegdate;
     private MemberDTO memberDTO;
     private StudyDTO studyDTO;
 }

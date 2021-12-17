@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class ApplyDTO {
     private int applyNo;
-    private String applyRegDate;
+    private String applyRegdate;
     private String applyContent;
     private MemberDTO memberDTO;
     private StudyDTO studyDTO;
