@@ -2,32 +2,6 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <div th:replace="fragments/html-head.html :: fragment-html-head"></div>
-    <!--
-    <style>
-        .image {
-            text-align: center;
-        }
-
-        .modal {
-            text-align: center;
-        }
-
-        @media screen and (min-width: 768px) {
-            .modal:before {
-                display: inline-block;
-                vertical-align: middle;
-                content: " ";
-                height: 100%;
-            }
-        }
-
-        .modal-dialog {
-            display: inline-block;
-            text-align: left;
-            vertical-align: middle;
-        }
-    </style>
-    -->
 </head>
 <body style="margin: 0;">
 <script>
@@ -57,19 +31,24 @@
                         <h5 th:text="${study.studyDTO.studyName}" class="card-title" style="margin: 0;">Card title</h5>
                     </div>
                     <div style="display: inline-block; float: right;">
-                        <span th:text="${study.studyDTO.studyStateDTO.studyState}" class="badge badge-pill badge-success">Success</span>
+                        <span th:text="${study.studyDTO.studyStateDTO.studyState}"
+                              class="badge badge-pill badge-success">Success</span>
                     </div>
                 </div>
             </div>
             <div class="card-body">
-                <p th:text="${study.studyDTO.studyDesc}" class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                <p th:text="${study.studyDTO.studyDesc}" class="card-text">With supporting text below as a natural
+                    lead-in to additional content.</p>
                 <div style="margin-top: 15px;">
-                    <span th:text="${study.studyDTO.categoryTypeDTO.categoryType}" class="badge badge-pill badge-secondary">Secondary</span>
-                    <span th:text="${study.studyDTO.categoryLangDTO.categoryLang}" class="badge badge-pill badge-secondary">Secondary</span>
+                    <span th:text="${study.studyDTO.categoryTypeDTO.categoryType}"
+                          class="badge badge-pill badge-secondary">Secondary</span>
+                    <span th:text="${study.studyDTO.categoryLangDTO.categoryLang}"
+                          class="badge badge-pill badge-secondary">Secondary</span>
                 </div>
                 <div style="margin-top: 15px;">
                     <div style="display: inline-block;">
-                        <img th:src="${study.memberDTO.picture}" class="rounded-circle" style="margin-right: 10px; width: 30px; height: 30px;"/>
+                        <img th:src="${study.memberDTO.picture}" class="rounded-circle"
+                             style="margin-right: 10px; width: 30px; height: 30px;"/>
                         <span th:text="${study.memberDTO.name}"></span>
                     </div>
                     <div style="display: inline-block; float: right;">
@@ -82,48 +61,15 @@
             </div>
         </div>
     </div>
-    <!--
-    <div class="row" style="margin-top: 100px">
-        <div th:each="study: ${studyList}" class="col-4">
-            <div class="card" style="width: 18rem;">
-                <div class="card-header">
-                    <p th:text="${study.studyDTO.studyName}"></p>
-                </div>
-                <div class="card-body">
-                    <p th:text="${study.studyDTO.studyDesc}" class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                    <span th:text="${study.studyDTO.categoryTypeDTO.categoryType}"></span>
-                    <span th:text="${study.studyDTO.categoryLangDTO.categoryLang}"></span>
-                    <p th:text="${study.studyDTO.studyStateDTO.studyState}"></p>
-                    <span th:text="${study.memberDTO.name}"></span>
-                    <span th:text="${study.studyDTO.studyRegDate}"></span>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    -->
 </div>
-<span class="rounded-circle text-center" style="background-color: rgba(0, 0, 0, 0.8); position: fixed; right: 40px; bottom: 30px; width:50px; height: 50px; padding-top: 5px;" onclick="window.scrollTo(0, 0);">
-    <svg style="color: #341BE0; font-weight: bold;" xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-caret-up" viewBox="0 0 16 16">
+<span class="rounded-circle text-center"
+      style="background-color: rgba(0, 0, 0, 0.8); position: fixed; right: 40px; bottom: 30px; width:50px; height: 50px; padding-top: 5px;"
+      onclick="window.scrollTo(0, 0);">
+    <svg style="color: #341BE0; font-weight: bold;" xmlns="http://www.w3.org/2000/svg" width="35" height="35"
+         fill="currentColor" class="bi bi-caret-up" viewBox="0 0 16 16">
         <path d="M3.204 11h9.592L8 5.519 3.204 11zm-.753-.659 4.796-5.48a1 1 0 0 1 1.506 0l4.796 5.48c.566.647.106 1.659-.753 1.659H3.204a1 1 0 0 1-.753-1.659z"/>
     </svg>
 </span>
 <div th:replace="fragments/footer.html :: fragment-footer"></div>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

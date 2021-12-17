@@ -23,9 +23,6 @@ public class HomeController {
 
     @GetMapping("/")
     public String home(Model model, @LoginUser SessionMember member) {
-        
-        // 지라 연동 테스트 by syeon
-
         if(member != null) {
             model.addAttribute("member", member);
             model.addAttribute("picture", member.getPicture());

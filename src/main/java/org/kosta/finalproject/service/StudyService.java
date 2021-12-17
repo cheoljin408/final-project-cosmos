@@ -1,5 +1,6 @@
 package org.kosta.finalproject.service;
 
+import org.kosta.finalproject.model.domain.StudyDTO;
 import org.kosta.finalproject.model.domain.StudyMemberDTO;
 
 import java.util.List;
@@ -14,4 +15,13 @@ public interface StudyService {
     List<Map<String, Object>> getStudyListByStudyNameAndDesc(String searchWord);
 
     List<Map<String, Object>> getStudyListByCategory(String categoryVal);
+
+    void registerStudy(StudyDTO studyDTO);
+
+    void registerStudyMemberRole(String email);
+
+    Map<String, Object> getStudyDetailByStudyNo(int studyNo);
+
+    String findStudyMemberRoleByStudyNo(int studyNo, String email);
+
 }
