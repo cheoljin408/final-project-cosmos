@@ -7,6 +7,9 @@ import java.util.List;
 public interface StudyService {
 
     List<StudyMemberDTO> getAllList();
+
     List<StudyMemberDTO> getStudyListByCategory();
-    List<StudyMemberDTO> getStudyListByStudyNameAndDesc();
+
+    List<StudyMemberDTO> getStudyListByStudyNameAndDesc(String searchWord);
+
 }
