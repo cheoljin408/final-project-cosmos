@@ -31,4 +31,11 @@ public class StudyController {
         model.addAttribute("studyList", result);
         return "studylist/study-list-main";
     }
+
+    @GetMapping("/getStudyListByStudyNameAndDesc")
+    public String getStudyListByStudyNameAndDesc(String searchWord,Model model){
+        List<StudyMemberDTO> list = studyService.getStudyListByStudyNameAndDesc(searchWord);
+        model.addAttribute("studyList",list);
+        return "studylist/findStudyListByStudyNameAndDesc";
+    }
 }
