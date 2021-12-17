@@ -37,10 +37,11 @@ public class StudyController {
 
 
     @GetMapping("/getStudyListByStudyNameAndDesc")
-    public String getStudyListByStudyNameAndDesc(String searchWord,Model model){
-        List<StudyMemberDTO> list = studyService.getStudyListByStudyNameAndDesc(searchWord);
-        model.addAttribute("studyList",list);
-        return "studylist/findStudyListByStudyNameAndDesc";
+    @ResponseBody
+    public List<Map<String, Object>> getStudyListByStudyNameAndDesc(@RequestParam String searchWord){
+        List<Map<String, Object>> result = studyService.getStudyListByStudyNameAndDesc(searchWord);
+        System.out.println(result);
+        return result;
     }
     /**
      *   카테고리 버튼 ->  Ajax를 통해서 -> 비동기 처리로 리스트를 화면에 뿌려줌
