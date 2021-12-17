@@ -8,6 +8,9 @@ import java.util.List;
 @Mapper
 public interface StudyMapper {
     List<StudyMemberDTO> getAllStudyList();
+
     List<StudyMemberDTO> getStudyListByCategory();
-    List<StudyMemberDTO> getStudyListByStudyNameAndDesc();
+
+    List<StudyMemberDTO> getStudyListByStudyNameAndDesc(String searchWord);
+
 }
