@@ -1,14 +1,10 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <div th:replace="fragments/html-head.html :: fragment-html-head"></div>
 </head>
 <body>
+    <div th:replace="fragments/header.html :: fragment-header"></div>
     <div class = "container pt-3">
         <br>
         <button class="bb btn btn-outline-dark" value="자바">자바</button> &nbsp; &nbsp;
@@ -50,6 +46,7 @@
             </div>
         </div>
     </div>
+    <div th:replace="fragments/footer.html :: fragment-footer"></div>
     <script type="text/javascript">
         $(function(){
 
