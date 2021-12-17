@@ -28,16 +28,10 @@ public class HomeController {
 
         if(member != null) {
             model.addAttribute("member", member);
+            model.addAttribute("picture", member.getPicture());
         }
 
-        // List<Map<String, String>> studyList = studyService.getStudyList3();
         List<StudyMemberDTO> studyList = studyService.getStudyList3();
-        for(int i=0; i<studyList.size(); i++) {
-            System.out.println(studyList.get(i).toString());
-            System.out.println(studyList.get(i).getMemberDTO().getName());
-            System.out.println(studyList.get(i).getMemberDTO().getPicture());
-        }
-        System.out.println(studyList.size());
         model.addAttribute("studyList", studyList);
         return "index";
     }
