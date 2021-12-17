@@ -29,7 +29,7 @@
 
         <br><br><br>
         <div class="row" id="cardList" >
-            <div th:each="study: ${studyList}" class="col-4 pt-3">
+            <div th:each="study: ${studyList}" class="col-4 pt-3" th:width="40px">
                 <div class="card" style="width: 18rem;">
                     <div class="card-header">
                         <p th:text="${study.studyDTO.studyName}"></p>
@@ -41,7 +41,8 @@
                         <span th:text="${study.studyDTO.categoryTypeDTO.categoryType}"></span>
                         <span th:text="${study.studyDTO.categoryLangDTO.categoryLang}"></span>
                         <p th:text="${study.studyDTO.studyStateDTO.studyState}"></p>
-                        <span th:text="${study.memberDTO.name}"></span>
+                        <img class="rounded-circle me-3" width="40" height="40" src="" th:src="${study.memberDTO.picture}" alt="프로필 이미지">
+                        <span th:text="${study.memberDTO.name}"></span> <br>
                         <span th:text="${study.studyDTO.studyRegdate}"></span>
                         <a href="#" class="btn btn-primary">Go somewhere</a>
                     </div>
@@ -83,9 +84,12 @@
                             searchList +=        "<p>"
                             searchList +=             `${result[i].STUDY_STATE}`
                             searchList +=        "</p>"
+                            searchList +=        "<img class='rounded-circle me-3' width='40' height='40' src="
+                            searchList +=        `${result[i].PICTURE}`
+                            searchList +=        " alt='프로필 이미지'>"
                             searchList +=        "<span>"
                             searchList +=             `${result[i].NAME}`
-                            searchList +=        "</span>"
+                            searchList +=        "</span> <br>"
                             searchList +=        "<span>"
                             searchList +=              `${result[i].STUDY_REGDATE}`
                             searchList +=        "</span>"
@@ -132,9 +136,12 @@
                             searchList +=        "<p>"
                             searchList +=             `${result[i].STUDY_STATE}`
                             searchList +=        "</p>"
+                            searchList +=        "<img class='rounded-circle me-3' width='40' height='40' src="
+                            searchList +=        `${result[i].PICTURE}`
+                            searchList +=        " alt='프로필 이미지'>"
                             searchList +=        "<span>"
                             searchList +=             `${result[i].NAME}`
-                            searchList +=        "</span>"
+                            searchList +=        "</span> <br>"
                             searchList +=        "<span>"
                             searchList +=              `${result[i].STUDY_REGDATE}`
                             searchList +=        "</span>"
