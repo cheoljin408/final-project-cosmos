@@ -1,3 +1,4 @@
+<!--
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -5,6 +6,74 @@
 </head>
 <body>
 <div th:replace="fragments/header.html :: fragment-header"></div><br><br>
+<div class="container">
+    <div class="row h-100">
+        <div class="offset-sm-1 col-sm-10">
+            <p>test1 님의 참여신청 결과</p>
+            <div class="card">
+                <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                        <p>2021.12.17</p>
+                        <p>OOO 스터디 참가신청이 수락되었습니다.</p>
+                        &lt;!&ndash;<footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>&ndash;&gt;
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+    </div>
+    &nbsp;
+
+    <div class="row h-100">
+        <div class="offset-sm-1 col-sm-10">
+            <p>test2님이 OOO스터디에 참가신청하였습니다.</p>
+            <div class="card">
+                <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                        <p>2021.12.17</p>
+                        <p>test2님이 OOO스터디에 참가신청하였습니다.</p>
+                        &lt;!&ndash;<footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>&ndash;&gt;
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+    </div>
+    &nbsp;
+
+    <div class="row h-100">
+        <div class="offset-sm-1 col-sm-10">
+            <p>test1 님의 참여신청 결과</p>
+            <div class="card">
+                <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                        <p>2021.12.17</p>
+                        <p>OOO 스터디 참가신청이 수락되었습니다.</p>
+                        &lt;!&ndash;<footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>&ndash;&gt;
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="fragments/footer.html :: fragment-footer"></div>
+</body>
+</html>-->
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:fragment="fragment-html-head">
+    <title>Thymeleaf Fragment</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+
+<body>
 <div class="container">
     <div class="row h-100">
         <div class="offset-sm-1 col-sm-10">
@@ -52,8 +121,6 @@
             </div>
         </div>
     </div>
-    &nbsp;
 </div>
-<div th:replace="fragments/footer.html :: fragment-footer"></div>
 </body>
 </html>

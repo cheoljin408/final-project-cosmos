@@ -8,7 +8,7 @@ public class StudyDTO {
     private String studyName;
     private String studyDesc;
     private String studyInfo;
-    private String studyRegDate;
+    private String studyRegdate;
     private StudyStateDTO studyStateDTO;
     private CategoryTypeDTO categoryTypeDTO;
     private CategoryLangDTO categoryLangDTO;
