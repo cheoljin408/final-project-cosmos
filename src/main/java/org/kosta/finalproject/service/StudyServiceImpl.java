@@ -1,10 +1,13 @@
 package org.kosta.finalproject.service;
 
+import org.kosta.finalproject.model.domain.CategoryLangDTO;
+import org.kosta.finalproject.model.domain.CategoryTypeDTO;
 import org.kosta.finalproject.model.domain.StudyMemberDTO;
 import org.kosta.finalproject.model.mapper.StudyMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class StudyServiceImpl implements StudyService{
@@ -22,8 +25,8 @@ public class StudyServiceImpl implements StudyService{
     }
 
     @Override
-    public List<StudyMemberDTO> getStudyListByCategory() {
-        return null;
+    public List<Map<String, Object>> getStudyListByCategory(String categoryVal) {
+        return studyMapper.getStudyListByCategory(categoryVal);
     }
 
     @Override

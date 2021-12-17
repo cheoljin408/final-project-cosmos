@@ -1,8 +1,11 @@
 package org.kosta.finalproject.service;
 
+import org.kosta.finalproject.model.domain.CategoryLangDTO;
+import org.kosta.finalproject.model.domain.CategoryTypeDTO;
 import org.kosta.finalproject.model.domain.StudyMemberDTO;
 
 import java.util.List;
+import java.util.Map;
 
 public interface StudyService {
 
@@ -11,5 +14,7 @@ public interface StudyService {
     List<StudyMemberDTO> getStudyListByCategory();
 
     List<StudyMemberDTO> getStudyListByStudyNameAndDesc(String searchWord);
+
+    List<Map<String, Object>> getStudyListByCategory(String categoryVal);
 
 }
