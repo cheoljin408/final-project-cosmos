@@ -60,6 +60,31 @@
         order by s.STUDY_NO desc
     </select>
 
+     <select id="getStudyListByStudyNameAndDesc" parameterType="String" resultMap="studyMemberDTOMap">
+        select m.name as m_name,
+               m.PICTURE as m_picture,
+               s.STUDY_NO as s_study_no,
+               s.STUDY_NAME as s_study_name,
+               s.STUDY_DESC as s_study_desc,
+               s.STUDY_REGDATE as s_study_regdate,
+               sst.STUDY_STATE as s_sst_study_state,
+               ctt.category_type as s_ctt_category_type,
+               clt.category_lang as s_clt_category_lang
+        from member m,
+             STUDY_MEMBER sm,
+             STUDY s,
+             STUDY_STATE_TABLE sst,
+             category_type_table ctt,
+             category_lang_table clt
+        where m.EMAIL = sm.EMAIL
+            and s.STUDY_NO = sm.STUDY_NO
+            and s.STUDY_STATE_CODE = sst.STUDY_STATE_CODE
+            and s.category_lang_no = clt.category_lang_no
+            and s.category_type_no = ctt.category_type_no
+            and ( s.STUDY_NAME like '%'||#{value}||'%' or s.STUDY_DESC like '%'||#{value}||'%' )
+        order by s.STUDY_NO desc
+    </select>
+
     <select id="getStudyListByCategory" resultType="hashmap" parameterType="string" >
         select m.name ,
                m.PICTURE ,
@@ -85,26 +110,3 @@
     </select>
 </mapper>
 
-<!--
-    select m.name as m_name,
-               m.PICTURE as m_picture,
-               s.STUDY_NO as s_study_no,
-               s.STUDY_NAME as s_study_name,
-               s.STUDY_DESC as s_study_desc,
-               s.STUDY_REGDATE as s_study_regdate,
-               sst.STUDY_STATE as s_sst_study_state,
-               ctt.category_type as s_ctt_category_type,
-               clt.category_lang as s_clt_category_lang
-        from member m,
-             STUDY_MEMBER sm,
-             STUDY s,
-             STUDY_STATE_TABLE sst,
-             category_type_table ctt,
-             category_lang_table clt
-        where m.EMAIL = sm.EMAIL
-          and s.STUDY_NO = sm.STUDY_NO
-          and s.STUDY_STATE_CODE = sst.STUDY_STATE_CODE
-          and s.category_lang_no = clt.category_lang_no
-          and s.category_type_no = ctt.category_type_no
-          and (clt.category_lang = #{categoryVal} or ctt.category_type = #{categoryVal})
--->

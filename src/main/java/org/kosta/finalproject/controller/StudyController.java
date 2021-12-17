@@ -35,6 +35,13 @@ public class StudyController {
         return "studylist/study-list-main";
     }
 
+
+    @GetMapping("/getStudyListByStudyNameAndDesc")
+    public String getStudyListByStudyNameAndDesc(String searchWord,Model model){
+        List<StudyMemberDTO> list = studyService.getStudyListByStudyNameAndDesc(searchWord);
+        model.addAttribute("studyList",list);
+        return "studylist/findStudyListByStudyNameAndDesc";
+    }
     /**
      *   카테고리 버튼 ->  Ajax를 통해서 -> 비동기 처리로 리스트를 화면에 뿌려줌
      *   @return :

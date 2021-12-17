@@ -21,7 +21,6 @@
     <main class="flex-shrink-0">
         <section clss="py-3">
             <div class = "container col-lg-15">
-
                 <div class="row p-lg-2 align:center" style="vertical-align: center">
                     <button class="bb btn btn-outline-dark" value="자바">자바</button> &nbsp; &nbsp;
                     <button class="bb btn btn-outline-dark" value="C">C</button> &nbsp; &nbsp;
@@ -32,7 +31,10 @@
                     <button class="bb btn btn-outline-dark" value="면접">면접</button> &nbsp; &nbsp;
                     <button class="bb btn btn-outline-dark" value="알고리즘">알고리즘</button> &nbsp; &nbsp;
                 </div>
-
+                 <form th:action="@{/study/getStudyListByStudyNameAndDesc}">
+                    <input type = "text" name = "searchWord" placeholder="검색어를 입력하세요">
+                    <button>검색</button>
+                </form>
                 <br><br><br>
                 <div id="cardList">
                 <div class="row gx-2"> <!-- -->
