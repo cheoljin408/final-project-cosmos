@@ -34,7 +34,7 @@ public class StudyListTest {
 
     @Test
     void 검색결과리스트(){
-        List<StudyMemberDTO> list = studyMapper.getStudyListByStudyNameAndDesc("d");
+        List<Map<String, Object>> list = studyMapper.getStudyListByStudyNameAndDesc("d");
         for(int i=0;i<list.size();i++){
             System.out.println("list.get(i) = " + list.get(i));
         }

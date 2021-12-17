@@ -30,7 +30,7 @@ public class StudyServiceImpl implements StudyService{
     }
 
     @Override
-    public List<StudyMemberDTO> getStudyListByStudyNameAndDesc(String searchWord) {
+    public List<Map<String, Object>> getStudyListByStudyNameAndDesc(String searchWord) {
         return studyMapper.getStudyListByStudyNameAndDesc(searchWord);
     }
 }

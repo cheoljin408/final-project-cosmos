@@ -12,9 +12,7 @@ import java.util.Map;
 public interface StudyMapper {
     List<StudyMemberDTO> getAllStudyList();
 
-    List<StudyMemberDTO> getStudyListByCategory();
-
-    List<StudyMemberDTO> getStudyListByStudyNameAndDesc(String searchWord);
+    List<Map<String, Object>> getStudyListByStudyNameAndDesc(String searchWord);
 
     List<Map<String, Object>> getStudyListByCategory(String categoryVal);
   
