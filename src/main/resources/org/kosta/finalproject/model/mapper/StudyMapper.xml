@@ -66,7 +66,7 @@
                s.STUDY_NO ,
                s.STUDY_NAME ,
                s.STUDY_DESC ,
-               s.STUDY_REGDATE ,
+               to_char(s.STUDY_REGDATE, 'yyyy-mm-dd hh24:mi:ss') as STUDY_REGDATE,
                sst.STUDY_STATE ,
                ctt.category_type,
                clt.category_lang
@@ -91,7 +91,7 @@
                s.STUDY_NO ,
                s.STUDY_NAME ,
                s.STUDY_DESC ,
-               s.STUDY_REGDATE ,
+               to_char(s.STUDY_REGDATE, 'yyyy-mm-dd hh24:mi:ss') as STUDY_REGDATE,
                sst.STUDY_STATE ,
                ctt.category_type ,
                clt.category_lang
