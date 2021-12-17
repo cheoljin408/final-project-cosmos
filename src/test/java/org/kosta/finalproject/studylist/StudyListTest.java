@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @SpringBootTest
 public class StudyListTest {
@@ -20,7 +21,7 @@ public class StudyListTest {
     @Autowired
     private StudyMapper studyMapper;
 
-    /*@Test
+    @Test
     @DisplayName("스터디 리스트 가져오기")
     void 스터디리스트가저오기(){
         List<StudyMemberDTO> result = studyMapper.getAllStudyList();
@@ -28,19 +29,12 @@ public class StudyListTest {
         assertThat(result.size()).isEqualTo(3);
         assertThat(result.get(0).getMemberDTO().getName()).isEqualTo("test3");
         assertThat(result.get(0).getMemberDTO().getPicture()).isEqualTo("test3");
-    }*/
+    }
     
-    /*@Test
-    @DisplayName("카테고리 가져오기")
-    void 카테고리가져오기(){
-        List<CategoryTypeDTO> result = studyMapper.getCategoryTypeList();
-        assertThat(result.size()).isEqualTo(4);
-    }*/
-
     @Test
     @DisplayName("카테고리버튼검색")
     void 카테고리버튼으로검색(){
-        List<StudyMemberDTO> result = studyMapper.getStudyListByCategory("언어");
+        List<Map<String, Object>> result = studyMapper.getStudyListByCategory("언어");
         assertThat(result.size()).isEqualTo(3);
     }
 }
