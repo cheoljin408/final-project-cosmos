@@ -1,5 +1,4 @@
 <!-- 헤더, 푸터 적용 코드 -->
-<!--
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -8,47 +7,35 @@
 <body>
 <div th:replace="fragments/header.html :: fragment-header"></div><br><br>
 <div class="container">
+    <!-- 수락/거부된 스터디 리스트 -->
+    <h3><span th:text="${member.name}"></span>님의 스터디 참여신청 결과</h3>
     <div class="row h-100">
-        <div class="offset-sm-1 col-sm-10">
-            <p>test1 님의 참여신청 결과</p>
+        <div th:each="alarm : ${alarmListOkAndNo}" class="offset-sm-1 col-sm-10"><br>
             <div class="card">
                 <div class="card-body">
                     <blockquote class="blockquote mb-0">
-                        <p>2021.12.17</p>
-                        <p>OOO 스터디 참가신청이 수락되었습니다.</p>
-                        &lt;!&ndash;<footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>&ndash;&gt;
+                        신청일시: <span th:text="${alarm.A_APPLYREGDATE}"/><br>
+                        <span th:text="${alarm.A_S_STUDYNAME}"/>&nbsp;스터디 참가신청이
+                        <span th:text="${alarm.AST_APPLY_STATE}"/> 되었습니다.
+                        <footer class="blockquote-footer">여기에 무엇을 쓰면 좋을까?<cite title="Source Title"> SourceTitle:??</cite></footer>
                     </blockquote>
                 </div>
             </div>
         </div>
     </div>
-    &nbsp;
+    <br><br><br>
 
+    <!-- 대기중인 스터디 리스트 -->
+    <h3><span th:text="${member.name}"></span>님의 대기중인 스터디</h3>
     <div class="row h-100">
-        <div class="offset-sm-1 col-sm-10">
-            <p>test2님이 OOO스터디에 참가신청하였습니다.</p>
+        <div th:each="alarmWait : ${alarmListWait}" class="offset-sm-1 col-sm-10"><br>
             <div class="card">
                 <div class="card-body">
                     <blockquote class="blockquote mb-0">
-                        <p>2021.12.17</p>
-                        <p>test2님이 OOO스터디에 참가신청하였습니다.</p>
-                        &lt;!&ndash;<footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>&ndash;&gt;
-                    </blockquote>
-                </div>
-            </div>
-        </div>
-    </div>
-    &nbsp;
-
-    <div class="row h-100">
-        <div class="offset-sm-1 col-sm-10">
-            <p>test1 님의 참여신청 결과</p>
-            <div class="card">
-                <div class="card-body">
-                    <blockquote class="blockquote mb-0">
-                        <p>2021.12.17</p>
-                        <p>OOO 스터디 참가신청이 수락되었습니다.</p>
-                        &lt;!&ndash;<footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>&ndash;&gt;
+                        신청일시: <span th:text="${alarmWait.A_APPLYREGDATE}"/><br>
+                        <span th:text="${alarmWait.A_S_STUDYNAME}"/>&nbsp;스터디 참가신청이
+                        <span th:text="${alarmWait.AST_APPLY_STATE}"/> 중입니다.
+                        <footer class="blockquote-footer">여기에 무엇을 쓰면 좋을까?<cite title="Source Title"> SourceTitle:??</cite></footer>
                     </blockquote>
                 </div>
             </div>
@@ -57,77 +44,7 @@
 </div>
 <div th:replace="fragments/footer.html :: fragment-footer"></div>
 </body>
-</html>-->
-
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:fragment="fragment-html-head">
-    <title>Thymeleaf Fragment</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</head>
-<body>
-<div class="container">
-    <div class="row h-100">
-        <div class="offset-sm-1 col-sm-10">
-            <p>test1 님의 참여신청 결과</p>
-            <div class="card">
-                <div class="card-body">
-                    <blockquote class="blockquote mb-0">
-                        <p>2021.12.17</p>
-                        <p>OOO 스터디 참가신청이 수락되었습니다.</p>
-                        <!--<footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>-->
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                            <button class="btn btn-primary me-md-2" type="button">스터디룸 입장</button>&nbsp;
-                        </div>
-                    </blockquote>
-                </div>
-            </div>
-        </div>
-    </div>
-    &nbsp;
-
-    <div class="row h-100">
-        <div class="offset-sm-1 col-sm-10">
-            <p>test2님이 OOO스터디에 참가신청하였습니다.</p>
-            <div class="card">
-                <div class="card-body">
-                    <blockquote class="blockquote mb-0">
-                        <p>2021.12.17</p>
-                        <p>test2님이 OOO스터디에 참가신청하였습니다.</p>
-                        <!--<footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>-->
-                    </blockquote>
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                        <button class="btn btn-primary me-md-2" type="button">수락</button>&nbsp;
-                        <button class="btn btn-primary" type="button">거절</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    &nbsp;
-
-    <div class="row h-100">
-        <div class="offset-sm-1 col-sm-10">
-            <p>test1 님의 참여신청 결과</p>
-            <div class="card">
-                <div class="card-body">
-                    <blockquote class="blockquote mb-0">
-                        <p>2021.12.17</p>
-                        <p>OOO 스터디 참가신청이 거절되었습니다.</p>
-                        <!--<footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>-->
-                        
-                    </blockquote>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-</body>
 </html>
+
+
+

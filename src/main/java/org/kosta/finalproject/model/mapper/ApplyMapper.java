@@ -8,6 +8,5 @@ import java.util.Map;
 
 @Mapper
 public interface ApplyMapper {
-    //ApplyMapper.xml로 alarm
-    List<Map<String, Object>> alarm();
+    List<Map<String, Object>> getAlarmList();
 }

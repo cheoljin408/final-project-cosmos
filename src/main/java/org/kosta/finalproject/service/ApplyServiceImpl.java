@@ -18,9 +18,8 @@ public class ApplyServiceImpl implements ApplyService {
         this.applyMapper = applyMapper;
     }
 
-    public List<Map<String, Object>> alarm() {
-        //mapper호출
-        List<Map<String, Object>> alarm = applyMapper.alarm();
-        return alarm;
+    public List<Map<String, Object>> getAlarmList() {
+        List<Map<String, Object>> alarmList = applyMapper.getAlarmList();
+        return alarmList;
     }
 }
