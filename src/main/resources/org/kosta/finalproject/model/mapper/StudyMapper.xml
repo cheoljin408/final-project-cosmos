@@ -146,11 +146,11 @@
     </select>
 
     <!-- 스터디 등록 -->
-    <insert id="registerStudy" parameterType="StudyDTO">
-        insert into study(STUDY_NO, STUDY_NAME, STUDY_DESC, STUDY_INFO, STUDY_REGDATE, CATEGORY_TYPE_NO, CATEGORY_LANG_NO
+    <insert id="registerStudy" parameterType="HashMap">
+        insert into study(STUDY_NO, STUDY_NAME, STUDY_INFO, STUDY_DESC, STUDY_REGDATE, CATEGORY_TYPE_NO, CATEGORY_LANG_NO
         )
-        values (STUDY_SEQ.nextval, #{studyName}, #{studyDesc}, #{studyInfo}, sysdate,
-        #{categoryTypeDTO.categoryTypeNo}, #{categoryLangDTO.categoryLangNo})
+        values (STUDY_SEQ.nextval, #{STUDY_NAME}, #{STUDY_INFO}, #{STUDY_DESC}, sysdate,
+        #{CATEGORY_TYPE_NO}, #{CATEGORY_LANG_NO})
         <selectKey keyProperty="studyNo" resultType="int" order="AFTER">
             SELECT STUDY_SEQ.CURRVAL FROM DUAL
         </selectKey>
@@ -175,7 +175,9 @@
                to_char(s.STUDY_REGDATE, 'YYYY-MM-DD')                          AS STUDY_REGDATE,
                sst.STUDY_STATE,
                ctt.category_type,
-               clt.category_lang
+               ctt.category_type_no,
+               clt.category_lang,
+               clt.category_lang_no
         from member m,
              STUDY_MEMBER sm,
              STUDY s,
@@ -200,11 +202,17 @@
     </select>
 
     <!-- 스터디 정보 수정 -->
-    <update id="modifyStudy" parameterType="StudyDTO">
-        UPDATE STUDY
-        SET STUDY_NAME = #{studyName},
-            STUDY_DESC = #{studyDesc},
-            STUDY_INFO = #{studyInfo}
-        WHERE STUDY_NO = #{studyNo}
+    <update id="modifyStudy" parameterType="HashMap">
+        UPDATE (
+            SELECT s.STUDY_NAME, s.STUDY_DESC, s.STUDY_INFO, ctt.CATEGORY_TYPE_NO, clt.CATEGORY_LANG_NO
+            FROM study s, CATEGORY_TYPE_TABLE ctt, CATEGORY_LANG_TABLE clt
+            WHERE s.CATEGORY_TYPE_NO = CTT.CATEGORY_TYPE_NO
+            AND s.CATEGORY_LANG_NO = clt.CATEGORY_LANG_NO
+            AND s.STUDY_NO = #{STUDY_NO}
+        ) SET STUDY_NAME = #{STUDY_NAME},
+        STUDY_DESC = #{STUDY_DESC},
+        STUDY_INFO = #{STUDY_INFO},
+        CATEGORY_TYPE_NO = #{CATEGORY_TYPE_NO},
+        CATEGORY_LANG_NO = #{CATEGORY_LANG_NO}
     </update>
 </mapper>

@@ -16,7 +16,7 @@ public interface StudyService {
 
     List<Map<String, Object>> getStudyListByCategory(String categoryVal);
 
-    void registerStudy(StudyDTO studyDTO);
+    void registerStudy(Map<String,String> studyDTO);
 
     void registerStudyMemberRole(String email);
 
@@ -24,5 +24,5 @@ public interface StudyService {
 
     String findStudyMemberRoleByStudyNo(int studyNo, String email);
 
-    void modifyStudy(StudyDTO studyDTO);
+    void modifyStudy(Map<String, String> studyDTO);
 }

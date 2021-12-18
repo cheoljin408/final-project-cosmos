@@ -40,7 +40,7 @@ public class StudyServiceImpl implements StudyService{
     }
 
     @Override
-    public void registerStudy(StudyDTO studyDTO) {
+    public void registerStudy(Map<String, String> studyDTO) {
         studyMapper.registerStudy(studyDTO);
     }
 
@@ -60,7 +60,7 @@ public class StudyServiceImpl implements StudyService{
     }
 
     @Override
-    public void modifyStudy(StudyDTO studyDTO) {
+    public void modifyStudy(Map<String, String> studyDTO) {
         studyMapper.modifyStudy(studyDTO);
     }
 

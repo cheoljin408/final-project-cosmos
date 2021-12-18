@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -33,30 +34,23 @@ public class StudyTest {
         MemberDTO memberDTO = new MemberDTO();
         memberDTO.setEmail("test@test.com");
         memberDTO.setName("test");
-        StudyDTO studyDTO = new StudyDTO();
-        studyDTO.setStudyName("test study name");
-        studyDTO.setStudyInfo("test info");
-        studyDTO.setStudyDesc("test desc");
-
-        CategoryLangDTO categoryLangDTO = new CategoryLangDTO();
-        categoryLangDTO.setCategoryLangNo(1);
-        studyDTO.setCategoryLangDTO(categoryLangDTO);
-
-        CategoryTypeDTO categoryTypeDTO = new CategoryTypeDTO();
-        categoryTypeDTO.setCategoryTypeNo(1);
-        studyDTO.setCategoryTypeDTO(categoryTypeDTO);
+        Map<String,String> studyDTO = new HashMap<String,String>();
+        studyDTO.put("STUDY_NAME","test study name");
+        studyDTO.put("STUDY_INFO","test info");
+        studyDTO.put("STUDY_DESC","test desc");
+        studyDTO.put("CATEGORY_TYPE_NO","3");
+        studyDTO.put("CATEGORY_LANG_NO","3");
+        int beforeReg = studyService.getAllList().size();
 
         //when
         studyService.registerStudy(studyDTO);
         studyService.registerStudyMemberRole(memberDTO.getEmail());
+        int afterReg = studyService.getAllList().size();
 
         //then
-        // 스터디 등록 시 스터디 번호가 생성되므로 이를 통해 등록된 스터디 내용을 조회할 수 있다
-        Map<String, Object> studyDetailInfo = studyService.getStudyDetailByStudyNo(studyDTO.getStudyNo());
-        // test1. 스터디 리더 등록 확인
-        assertThat(studyDetailInfo.get("STUDY_MEMBER_ROLE")).isEqualTo("스터디리더");
-        // test2. 스터디 모집 상태 확인
-        assertThat(studyDetailInfo.get("STUDY_STATE")).isEqualTo("모집중");
+        // 스터디 등록 전과 후의 스터디 수 비교: 전 < 후
+        assertThat(beforeReg).isLessThan(afterReg);
+
     }
 
     @Test
@@ -82,20 +76,17 @@ public class StudyTest {
         Map<String, Object> studyDetailInfo = studyService.getStudyDetailByStudyNo(51);
         System.out.println("studyDetailInfo = " + studyDetailInfo);
         // 51번 스터디 모집 내용을 아래의 updateStudyData 내용으로 수정
-        StudyDTO updateStudyData = new StudyDTO();
-        updateStudyData.setStudyNo(51);
-        updateStudyData.setStudyName("TEST t_study name");
-        updateStudyData.setStudyDesc("TEST t_study desc");
-        updateStudyData.setStudyInfo("TEST t_study info");
-        CategoryTypeDTO categoryTypeDTO = new CategoryTypeDTO();
-        CategoryLangDTO categoryLangDTO = new CategoryLangDTO();
-        categoryTypeDTO.setCategoryTypeNo(3);
-        categoryLangDTO.setCategoryLangNo(3);
-        updateStudyData.setCategoryTypeDTO(categoryTypeDTO);
-        updateStudyData.setCategoryLangDTO(categoryLangDTO);
+        Map<String, String> studyDTO = new HashMap<String, String>() {
+        };
+        studyDTO.put("STUDY_NO", "51");
+        studyDTO.put("STUDY_NAME", "TEST t_study name");
+        studyDTO.put("STUDY_DESC", "TEST t_study desc");
+        studyDTO.put("STUDY_INFO", "TEST t_study info");
+        studyDTO.put("CATEGORY_TYPE_NO", "3");
+        studyDTO.put("CATEGORY_LANG_NO", "3");
 
         //when
-        studyService.modifyStudy(updateStudyData);
+        studyService.modifyStudy(studyDTO);
         Map<String, Object> studyDetailInfo2 = studyService.getStudyDetailByStudyNo(51);
         System.out.println("studyDetailInfo = " + studyDetailInfo);
         System.out.println("studyDetailInfo2 = " + studyDetailInfo2);
