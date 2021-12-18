@@ -41,5 +41,43 @@
           and a.apply_state_code = ast.apply_state_code
         order by a.apply_no desc
     </select>
+
+    <!-- 본인 : 스터디 리더 , 내가 만든 스터디에 참여 신청을 거절하는 SQL문 -->
+    <update id="applyRefuse" parameterType="int">
+        update APPLY set APPLY_STATE_CODE = 'NO' WHERE APPLY_NO = #{value}
+    </update>
+
+    <!-- 본인 : 스터디 리더 , 내가 만든 스터디에 참여 신청을 수락하는 SQL문 -->
+    <update id="applyAccept" parameterType="int">
+        update APPLY set APPLY_STATE_CODE = 'OK' WHERE APPLY_NO = #{value}
+    </update>
+
+    <insert id="insertStudyMember">
+        insert into STUDY_MEMBER(EMAIL, STUDY_NO, STUDY_MEMBER_ROLE) values(#{email}, #{studyNo}, '스터디원')
+    </insert>
+
+    <!-- 참가신청 알람 리스트 sql-->
+    <select id="getAlarmList" resultType="hashmap">
+        select a.APPLY_NO           as a_applyNo,
+               a.STUDY_NO           as a_studyNo,
+               a.APPLY_REGDATE      as a_applyRegdate,
+               a.APPLY_CONTENT      as a_applyContent,
+               a.EMAIL              as email,
+               m.NAME               as a_m_name,
+               m.PICTURE            as a_m_picture,
+               m.ROLE               as a_m_role,
+               s.STUDY_NAME         as a_s_studyName,
+               ast.APPLY_STATE_CODE as ast_APPLY_STATE_CODE,
+               ast.APPLY_STATE      as ast_APPLY_STATE
+        from APPLY a,
+             MEMBER m,
+             STUDY s,
+             APPLY_STATE_TABLE ast
+        where a.study_NO = s.study_NO
+          and a.email = m.email
+          and a.apply_state_code = ast.apply_state_code
+        order by a.apply_no desc
+    </select>
+
 </mapper>
 
