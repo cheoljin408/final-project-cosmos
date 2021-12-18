@@ -14,6 +14,8 @@ import java.util.List;
 @Controller
 public class HomeController {
 
+    // 지라 테스트 이슈
+
     private final StudyService studyService;
 
     @Autowired
