@@ -59,4 +59,9 @@ public class StudyServiceImpl implements StudyService{
         return studyMapper.findStudyMemberRoleByStudyNo(studyNo, email);
     }
 
+    @Override
+    public void modifyStudy(StudyDTO studyDTO) {
+        studyMapper.modifyStudy(studyDTO);
+    }
+
 }

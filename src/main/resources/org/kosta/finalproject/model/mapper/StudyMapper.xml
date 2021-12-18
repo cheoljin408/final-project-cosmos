@@ -191,10 +191,20 @@
           and s.study_no = #{value}
     </select>
 
+    <!-- 스터디 번호로 스터디 구성원 역할 조회 -->
     <select id="findStudyMemberRoleByStudyNo" resultType="String">
         SELECT STUDY_MEMBER_ROLE
         FROM STUDY_MEMBER
         WHERE STUDY_NO = #{param1}
           AND EMAIL = #{param2}
     </select>
+
+    <!-- 스터디 정보 수정 -->
+    <update id="modifyStudy" parameterType="StudyDTO">
+        UPDATE STUDY
+        SET STUDY_NAME = #{studyName},
+            STUDY_DESC = #{studyDesc},
+            STUDY_INFO = #{studyInfo}
+        WHERE STUDY_NO = #{studyNo}
+    </update>
 </mapper>

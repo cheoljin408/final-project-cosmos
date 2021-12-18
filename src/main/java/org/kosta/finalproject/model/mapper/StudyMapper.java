@@ -26,4 +26,5 @@ public interface StudyMapper {
 
     String findStudyMemberRoleByStudyNo(int studyNo, String email);
 
+    void modifyStudy(StudyDTO studyDTO);
 }

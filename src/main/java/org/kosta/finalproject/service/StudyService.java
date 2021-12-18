@@ -24,4 +24,5 @@ public interface StudyService {
 
     String findStudyMemberRoleByStudyNo(int studyNo, String email);
 
+    void modifyStudy(StudyDTO studyDTO);
 }

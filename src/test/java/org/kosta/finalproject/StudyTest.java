@@ -79,10 +79,23 @@ public class StudyTest {
     @DisplayName("스터디 모집 정보 수정")
     void 스터디모집정보수정(){
         //given
+        Map<String, Object> studyDetailInfo = studyService.getStudyDetailByStudyNo(51);
+        System.out.println("studyDetailInfo = " + studyDetailInfo);
+        // 51번 스터디 모집 내용을 아래의 updateStudyData 내용으로 수정
+        StudyDTO updateStudyData = new StudyDTO();
+        updateStudyData.setStudyNo(51);
+        updateStudyData.setStudyName("update t_study name");
+        updateStudyData.setStudyDesc("update t_study desc");
+        updateStudyData.setStudyInfo("update t_study info");
 
         //when
+        studyService.modifyStudy(updateStudyData);
+        Map<String, Object> studyDetailInfo2 = studyService.getStudyDetailByStudyNo(51);
+        System.out.println("studyDetailInfo = " + studyDetailInfo);
+        System.out.println("studyDetailInfo2 = " + studyDetailInfo2);
 
         //then
+        assertThat(studyDetailInfo).isNotSameAs(studyDetailInfo2);
 
     }
 }
