@@ -39,9 +39,15 @@
             </div>
         </div><!-- Modal end -->
        <script type="text/javascript">
+          /*
+                모달창에 신청자의 정보를 띄우기 위한 작업
+           */
            $(function () {
-
+                $(".alarmInfo").click(function(){
+                    let study_no = $(this).childer("study_no").val();
+                    let applicant_name = $(this).childer("study_no").val();
+                    let applicant_content = $(this).childer("study_no").val();
+                });
            });
-
        </script>
 </html>

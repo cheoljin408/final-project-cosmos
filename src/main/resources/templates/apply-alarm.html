@@ -94,7 +94,7 @@
     &nbsp;
 
     <div class="row h-100">
-        <div class="offset-sm-1 col-sm-10">
+        <div class="offset-sm-1 col-sm-10"  data-toggle="modal" data-target="#myModal">
             <p>test2님이 OOO스터디에 참가신청하였습니다.</p>
             <div class="card">
                 <div class="card-body">
@@ -122,12 +122,12 @@
                         <p>2021.12.17</p>
                         <p>OOO 스터디 참가신청이 거절되었습니다.</p>
                         <!--<footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>-->
-                        
                     </blockquote>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<div th:replace="fragments/apply-accept-modal.html :: fragment-apply-modal"></div>
 </body>
 </html>
