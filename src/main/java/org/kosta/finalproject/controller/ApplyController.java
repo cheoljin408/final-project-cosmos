@@ -26,7 +26,7 @@ public class ApplyController {
     }
 
     /**
-     * 스터디 참가신청 결과 알람 리스트
+     * 내가 신청한 스터디 수락결과 알람 리스트
      * @param member
      * @param model
      * @return
@@ -44,18 +44,21 @@ public class ApplyController {
         List<Map<String, Object>> alarmListOkAndNo = new ArrayList<Map<String, Object>>();
         List<Map<String, Object>> alarmListWait = new ArrayList<Map<String, Object>>();
         for (int i = 0; i < allList.size(); i++) {
-            if(!allList.get(i).get("AST_APPLY_STATE_CODE").equals("WAIT")) {
+            if(!allList.get(i).get("AST_APPLY_STATE_CODE").equals("WAIT") && allList.get(i).get("A_M_NAME").equals(member.getName())) {
                 alarmListOkAndNo.add(allList.get(i));
+                System.out.println(1000);
             }
             //대기중인 스터디 추가
-            else {
+            else if(allList.get(i).get("AST_APPLY_STATE_CODE").equals("WAIT") && allList.get(i).get("A_M_NAME").equals(member.getName())) {
                 alarmListWait.add(allList.get(i));
             }
+            System.out.println(member.getName());
         }
         model.addAttribute("alarmListOkAndNo", alarmListOkAndNo);
         model.addAttribute("alarmListWait", alarmListWait);
         System.out.println(alarmListWait);
         return "apply-alarm";
+
     }
 
     /**
