@@ -147,8 +147,8 @@
 
     <!-- 스터디 등록 -->
     <insert id="registerStudy" parameterType="StudyDTO">
-        insert into study(STUDY_NO, STUDY_NAME, STUDY_DESC, STUDY_INFO, STUDY_REGDATE, CATEGORY_LANG_NO,
-        CATEGORY_TYPE_NO)
+        insert into study(STUDY_NO, STUDY_NAME, STUDY_DESC, STUDY_INFO, STUDY_REGDATE, CATEGORY_TYPE_NO, CATEGORY_LANG_NO
+        )
         values (STUDY_SEQ.nextval, #{studyName}, #{studyDesc}, #{studyInfo}, sysdate,
         #{categoryTypeDTO.categoryTypeNo}, #{categoryLangDTO.categoryLangNo})
         <selectKey keyProperty="studyNo" resultType="int" order="AFTER">

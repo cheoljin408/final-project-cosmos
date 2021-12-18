@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.kosta.finalproject.model.mapper.ApplyMapper">
+    <resultMap id="applyDTOMap" type="org.kosta.finalproject.model.domain.ApplyDTO">
+        <result property="applyRegdate" column="applyRegdate"/>
+        <association property="memberDTO" resultMap="memberDTOMap" columnPrefix="m_"/>
+        <association property="studyDTO" resultMap="studyDTOMap" columnPrefix="s_"/>
+        <association property="applyStateDTO" resultMap="applyStateDTOMap" columnPrefix="ast_"/>
+    </resultMap>
+
+    <resultMap id="memberDTOMap" type="org.kosta.finalproject.model.domain.MemberDTO">
+        <result property="name" column="name"/>
+        <result property="picture" column="picture"/>
+        <result property="role" column="role"/>
+    </resultMap>
+
+    <resultMap id="studyDTO" type="org.kosta.finalproject.model.domain.StudyDTO">
+        <result property="studyName" column="study_name"/>
+        <result property="studyRegdate" column="study_regdate"/>
+    </resultMap>
+
+    <!-- HashMap : as가 별징,  -->
+    <select id="alarm" resultType="hashMap">
+        select a.apply_Regdate as a_applyRegdate,
+               m.name as a_m_name,
+               m.picture as a_m_picture,
+               m.role as a_m_role,
+               s.study_Name as a_s_studyName,
+               s.study_Regdate as a_s_studyRegdate
+        from APPLY a,
+             MEMBER m,
+             STUDY s,
+             APPLY_STATE_TABLE ast
+        where a.study_NO = s.study_NO and
+            a.email = m.email and
+            a.apply_state_code = ast.apply_state_code
+        order by a.apply_no desc
+    </select>
+
+</mapper>

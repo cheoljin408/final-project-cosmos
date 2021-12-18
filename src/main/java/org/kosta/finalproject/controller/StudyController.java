@@ -79,7 +79,11 @@ public class StudyController {
      * 스터디 등록 폼
      */
     @GetMapping("registerStudy")
-    public String registerStudy() {
+    public String registerStudy(@LoginUser SessionMember member, Model model) {
+        if(member != null) {
+            model.addAttribute("member", member);
+            model.addAttribute("picture", member.getPicture());
+        }
         return "study/register-study";
     }
 
@@ -100,7 +104,7 @@ public class StudyController {
         }
         // log.info("jsonData = {}", jsonData);
         // log.info("studyName = {}", jsonData.get("studyName"));
-        // log.info("categoryTypeNo = {}", jsonData.get("categoryTypeNo"))
+        log.info("categoryTypeNo = {}", jsonData.get("categoryTypeNo"));
         StudyDTO studyDTO = new StudyDTO();
         studyDTO.setStudyName(jsonData.get("studyName"));
         studyDTO.setStudyDesc(jsonData.get("studyDesc"));
@@ -111,7 +115,7 @@ public class StudyController {
         categoryLangDTO.setCategoryLangNo(Integer.parseInt(jsonData.get("categoryLangNo")));
         studyDTO.setCategoryTypeDTO(categoryTypeDTO);
         studyDTO.setCategoryLangDTO(categoryLangDTO);
-        // log.info("delivered study data:{}", studyDTO);
+        log.info("delivered study data:{}", studyDTO);
 
         studyService.registerStudy(studyDTO);
         // log.info("email: {}", member.getEmail());
