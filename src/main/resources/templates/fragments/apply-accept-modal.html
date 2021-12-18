@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+       <!-- 모달창 : 참여 신청에 대한 참가 및 수락 기능 (신청자의 정보, 자기소개서, 등등 정보를 확인) -->
+        <div th:fragment="fragment-apply-modal" class="modal" id="myModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">스터디 참가신청</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <div>   <!-- 스터디 이름 -->
+                            <label><b>스터디 이름</b></label>
+                            <input type="text" class="form-control" name="studyName" id="studyName" value="자바 스터딩" readonly>
+                        </div>
+                        <br>
+
+                        <div>   <!-- 신청자 이름 -->
+                            <label><b>신청자 이름</b></label>
+                            <input type="text" class="form-control" name="studyName" id="applicant_name" value="아이유" readonly>
+                        </div>
+                        <br>
+
+                        <div>   <!-- 신청자 자기소개서 -->
+                            <label><b>자기소개서</b></label>
+                            <textarea type="text" class="form-control" name="applicant_info" id="applicant_info" rows="5" readonly>안녕하세요 자바 부셔버릴겁니다</textarea>
+                        </div>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button id="apply-accept" type="button" class="btn btn-primary" data-dismiss="modal">수락</button>
+                        <button id="apply-refuse" type="button" class="btn btn-danger" data-dismiss="modal">거절</button>
+                    </div>
+                </div>
+            </div>
+        </div><!-- Modal end -->
+       <script type="text/javascript">
+          /*
+                모달창에 신청자의 정보를 띄우기 위한 작업
+           */
+           $(function () {
+                $(".alarmInfo").click(function(){
+                    let study_no = $(this).childer("study_no").val();
+                    let applicant_name = $(this).childer("study_no").val();
+                    let applicant_content = $(this).childer("study_no").val();
+                });
+           });
+       </script>
+</html>

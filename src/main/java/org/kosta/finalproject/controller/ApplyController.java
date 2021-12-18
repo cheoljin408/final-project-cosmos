@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -56,4 +58,15 @@ public class ApplyController {
         return "apply-alarm";
     }
 
+    /**
+     *
+     *  스터디 신청서에서 팀장이 수락 버튼을 누른경우 해당 로직을 실행하는 함수 ( Ajax 통신 )
+     *
+     * @return
+     */
+    @GetMapping("/apply")
+    @ResponseBody
+    public String applyRefuse(@RequestParam int applyNo){
+        return null;
+    }
 }
