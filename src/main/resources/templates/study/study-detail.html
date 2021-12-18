@@ -96,5 +96,22 @@
 </section>
 <!-- 본문 종료 -->
 <div th:replace="fragments/footer.html :: fragment-footer"></div>
+<script th:inline="javascript">
+    var jsonData = [[${study}]];
+    $(function(){
+        $("#update-study").click(function(){
+	        $.ajax({
+                type: "post",
+                url: "studyDetail",
+                dataType: "json",
+                data: JSON.stringify(jsonData),
+                contentType: "application/json; charset=utf-8",
+                success: function(studyNo){
+                    location.replace("modifyStudy?studyNo=" + studyNo);
+                }
+            });
+        });
+    });
+</script>
 </body>
 </html>

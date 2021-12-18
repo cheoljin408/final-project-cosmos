@@ -84,9 +84,9 @@ public class StudyTest {
         // 51번 스터디 모집 내용을 아래의 updateStudyData 내용으로 수정
         StudyDTO updateStudyData = new StudyDTO();
         updateStudyData.setStudyNo(51);
-        updateStudyData.setStudyName("update t_study name");
-        updateStudyData.setStudyDesc("update t_study desc");
-        updateStudyData.setStudyInfo("update t_study info");
+        updateStudyData.setStudyName("TEST t_study name");
+        updateStudyData.setStudyDesc("TEST t_study desc");
+        updateStudyData.setStudyInfo("TEST t_study info");
 
         //when
         studyService.modifyStudy(updateStudyData);

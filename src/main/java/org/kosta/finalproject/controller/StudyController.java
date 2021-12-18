@@ -104,7 +104,7 @@ public class StudyController {
         }
         // log.info("jsonData = {}", jsonData);
         // log.info("studyName = {}", jsonData.get("studyName"));
-        log.info("categoryTypeNo = {}", jsonData.get("categoryTypeNo"));
+        // log.info("categoryTypeNo = {}", jsonData.get("categoryTypeNo"));
         StudyDTO studyDTO = new StudyDTO();
         studyDTO.setStudyName(jsonData.get("studyName"));
         studyDTO.setStudyDesc(jsonData.get("studyDesc"));
@@ -115,7 +115,7 @@ public class StudyController {
         categoryLangDTO.setCategoryLangNo(Integer.parseInt(jsonData.get("categoryLangNo")));
         studyDTO.setCategoryTypeDTO(categoryTypeDTO);
         studyDTO.setCategoryLangDTO(categoryLangDTO);
-        log.info("delivered study data:{}", studyDTO);
+        // log.info("delivered study data:{}", studyDTO);
 
         studyService.registerStudy(studyDTO);
         // log.info("email: {}", member.getEmail());
@@ -133,7 +133,8 @@ public class StudyController {
      * 2. 스터디에 속하지 않은 사용자는 신청 버튼이 보인다
      * 3. 스터디원은 어떠한 버튼도 보이지 않는다
      */
-    @RequestMapping("/studyDetail")
+    @Transactional
+    @GetMapping("/studyDetail")
     public String studyDetail(@LoginUser SessionMember member, Model model, int studyNo) {
         if(member != null) {
             model.addAttribute("member", member);
@@ -148,5 +149,28 @@ public class StudyController {
         }
         model.addAttribute("role", role);
         return "study/study-detail";
+    }
+
+    @ResponseBody
+    @PostMapping("/studyDetail")
+    public int modifyStudy(@LoginUser SessionMember member, Model model, @RequestBody HashMap<String, String> jsonData) {
+        if(member != null) {
+            model.addAttribute("member", member);
+            model.addAttribute("picture", member.getPicture());
+        }
+        model.addAttribute("study", jsonData);
+        // log.info("study: {}", jsonData);
+        int studyNo = Integer.parseInt(jsonData.get("STUDY_NO"));
+        return studyNo;
+    }
+
+    @GetMapping("/modifyStudy")
+    public String modifyStudy(@LoginUser SessionMember member, Model model, int studyNo) {
+        if(member != null) {
+            model.addAttribute("member", member);
+            model.addAttribute("picture", member.getPicture());
+        }
+        model.addAttribute("studyNo", studyNo);
+        return "study/modify-study";
     }
 }
