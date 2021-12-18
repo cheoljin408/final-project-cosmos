@@ -87,6 +87,12 @@ public class StudyTest {
         updateStudyData.setStudyName("TEST t_study name");
         updateStudyData.setStudyDesc("TEST t_study desc");
         updateStudyData.setStudyInfo("TEST t_study info");
+        CategoryTypeDTO categoryTypeDTO = new CategoryTypeDTO();
+        CategoryLangDTO categoryLangDTO = new CategoryLangDTO();
+        categoryTypeDTO.setCategoryTypeNo(3);
+        categoryLangDTO.setCategoryLangNo(3);
+        updateStudyData.setCategoryTypeDTO(categoryTypeDTO);
+        updateStudyData.setCategoryLangDTO(categoryLangDTO);
 
         //when
         studyService.modifyStudy(updateStudyData);
