@@ -19,22 +19,43 @@
         <result property="studyRegdate" column="study_regdate"/>
     </resultMap>
 
-    <!-- HashMap : as가 별징,  -->
-    <select id="alarm" resultType="hashMap">
-        select a.apply_Regdate as a_applyRegdate,
-               m.name as a_m_name,
-               m.picture as a_m_picture,
-               m.role as a_m_role,
-               s.study_Name as a_s_studyName,
-               s.study_Regdate as a_s_studyRegdate
+    <!-- 참가신청 알람 리스트 sql-->
+    <select id="getAlarmList" resultType="hashmap">
+        select a.APPLY_NO       as a_applyNo,
+               a.STUDY_NO       as a_studyNo,
+               a.APPLY_REGDATE  as a_applyRegdate,
+               a.APPLY_CONTENT  as a_applyContent,
+               a.EMAIL          as email,
+               m.NAME           as a_m_name,
+               m.PICTURE        as a_m_picture,
+               m.ROLE           as a_m_role,
+               s.STUDY_NAME     as a_s_studyName
         from APPLY a,
              MEMBER m,
              STUDY s,
              APPLY_STATE_TABLE ast
-        where a.study_NO = s.study_NO and
-            a.email = m.email and
-            a.apply_state_code = ast.apply_state_code
+        where a.study_NO = s.study_NO
+          and a.email = m.email
+          and a.apply_state_code = ast.apply_state_code
         order by a.apply_no desc
     </select>
-
 </mapper>
+<!--
+<select id="getAlarmList" resultType="hashMap">
+select a.APPLY_NO,
+       a.STUDY_NO,
+       a.EMAIL,
+       a.apply_Regdate,
+       m.name,
+       m.picture,
+       m.role,
+       s.study_Name
+from APPLY a,
+     MEMBER m,
+     STUDY s,
+     APPLY_STATE_TABLE ast
+where a.study_NO = s.study_NO and
+    a.email = m.email and
+    a.apply_state_code = ast.apply_state_code
+order by a.apply_no desc
+</select>-->
