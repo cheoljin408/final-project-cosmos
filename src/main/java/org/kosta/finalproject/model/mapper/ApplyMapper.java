@@ -9,4 +9,7 @@ import java.util.Map;
 @Mapper
 public interface ApplyMapper {
     List<Map<String, Object>> getAlarmList();
+    void applyRefuse(int applyNo);
+    void applyAccept(int applyNo);
+    void insertStudyMember(String email, int studyNo);
 }

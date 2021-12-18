@@ -3,6 +3,7 @@ package org.kosta.finalproject.service;
 import org.kosta.finalproject.model.mapper.ApplyMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
@@ -22,4 +23,16 @@ public class ApplyServiceImpl implements ApplyService {
         List<Map<String, Object>> alarmList = applyMapper.getAlarmList();
         return alarmList;
     }
+
+    @Override
+    public void applyRefuse(int applyNo) {
+        applyMapper.applyRefuse(applyNo);
+    }
+
+    @Override
+    public void applyAccept(String email, int applyNo, int studyNo) {
+        applyMapper.applyAccept(applyNo);
+        applyMapper.insertStudyMember(email, studyNo);
+    }
+
 }
