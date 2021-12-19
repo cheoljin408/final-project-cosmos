@@ -41,5 +41,37 @@
           and a.apply_state_code = ast.apply_state_code
         order by a.apply_no desc
     </select>
+
+    <!-- 내 스터디의 참가신청리스트 추출 -->
+    <select id="requestedApplyList" parameterType="String" resultType="hashmap">
+        select a.APPLY_NO           as a_applyNo,
+               a.STUDY_NO           as a_studyNo,
+               a.APPLY_REGDATE      as a_applyRegdate,
+               a.APPLY_CONTENT      as a_applyContent,
+               a.EMAIL              as a_email,
+               a.APPLY_STATE_CODE   as a_apply_state_code,
+               ast.APPLY_STATE      as ast_apply_state,
+               m.NAME               as m_name,
+               m.PICTURE            as m_picture,
+               m.ROLE               as m_role,
+               s.STUDY_NAME         as s_study_name,
+               s.STUDY_STATE_CODE   as s_study_state_code,
+               sm.STUDY_MEMBER_ROLE as sm_study_member_role
+        from APPLY a,
+             MEMBER m,
+             STUDY s,
+             STUDY_MEMBER sm,
+             APPLY_STATE_TABLE ast
+        where a.STUDY_NO in (
+            select  STUDY_NO
+            from    STUDY_MEMBER
+            where   EMAIL = #{value}
+              and   STUDY_MEMBER_ROLE = '스터디리더')
+          and   a.STUDY_NO = s.STUDY_NO
+          and   s.STUDY_NO = sm.STUDY_NO
+          and   a.EMAIL = m.EMAIL
+          and   a.APPLY_STATE_CODE = ast.APPLY_STATE_CODE
+        order by a.APPLY_NO desc
+    </select>
 </mapper>
 

@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -57,7 +56,7 @@ public class ApplyController {
         model.addAttribute("alarmListOkAndNo", alarmListOkAndNo);
         model.addAttribute("alarmListWait", alarmListWait);
         System.out.println(alarmListWait);
-        return "apply-alarm";
+        return "studyapplyalarm/apply-alarm";
 
     }
 
@@ -71,5 +70,22 @@ public class ApplyController {
     @ResponseBody
     public String applyRefuse(@RequestParam int applyNo){
         return null;
+    }
+
+    /**
+     * 내가 만든 스터디에 참가신청한 회원들의 리스트 추출
+     * @param member
+     * @param model
+     * @return
+     */
+    @GetMapping("/requestedApply")
+    public String requestedApplyList(@LoginUser SessionMember member, Model model) {
+        if(member != null) {
+            model.addAttribute("member", member);
+            model.addAttribute("picture", member.getPicture());
+        }
+        List<Map<String, Object>> requestedApplyList = applyService.requestedApplyList(member.getEmail());
+        model.addAttribute("requestedApplyList", requestedApplyList);
+        return "studyapplyalarm/apply-request-list";
     }
 }
