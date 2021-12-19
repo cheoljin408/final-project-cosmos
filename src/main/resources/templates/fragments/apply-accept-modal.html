@@ -14,13 +14,13 @@
                     <div class="modal-body">
                         <div>   <!-- 스터디 이름 -->
                             <label><b>스터디 이름</b></label>
-                            <input type="text" class="form-control" name="studyName" id="studyName" value="자바 스터딩" readonly>
+                            <input type="text" class="form-control" name="studyName" id="studyName" value="${}" readonly>
                         </div>
                         <br>
 
                         <div>   <!-- 신청자 이름 -->
                             <label><b>신청자 이름</b></label>
-                            <input type="text" class="form-control" name="studyName" id="applicant_name" value="아이유" readonly>
+                            <input type="text" class="form-control" name="studyName" id="applicant_name" value="${}" readonly>
                         </div>
                         <br>
 
@@ -44,9 +44,9 @@
            */
            $(function () {
                 $(".alarmInfo").click(function(){
-                    let study_no = $(this).childer("study_no").val();
-                    let applicant_name = $(this).childer("study_no").val();
-                    let applicant_content = $(this).childer("study_no").val();
+                    let study_no = $(this).children("study_no").val();
+                    let applicant_name = $(this).children("study_no").val();
+                    let applicant_content = $(this).children("study_no").val();
                 });
            });
        </script>
