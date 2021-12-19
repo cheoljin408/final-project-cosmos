@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<div th:fragment="fragment-applymodal" class="modal fade" id="applyModal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <!--<h4 class="modal-title"><b>스터디 참가 신청서</b></h4><br>-->
+                <p class="navbar-brand"
+                   style="font-family: 'Secular One', sans-serif; color: black; font-size: 1.5rem; margin: 0 auto;"><b>스터디 참가 신청서</b></p>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body text-center">
+                <img th:src="${member.picture}" class="rounded-circle" width="40" height="40">
+                <b><span style="font-size: 1.3rem;" th:text="${member.name}">세션 이름</span></b>님<br><br>
+                <p style="font-size: 1.3rem;"><b>스터디리더에게 자신을 간략히 소개해주세요</b></p>
+                <div class="form-group">
+                    <textarea class="form-control" rows="10" id="applyContent" name="text"></textarea>
+                </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="applyStudyBtn">신청하기</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+            </div>
+        </div>
+    </div>
+</div>
+</html>
