@@ -9,4 +9,8 @@ public interface StudyCommentService {
     List<StudyCommentDTO> getAllStudyCommentList(int studyNo);
 
     void registerStudyComment(Map<String, Object> jsonData);
+
+    void updateStudyComment(Map<String, Object> jsonData);
+
+    Map<String, Object> getStudyCommentByStudyCommentNo(int studyCommentNo);
 }
