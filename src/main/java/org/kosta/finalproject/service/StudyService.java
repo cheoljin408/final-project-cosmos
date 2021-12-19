@@ -24,4 +24,6 @@ public interface StudyService {
     String findStudyMemberRoleByStudyNo(int studyNo, String email);
 
     void modifyStudy(Map<String, String> studyDTO);
+
+    void deleteStudyByStudyNo(int studyNo);
 }

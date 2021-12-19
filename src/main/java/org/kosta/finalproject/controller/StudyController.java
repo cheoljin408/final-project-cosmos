@@ -87,8 +87,6 @@ public class StudyController {
     /**
      * 스터디 등록
      * 사용자가 입력한 데이터로 스터디를 등록한 뒤 작성자는 스터디리더로 역할 등록
-     * @param member
-     * @param jsonData
      */
     @Transactional
     @ResponseBody
@@ -109,13 +107,11 @@ public class StudyController {
      * 1. 해당 스터디의 스터디 리더는 수정, 삭제 버튼이 보인다
      * 2. 스터디에 속하지 않은 사용자는 신청 버튼이 보인다
      * 3. 스터디원은 어떠한 버튼도 보이지 않는다
-     * @param member
-     * @param model
-     * @param studyNo
+     * @return: 스터디 상세보기 페이지
      */
     @Transactional
-    @GetMapping("/studyDetail")
-    public String studyDetail(@LoginUser SessionMember member, Model model, int studyNo) {
+    @GetMapping("/studyDetail/{studyNo}")
+    public String studyDetail(@PathVariable int studyNo, @LoginUser SessionMember member, Model model) {
         if(member != null) {
             model.addAttribute("member", member);
             model.addAttribute("picture", member.getPicture());
@@ -133,10 +129,7 @@ public class StudyController {
 
     /**
      * 스터디 정보 수정
-     * @param studyNo
-     * @param member
-     * @param model
-     * @return
+     * @return: 스터디 수정 폼 페이지
      */
     @GetMapping("/modifyStudy/{studyNo}")
     public String modifyStudy(@PathVariable int studyNo, @LoginUser SessionMember member, Model model) {
@@ -151,12 +144,7 @@ public class StudyController {
     }
 
     /**
-     *
-     * @param studyNo
-     * @param member
-     * @param model
-     * @param jsonData
-     * @return
+     * 스터디 정보 수정 성공 후 메인 페이지로 이동
      */
     @ResponseBody
     @PutMapping("/modifyStudy/{studyNo}")

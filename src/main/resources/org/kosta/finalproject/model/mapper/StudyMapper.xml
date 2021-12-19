@@ -212,4 +212,8 @@
         WHERE STUDY_NO = #{studyNo}
     </update>
 
+    <!-- 스터디 삭제 -->
+    <delete id="deleteStudyByStudyNo" parameterType="int">
+        DELETE FROM STUDY WHERE STUDY_NO = #{value}
+    </delete>
 </mapper>

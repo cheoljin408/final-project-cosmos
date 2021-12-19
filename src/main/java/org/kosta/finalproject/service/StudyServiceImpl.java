@@ -63,4 +63,9 @@ public class StudyServiceImpl implements StudyService{
         studyMapper.modifyStudy(studyDTO);
     }
 
+    @Override
+    public void deleteStudyByStudyNo(int studyNo) {
+        studyMapper.deleteStudyByStudyNo(studyNo);
+    }
+
 }
