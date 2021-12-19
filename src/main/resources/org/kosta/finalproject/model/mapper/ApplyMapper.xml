@@ -37,4 +37,13 @@
         order by a.apply_no desc
     </select>
 
+    <insert id="registerApplyStudy" parameterType="String">
+        INSERT INTO APPLY(APPLY_NO, STUDY_NO, APPLY_REGDATE, APPLY_CONTENT, EMAIL)
+        VALUES(APPLY_SEQ.nextval,#{studyNo},to_char(sysdate,'yyyy-mm-dd hh24:mi:ss'),#{applyContent},#{email})
+    </insert>
+
+    <select id="checkApplyByStudyNoAndEmail" resultType="int">
+        select count(*) from apply where study_no=#{studyNo} and email=#{email}
+    </select>
+
 </mapper>
