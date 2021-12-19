@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
@@ -24,14 +25,20 @@ public class StudyCommentApiController {
         this.studyCommentService = studyCommentService;
     }
 
-    @PostMapping("/api/studyComment/{studyNo}")
-    public String registerStudyComment(@LoginUser SessionMember member, @PathVariable int studyNo, Model model, @RequestBody Map<String, Object> jsonData) {
-        if(member != null) {
-            model.addAttribute("member", member);
-            model.addAttribute("picture", member.getPicture());
-        }
-
+    @PostMapping("/api/registerStudyComment/{studyNo}")
+    public String registerStudyComment(@PathVariable int studyNo, Model model, @RequestBody Map<String, Object> jsonData) {
         studyCommentService.registerStudyComment(jsonData);
+
+        List<StudyCommentDTO> allStudyCommentList = studyCommentService.getAllStudyCommentList(studyNo);
+        System.out.println("allStudyCommentList = " + allStudyCommentList);
+        model.addAttribute("studyCommentList", allStudyCommentList);
+
+        return "fragments/study-comment :: fragment-study-comment";
+    }
+
+    @PutMapping("/api/updateStudyComment/{studyNo}")
+    public String updateStudyComment(@RequestBody Map<String, Object> jsonData, @PathVariable int studyNo, Model model) {
+        studyCommentService.updateStudyComment(jsonData);
 
         List<StudyCommentDTO> allStudyCommentList = studyCommentService.getAllStudyCommentList(studyNo);
         System.out.println("allStudyCommentList = " + allStudyCommentList);
