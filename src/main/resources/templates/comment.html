@@ -5,61 +5,43 @@
 </head>
 <body style="margin: 0;">
 <div th:replace="fragments/header.html :: fragment-header"></div>
-
-<div class="container" style="margin-top: 100px;">
-    <h5>댓글</h5>
-    <div class="card">
-        <div class="card-body">
-            <div style="margin-bottom: 20px;">
-                <img th:src="${picture}" class="rounded-circle"
-                     style="margin-right: 10px; width: 30px; height: 30px;"/>
-                <span>name</span>
-            </div>
-            <div class="input-group">
-                <input type="text" class="form-control" placeholder="댓글을 입력하세요">
-                <button id="studyCommentRegisterBtn" class="btn btn-outline-secondary" type="button">등록</button>
-            </div>
-        </div>
-    </div>
-    <div>
-        <div th:each="studyComment:${studyCommentList}" class="card" style="border: none;">
-            <div class="card-body">
-                <div style="margin-bottom: 10px;">
-                    <img th:src="${studyComment.memberDTO.picture}" class="rounded-circle"
-                         style="margin-right: 10px; width: 30px; height: 30px;"/>
-                    <span th:text="${studyComment.memberDTO.name}">name</span>
-                </div>
-                <div>
-                    <div style="display: inline-block" class="align-middle">
-                        <p th:text="${studyComment.studyCommentContent}" style="margin: 0;">댓글내용</p>
-                    </div>
-                    <div th:if="${studyComment.memberDTO.email == member.email}" style="display: inline-block; float: right;">
-                        <button id="studyCommentUpdateBtn" th:value="${studyComment.studyCommentNo}" type="button" class="btn btn-secondary btn-sm">수정</button>
-                        <button id="studyCommentDeleteBtn" th:value="${studyComment.studyCommentNo}" type="button" class="btn btn-secondary btn-sm">삭제</button>
-                    </div>
-                </div>
-            </div>
-            <hr>
-        </div>
-    </div>
+<div id="studyCommentRoot">
+    <div th:replace="fragments/study-comment :: fragment-study-comment" id="studyCommentListView"></div>
 </div>
 
 <div th:replace="fragments/footer.html :: fragment-footer"></div>
 
-<script>
-    $(function() {
-        // 댓글 등록
-        $("#studyCommentRegisterBtn").click(function() {
+<script th:inline="javascript">
+    $(function () {
+        // 댓글 등록 study_comment_seq.nextval, 'cheoljin408 comment', sysdate, 'cheoljin408@gmail.com', 28
+        $("#studyCommentRegisterBtn").click(function () {
             console.log(`댓글 등록`);
+            let data = {
+                studyCommentContent: $("#studyCommentContent").val(),
+                email: /*[[${member.email}]]*/,
+                studyNo: $("#studyCommentRegisterBtn").val()
+            };
+            console.log(data);
+
+            $.ajax({
+                type: 'POST',
+                url: '/api/studyComment/' + /*[[${studyNo}]]*/,
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(data)
+            }).done(function (fragment) {
+                $("#studyCommentListView").replaceWith(fragment);
+            }).fail(function (error) {
+                alert(error.message());
+            });
         });
 
         // 댓글 수정
-        $("#studyCommentUpdateBtn").click(function() {
+        $("#studyCommentRoot").on("click", ".studyCommentUpdateBtn", function() {
             console.log(`${$(this).val()} 댓글 수정`);
         });
 
         // 댓글 삭제
-        $("#studyCommentDeleteBtn").click(function() {
+        $("#studyCommentRoot").on("click", ".studyCommentDeleteBtn", function() {
             console.log(`${$(this).val()} 댓글 삭제`);
         });
     });

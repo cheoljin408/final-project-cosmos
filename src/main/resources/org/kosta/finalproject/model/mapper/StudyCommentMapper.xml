@@ -24,9 +24,9 @@
 
     <select id="getAllStudyCommentList" parameterType="int" resultMap="studyCommentDTOMap">
         select sc.study_comment_no,
-               m.email as m_email,
-               m.name as m_name,
-               m.picture as m_picture,
+               m.email    as m_email,
+               m.name     as m_name,
+               m.picture  as m_picture,
                sc.study_comment_content,
                sc.study_comment_regdate,
                s.study_no as s_study_no
@@ -38,4 +38,9 @@
           and s.study_no = #{value}
         order by study_comment_regdate desc
     </select>
+
+    <insert id="registerStudyComment" parameterType="Map">
+        insert into study_comment
+        values (study_comment_seq.nextval, #{studyCommentContent}, sysdate, #{email}, #{studyNo})
+    </insert>
 </mapper>

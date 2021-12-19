@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class StudyCommentServiceImpl implements StudyCommentService {
@@ -20,5 +21,10 @@ public class StudyCommentServiceImpl implements StudyCommentService {
     @Override
     public List<StudyCommentDTO> getAllStudyCommentList(int studyNo) {
         return studyCommentMapper.getAllStudyCommentList(studyNo);
+    }
+
+    @Override
+    public void registerStudyComment(Map<String, Object> jsonData) {
+        studyCommentMapper.registerStudyComment(jsonData);
     }
 }
