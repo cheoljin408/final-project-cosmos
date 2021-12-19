@@ -92,4 +92,33 @@ public class StudyTest {
         assertThat(studyDetailInfo).isNotSameAs(studyDetailInfo2);
 
     }
+
+    /**
+     * 스터디 리더는 본인이 만든 스터디를 삭제할 수 있다
+     * 스터디 번호로 해당 스터디를 삭제하면 등록된 스터디 리더와 스터디원들은 자동으로 탈퇴된다(직책 해제)
+     * 스터디 모집 게시판 역시 삭제되며 해당 게시판에 달린 댓글들도 삭제된다
+     * 스터디 참여 신청 목록 삭제
+     * 공지 게시판 및 공지 게시판 파일 삭제
+     * 과제 및 과제 파일 삭제
+     * 과제 제출 및 과제 제출 파일 삭제
+     */
+    @Test
+    @DisplayName("스터디 삭제")
+    void 스터디삭제(){
+
+        //given
+        int studyNo = 106;
+        Map<String, Object> studyInfo = studyService.getStudyDetailByStudyNo(studyNo);
+        System.out.println("studyInfo = " + studyInfo);
+        // 참여 신청 정보 확인
+        // 댓글 정보 확인
+        // 공지사항, 과제, 과제제출 확인
+
+        //when
+        studyService.deleteStudyByStudyNo(studyNo);
+
+        //then
+        assertThat(studyInfo).isNull();
+
+    }
 }

@@ -69,7 +69,7 @@
                 data: JSON.stringify(jsonData),
                 contentType: "application/json; charset=utf-8",
                 success: function () {
-                    var url = "/study/studyDetail?studyNo=" + studyNo;
+                    var url = "/study/studyDetail/" + studyNo;
                     location.replace(url);
                 }
             });
