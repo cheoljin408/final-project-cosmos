@@ -24,7 +24,7 @@
         </div>
     </div>
     <div class="d-flex flex-wrap justify-content-center">
-        <div th:each="study: ${studyList}" class="card" style="width: 18rem; margin: 0 20px; cursor: pointer;" th:onclick="|window.location.href='/study/studyDetail?studyNo=${study.studyDTO.studyNo}'|">
+        <div th:each="study: ${studyList}" class="card" style="width: 18rem; margin: 0 20px; cursor: pointer;" th:onclick="|window.location.href='/study/studyDetail/${study.studyDTO.studyNo}'|">
             <div class="card-header">
                 <div>
                     <div style="display: inline-block;">
@@ -46,12 +46,12 @@
                           class="badge badge-pill badge-secondary">Secondary</span>
                 </div>
                 <div style="margin-top: 15px;">
-                    <div style="display: inline-block;">
+                    <div>
                         <img th:src="${study.memberDTO.picture}" class="rounded-circle"
                              style="margin-right: 10px; width: 30px; height: 30px;"/>
                         <span th:text="${study.memberDTO.name}"></span>
                     </div>
-                    <div style="display: inline-block; float: right;">
+                    <div>
                         <span th:text="${study.studyDTO.studyRegdate}"></span>
                     </div>
                 </div>

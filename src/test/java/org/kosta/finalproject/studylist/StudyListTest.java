@@ -34,7 +34,7 @@ public class StudyListTest {
 
     @Test
     void 검색결과리스트(){
-        List<Map<String, Object>> list = studyMapper.getStudyListByStudyNameAndDesc("d");
+        List<StudyMemberDTO> list = studyMapper.getStudyListByStudyNameAndDesc("d");
         for(int i=0;i<list.size();i++){
             System.out.println("list.get(i) = " + list.get(i));
         }
@@ -44,7 +44,7 @@ public class StudyListTest {
     @Test
     @DisplayName("카테고리버튼검색")
     void 카테고리버튼으로검색(){
-        List<Map<String, Object>> result = studyMapper.getStudyListByCategory("언어");
+        List<StudyMemberDTO> result = studyMapper.getStudyListByCategory("언어");
         assertThat(result.size()).isEqualTo(3);
     }
 }
