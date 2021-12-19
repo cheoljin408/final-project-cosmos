@@ -6,7 +6,10 @@ import java.util.Map;
 public interface ApplyService {
     List<Map<String, Object>> getAlarmList();
 
-    List<Map<String, Object>> requestedApplyList(String email);
+    void applyRefuse(int applyNo);
 
+    void applyAccept(String email, int applyNo, int studyNo);
+
+    List<Map<String, Object>> requestedApplyList(String email);
 
 }

@@ -42,6 +42,20 @@
         order by a.apply_no desc
     </select>
 
+    <!-- 본인 : 스터디 리더 , 내가 만든 스터디에 참여 신청을 거절하는 SQL문 -->
+    <update id="applyRefuse" parameterType="int">
+        update APPLY set APPLY_STATE_CODE = 'NO' WHERE APPLY_NO = #{value}
+    </update>
+
+    <!-- 본인 : 스터디 리더 , 내가 만든 스터디에 참여 신청을 수락하는 SQL문 -->
+    <update id="applyAccept" parameterType="int">
+        update APPLY set APPLY_STATE_CODE = 'OK' WHERE APPLY_NO = #{value}
+    </update>
+
+    <insert id="insertStudyMember">
+        insert into STUDY_MEMBER(EMAIL, STUDY_NO, STUDY_MEMBER_ROLE) values(#{email}, #{studyNo}, '스터디원')
+    </insert>
+
     <!-- 내 스터디의 참가신청리스트 추출 -->
     <select id="requestedApplyList" parameterType="String" resultType="hashmap">
         select a.APPLY_NO           as a_applyNo,
@@ -74,4 +88,3 @@
         order by a.APPLY_NO desc
     </select>
 </mapper>
-

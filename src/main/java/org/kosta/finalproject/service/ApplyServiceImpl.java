@@ -1,10 +1,8 @@
 package org.kosta.finalproject.service;
 
-import org.kosta.finalproject.model.domain.MemberDTO;
 import org.kosta.finalproject.model.mapper.ApplyMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Map;
 
@@ -25,8 +23,19 @@ public class ApplyServiceImpl implements ApplyService {
     }
 
     @Override
+    public void applyRefuse(int applyNo) {
+        applyMapper.applyRefuse(applyNo);
+    }
+
+    @Override
+    public void applyAccept(String email, int applyNo, int studyNo) {
+        applyMapper.applyAccept(applyNo);
+        applyMapper.insertStudyMember(email, studyNo);
+    }
+
     public List<Map<String, Object>> requestedApplyList(String email) {
         List<Map<String, Object>> requestedApplyList = applyMapper.requestedApplyList(email);
         return requestedApplyList;
     }
+
 }
