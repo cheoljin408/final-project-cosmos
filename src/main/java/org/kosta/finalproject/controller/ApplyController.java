@@ -1,5 +1,6 @@
 package org.kosta.finalproject.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.kosta.finalproject.config.auth.LoginUser;
 import org.kosta.finalproject.config.auth.dto.SessionMember;
 import org.kosta.finalproject.service.ApplyService;
@@ -7,15 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Controller
 public class ApplyController {
 
@@ -77,10 +76,8 @@ public class ApplyController {
     }
     @PostMapping("/apply/accept")
     @ResponseBody
-    @Transactional
-    public String applyAccept(@RequestParam Map<String, Object> param){
-        System.out.println("ApplyController.applyAccept");
-        System.out.println("param = " + param);
+    public String applyAccept(@RequestBody Map<String, Object> param){
+        log.info("param[email] = {}, param[study_no] = {}, param[apply_no] = {}", param.get("email"), param.get("study_no"), param.get("apply_no"));
         applyService.applyAccept(param);
         return null;
     }

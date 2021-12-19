@@ -30,7 +30,8 @@ public class ApplyServiceImpl implements ApplyService {
     @Override
     public void applyAccept(Map<String, Object> param) {
         applyMapper.applyAccept(Integer.parseInt((String)param.get("apply_no")));
-        applyMapper.insertStudyMember((String)param.get("email"), Integer.parseInt((String)param.get("study_no")));
+        System.out.println("completed");
+        applyMapper.insertStudyMember((String)param.get("email"), (String)param.get("study_no"));
     }
 
     public List<Map<String, Object>> requestedApplyList(String email) {
