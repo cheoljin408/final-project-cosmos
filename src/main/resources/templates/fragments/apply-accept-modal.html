@@ -14,40 +14,88 @@
                     <div class="modal-body">
                         <div>   <!-- 스터디 이름 -->
                             <label><b>스터디 이름</b></label>
-                            <input type="text" class="form-control" name="studyName" id="studyName" value="${}" readonly>
+                            <input type="text" class="form-control" name="studyName" id="studyName" value="" readonly>
                         </div>
                         <br>
 
                         <div>   <!-- 신청자 이름 -->
                             <label><b>신청자 이름</b></label>
-                            <input type="text" class="form-control" name="studyName" id="applicant_name" value="${}" readonly>
+                            <input type="text" class="form-control" name="studyName" id="applicant_name" value="" readonly>
                         </div>
                         <br>
 
                         <div>   <!-- 신청자 자기소개서 -->
                             <label><b>자기소개서</b></label>
-                            <textarea type="text" class="form-control" name="applicant_info" id="applicant_info" rows="5" readonly>안녕하세요 자바 부셔버릴겁니다</textarea>
+                            <textarea type="text" class="form-control" name="applicant_info" id="applicant_info" rows="5" readonly value=""></textarea>
                         </div>
                     </div>
 
                     <!-- Modal footer -->
                     <div class="modal-footer">
-                        <button id="apply-accept" type="button" class="btn btn-primary" data-dismiss="modal">수락</button>
-                        <button id="apply-refuse" type="button" class="btn btn-danger" data-dismiss="modal">거절</button>
+                        <button id="apply_accept" type="button" class="btn btn-primary" data-dismiss="modal">수락</button>
+                        <button id="apply_refuse" type="button" class="btn btn-danger" data-dismiss="modal">거절</button>
                     </div>
+                    <input type="hidden" id="study_no_modal" value=""/>
+                    <input type="hidden" id="apply_no_modal" value=""/>
+                    <input type="hidden" id="applicant_email" value=""/>
                 </div>
             </div>
-        </div><!-- Modal end -->
-       <script type="text/javascript">
-          /*
-                모달창에 신청자의 정보를 띄우기 위한 작업
-           */
-           $(function () {
-                $(".alarmInfo").click(function(){
-                    let study_no = $(this).children("study_no").val();
-                    let applicant_name = $(this).children("study_no").val();
-                    let applicant_content = $(this).children("study_no").val();
+            <script type="text/javascript">
+                $(function () {
+                    /* 동적으로 생성되는 알림에 대한 click 이벤트 등록  */
+                    $("#alarm_info").on("click", ".testBtn", function(){
+                        console.log("load btn .. ok");
+                    });
+
+                    /* 동적으로 생성되는 알림 div에 대한 Modal창 정보 로드 */
+                    $(".testBtn").click(function(){
+                        console.log("testBtn click ok");
+                        alert($(this).find(".apply_no").val());
+                        $("#studyName").val($(this).find(".study_name").text())
+                        $("#applicant_name").val($(this).find(".study_applicant_name").text());
+                        $("#applicant_info").val($(this).find(".study_applicant_content").val());
+                        $("#study_no_modal").val($(this).find(".study_no").val());
+                        $("#apply_no_modal").val($(this).find(".apply_no").val());
+                        $("#applicant_email").val($(this).find(".applicant_email").val());
+                    });``
+
+                    /* 수락 버튼 클릭시 이벤트 등록 */
+                    $("#apply_accept").click(function(){
+                        console.log("신청 수락 버튼 클릭");
+                        alert($("#study_no_modal").val());
+                        alert($("#applicant_email").val());
+                       var param = {
+                            email: $("#applicant_email").val(),
+                            study_no : $("#study_no_modal").val(),
+                            apply_no : $("#apply_no_modal").val()
+                       };
+                        $.ajax({
+                            type: "post",
+                            url: "/apply/accept",
+                            dataType: "json",
+                            data: JSON.stringify(param),
+                            contentType: "application/json; charset=utf-8",
+                            success: function () {
+                                alert("참가 신청을 수락하였습니다.");
+                            }
+                        });
+                    });
+
+                    /* 거절 버튼 클릭시 이벤트 등록 */
+                    $("#apply_refuse").click(function(){
+                        console.log("신청 거절 버튼 클릭");
+                        alert($("#study_no_modal").val());
+                        var apply_no = $("#apply_no_modal").val();
+                        $.ajax({
+                            type: "post",
+                            url: "/apply/refuse",
+                            data: "applyNo=" + apply_no,
+                            success: function () {
+                                alert("참가 신청을 거절하였습니다.");
+                            }
+                        });
+                    });
                 });
-           });
-       </script>
+            </script>
+        </div><!-- Modal end -->
 </html>

@@ -9,38 +9,26 @@
 <div class="container">
     <!-- 수락/거부된 스터디 리스트 -->
     <h3><span th:text="${member.name}"></span>님의 스터디 참여신청 현황</h3>
-    <div class="row h-100">
+    <div class="row h-100" id="alarm_info">
         <div th:each="alarm : ${requestedApplyList}" class="offset-sm-1 col-sm-10"><br>
-            <div class="card">
+            <div class="card modal_content testBtn" data-toggle="modal" data-target="#myModal">
                 <div class="card-body">
                     <blockquote class="blockquote mb-0">
-                        신청일시: <span th:text="${alarm.A_APPLYREGDATE}"/><br>
-                        <span th:text="${alarm.S_STUDY_NAME}"/>&nbsp;스터디에
-                        <span th:text="${alarm.M_NAME}"/> 님이 참가신청을 했습니다.
+                        신청일시: <span th:text="${alarm.A_APPLYREGDATE}" class="study_regdate"/><br>
+                        <span th:text="${alarm.S_STUDY_NAME}" class="study_name"/>&nbsp;스터디에
+                        <span th:text="${alarm.M_NAME}" class="study_applicant_name"/> 님이 참가신청을 했습니다.
+                        <input type="hidden" class="study_applicant_content" th:value="${alarm.A_APPLYCONTENT}"/>
+                        <input type="hidden" class="study_no" th:value="${alarm.A_STUDYNO}"/>
+                        <input type="hidden" class="apply_no" th:value="${alarm.A_APPLYNO}"/>
+                        <input type="hidden" class="applicant_email" th:value="${alarm.A_EMAIL}"/>
                         <footer class="blockquote-footer">여기에 무엇을 쓰면 좋을까?<cite title="Source Title"> SourceTitle:??</cite></footer>
                     </blockquote>
                 </div>
             </div>
         </div>
     </div>
+    <button id="testbbn">Jquery Button</button>
     <br><br><br>
-
-    <!-- 대기중인 스터디 리스트 -->
-    <!--<h3><span th:text="${member.name}"></span>님의 대기중인 스터디</h3>
-    <div class="row h-100">
-        <div th:each="alarmWait : ${alarmListWait}" class="offset-sm-1 col-sm-10"><br>
-            <div class="card">
-                <div class="card-body">
-                    <blockquote class="blockquote mb-0">
-                        신청일시: <span th:text="${alarmWait.A_APPLYREGDATE}"/><br>
-                        <span th:text="${alarmWait.A_S_STUDYNAME}"/>&nbsp;스터디 참가신청이
-                        <span th:text="${alarmWait.AST_APPLY_STATE}"/> 중입니다.
-                        <footer class="blockquote-footer">여기에 무엇을 쓰면 좋을까?<cite title="Source Title"> SourceTitle:??</cite></footer>
-                    </blockquote>
-                </div>
-            </div>
-        </div>
-    </div>-->
 </div>
 <div th:replace="fragments/apply-accept-modal.html :: fragment-apply-modal"></div>
 <div th:replace="fragments/footer.html :: fragment-footer"></div>

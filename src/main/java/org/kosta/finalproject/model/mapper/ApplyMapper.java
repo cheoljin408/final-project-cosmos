@@ -2,6 +2,7 @@ package org.kosta.finalproject.model.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.w3c.dom.stylesheets.LinkStyle;
 
 import java.util.List;
 import java.util.Map;
@@ -14,8 +15,8 @@ public interface ApplyMapper {
     void applyRefuse(int applyNo);
 
     void applyAccept(int applyNo);
-
-    void insertStudyMember(String email, int studyNo);
+  
+    void insertStudyMember(@Param("email")String email, @Param("studyNo")String studyNo);
 
     List<Map<String, Object>> requestedApplyList(String email);
 

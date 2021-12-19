@@ -53,7 +53,8 @@
     </update>
 
     <insert id="insertStudyMember">
-        insert into STUDY_MEMBER(EMAIL, STUDY_NO, STUDY_MEMBER_ROLE) values(#{email}, #{studyNo}, '스터디원')
+        insert into STUDY_MEMBER(EMAIL, STUDY_NO, STUDY_MEMBER_ROLE)
+        values(#{email},#{studyNo}, '스터디원')
     </insert>
 
     <!-- 내 스터디의 참가신청리스트 추출 -->

@@ -1,5 +1,6 @@
 package org.kosta.finalproject.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.kosta.finalproject.config.auth.LoginUser;
 import org.kosta.finalproject.config.auth.dto.SessionMember;
 import org.kosta.finalproject.service.ApplyService;
@@ -14,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Controller
 public class ApplyController {
 
@@ -65,19 +67,19 @@ public class ApplyController {
      *
      * @return
      */
-    @GetMapping("/apply/refuse")
+    @PostMapping("/apply/refuse")
     @ResponseBody
-    public String applyRefuse(@RequestParam int applyNo){
-        applyService.applyRefuse(applyNo);
-        return null;
+    public int applyRefuse(@RequestParam String applyNo){
+        System.out.println("applyNo = " + applyNo);
+        System.out.println("ApplyController.applyRefuse");
+        applyService.applyRefuse(Integer.parseInt(applyNo));
+        return 0;
     }
-    @GetMapping("/apply/accept")
+    @PostMapping("/apply/accept")
     @ResponseBody
-    @Transactional
-    public String applyAccept(@RequestParam String email,
-                              @RequestParam int applyNo,
-                              @RequestParam int studyNo){
-        applyService.applyAccept(email, applyNo, studyNo);
+    public String applyAccept(@RequestBody Map<String, Object> param){
+        log.info("param[email] = {}, param[study_no] = {}, param[apply_no] = {}", param.get("email"), param.get("study_no"), param.get("apply_no"));
+        applyService.applyAccept(param);
         return null;
     }
 
