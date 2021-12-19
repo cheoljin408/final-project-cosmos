@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,7 +26,7 @@ public class ApplyController {
     }
 
     /**
-     * 스터디 참가신청 결과 알람 리스트
+     * 내가 신청한 스터디 수락결과 알람 리스트
      * @param member
      * @param model
      * @return
@@ -45,18 +44,21 @@ public class ApplyController {
         List<Map<String, Object>> alarmListOkAndNo = new ArrayList<Map<String, Object>>();
         List<Map<String, Object>> alarmListWait = new ArrayList<Map<String, Object>>();
         for (int i = 0; i < allList.size(); i++) {
-            if(!allList.get(i).get("AST_APPLY_STATE_CODE").equals("WAIT")) {
+            if(!allList.get(i).get("AST_APPLY_STATE_CODE").equals("WAIT") && allList.get(i).get("A_M_NAME").equals(member.getName())) {
                 alarmListOkAndNo.add(allList.get(i));
+                System.out.println(1000);
             }
             //대기중인 스터디 추가
-            else {
+            else if(allList.get(i).get("AST_APPLY_STATE_CODE").equals("WAIT") && allList.get(i).get("A_M_NAME").equals(member.getName())) {
                 alarmListWait.add(allList.get(i));
             }
+            System.out.println(member.getName());
         }
         model.addAttribute("alarmListOkAndNo", alarmListOkAndNo);
         model.addAttribute("alarmListWait", alarmListWait);
         System.out.println(alarmListWait);
-        return "apply-alarm";
+        return "studyapplyalarm/apply-alarm";
+
     }
     /**
      *
@@ -78,5 +80,22 @@ public class ApplyController {
                               @RequestParam int studyNo){
         applyService.applyAccept(email, applyNo, studyNo);
         return null;
+    }
+
+    /**
+     * 내가 만든 스터디에 참가신청한 회원들의 리스트 추출
+     * @param member
+     * @param model
+     * @return
+     */
+    @GetMapping("/requestedApply")
+    public String requestedApplyList(@LoginUser SessionMember member, Model model) {
+        if(member != null) {
+            model.addAttribute("member", member);
+            model.addAttribute("picture", member.getPicture());
+        }
+        List<Map<String, Object>> requestedApplyList = applyService.requestedApplyList(member.getEmail());
+        model.addAttribute("requestedApplyList", requestedApplyList);
+        return "studyapplyalarm/apply-request-list";
     }
 }

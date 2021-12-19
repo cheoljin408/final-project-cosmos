@@ -10,4 +10,6 @@ public interface ApplyService {
 
     void applyAccept(String email, int applyNo, int studyNo);
 
+    List<Map<String, Object>> requestedApplyList(String email);
+
 }

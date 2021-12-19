@@ -12,4 +12,5 @@ public interface ApplyMapper {
     void applyRefuse(int applyNo);
     void applyAccept(int applyNo);
     void insertStudyMember(String email, int studyNo);
+    List<Map<String, Object>> requestedApplyList(String email);
 }
