@@ -5,9 +5,9 @@
     <div class="card">
         <div class="card-body">
             <div style="margin-bottom: 20px;">
-                <img th:src="${picture}" class="rounded-circle"
+                <img th:src="${session.member.picture}" class="rounded-circle"
                      style="margin-right: 10px; width: 30px; height: 30px;"/>
-                <span th:text="${member.name}">name</span>
+                <span th:text="${session.member.name}">name</span>
             </div>
             <div class="input-group">
                 <input id="studyCommentContent" type="text" class="form-control" placeholder="댓글을 입력하세요">
@@ -24,12 +24,16 @@
                     <span th:text="${studyComment.memberDTO.name}">name</span>
                 </div>
                 <div>
-                    <div style="display: inline-block" class="align-middle">
-                        <p th:text="${studyComment.studyCommentContent}" style="margin: 0;">댓글내용</p>
+                    <div style="display: inline-block; width: 85%;" class="align-middle">
+                        <p th:text="${studyComment.studyCommentContent}" style="margin: 0; display: inline-block;">댓글내용</p>
+                        <input class="form-control" type="text" style="display: none;" />
                     </div>
-                    <div th:if="${studyComment.memberDTO.email == member.email}" style="display: inline-block; float: right;">
-                        <button th:value="${studyComment.studyCommentNo}" type="button" class="btn btn-secondary btn-sm studyCommentUpdateBtn">수정</button>
-                        <button th:value="${studyComment.studyCommentNo}" type="button" class="btn btn-secondary btn-sm studyCommentDeleteBtn">삭제</button>
+                    <div th:if="${studyComment.memberDTO.email == session.member.email}" style="display: inline-block; float: right;">
+                        <button th:value="${studyComment.studyCommentNo}" type="button" class="btn btn-secondary btn-sm studyCommentUpdateBtn" style="display: inline;">수정</button>
+                        <button th:value="${studyComment.studyCommentNo}" type="button" class="btn btn-secondary btn-sm studyCommentUpdateSubmitBtn" style="display: none;">확인</button>
+
+                        <button th:value="${studyComment.studyCommentNo}" type="button" class="btn btn-secondary btn-sm studyCommentDeleteBtn" style="display: inline;">삭제</button>
+                        <button th:value="${studyComment.studyCommentNo}" type="button" class="btn btn-secondary btn-sm studyCommentCancelBtn" style="display: none;">취소</button>
                     </div>
                 </div>
             </div>
