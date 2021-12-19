@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="fragment-study-comment" id="studyCommentListView" class="container" style="margin-top: 100px;">
+    <h5>댓글</h5>
+    <div class="card">
+        <div class="card-body">
+            <div style="margin-bottom: 20px;">
+                <img th:src="${picture}" class="rounded-circle"
+                     style="margin-right: 10px; width: 30px; height: 30px;"/>
+                <span th:text="${member.name}">name</span>
+            </div>
+            <div class="input-group">
+                <input id="studyCommentContent" type="text" class="form-control" placeholder="댓글을 입력하세요">
+                <button id="studyCommentRegisterBtn" class="btn btn-outline-secondary" type="button" th:value="${studyNo}">등록</button>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div th:each="studyComment:${studyCommentList}" class="card" style="border: none;">
+            <div class="card-body">
+                <div style="margin-bottom: 10px;">
+                    <img th:src="${studyComment.memberDTO.picture}" class="rounded-circle"
+                         style="margin-right: 10px; width: 30px; height: 30px;"/>
+                    <span th:text="${studyComment.memberDTO.name}">name</span>
+                </div>
+                <div>
+                    <div style="display: inline-block" class="align-middle">
+                        <p th:text="${studyComment.studyCommentContent}" style="margin: 0;">댓글내용</p>
+                    </div>
+                    <div th:if="${studyComment.memberDTO.email == member.email}" style="display: inline-block; float: right;">
+                        <button th:value="${studyComment.studyCommentNo}" type="button" class="btn btn-secondary btn-sm studyCommentUpdateBtn">수정</button>
+                        <button th:value="${studyComment.studyCommentNo}" type="button" class="btn btn-secondary btn-sm studyCommentDeleteBtn">삭제</button>
+                    </div>
+                </div>
+            </div>
+            <hr>
+        </div>
+    </div>
+</div>
+</html>
