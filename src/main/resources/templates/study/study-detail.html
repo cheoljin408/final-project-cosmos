@@ -86,7 +86,7 @@
 
                         <!-- 스터디원, 스터디리더가 아닌 경우 참가 신청 버튼 -->
                         <div th:if="${role.equals('일반회원')}">
-                            <button type="button" class="btn btn-primary" id="apply-study">참가 신청</button>
+                            <button type="button" class="btn btn-primary" id="apply-study" data-toggle="modal" data-target="#applyModal">참가 신청</button>
                         </div>
                     </div>
                 </div>
@@ -95,6 +95,35 @@
     </div>
 </section>
 <!-- 본문 종료 -->
+<div th:replace="fragments/apply-modal.html :: fragment-applymodal"></div>
 <div th:replace="fragments/footer.html :: fragment-footer"></div>
+
+<script th:inline="javascript">
+    $(function(){
+        $("#applyStudyBtn").click(function(){
+            var applyJsonData = {
+                studyNo: /*[[${study.get("STUDY_NO")}]]*/ 'studyNo',
+                email : /*[[${member.email}]]*/ 'email',
+                applyContent : $("#applyContent").val()
+            };
+
+            $.ajax({
+                type:"post",
+                url:"/applyStudy",
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(applyJsonData),
+                success: function (result) {
+                    if(result==1){  //신청이 되었다면 return 1
+                        alert("신청완료되었습니다. 메인페이지로 이동합니다.");
+                    }else{
+                        alert("이미 신청되어있습니다. 메인페이지로 이동합니다.");
+                    }
+                    location.href = "/";
+                }
+            }); //ajax
+        });// applyStudyBtn.click
+    }); //ready
+</script>
 </body>
 </html>
