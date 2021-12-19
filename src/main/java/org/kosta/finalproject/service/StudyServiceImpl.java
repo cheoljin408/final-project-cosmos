@@ -1,6 +1,5 @@
 package org.kosta.finalproject.service;
 
-import org.kosta.finalproject.model.domain.StudyDTO;
 import org.kosta.finalproject.model.domain.StudyMemberDTO;
 import org.kosta.finalproject.model.mapper.StudyMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,17 +29,17 @@ public class StudyServiceImpl implements StudyService{
     }
 
     @Override
-    public List<Map<String, Object>> getStudyListByCategory(String categoryVal) {
+    public List<StudyMemberDTO> getStudyListByCategory(String categoryVal) {
         return studyMapper.getStudyListByCategory(categoryVal);
     }
 
     @Override
-    public List<Map<String, Object>> getStudyListByStudyNameAndDesc(String searchWord) {
+    public List<StudyMemberDTO> getStudyListByStudyNameAndDesc(String searchWord) {
         return studyMapper.getStudyListByStudyNameAndDesc(searchWord);
     }
 
     @Override
-    public void registerStudy(StudyDTO studyDTO) {
+    public void registerStudy(Map<String, String> studyDTO) {
         studyMapper.registerStudy(studyDTO);
     }
 
@@ -57,6 +56,16 @@ public class StudyServiceImpl implements StudyService{
     @Override
     public String findStudyMemberRoleByStudyNo(int studyNo, String email) {
         return studyMapper.findStudyMemberRoleByStudyNo(studyNo, email);
+    }
+
+    @Override
+    public void modifyStudy(Map<String, String> studyDTO) {
+        studyMapper.modifyStudy(studyDTO);
+    }
+
+    @Override
+    public void deleteStudyByStudyNo(int studyNo) {
+        studyMapper.deleteStudyByStudyNo(studyNo);
     }
 
 }

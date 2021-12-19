@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="fragment-getallstudylist" id="getallstudylist">
+    <div class="row">
+        <div th:each="study: ${studyList}" class="col-4 pt-3" th:width="40px" style="cursor: pointer;"
+             th:onclick="|window.location.href='/study/studyDetail/${study.studyDTO.studyNo}'|">
+            <div class="card" style="width: 18rem;">
+                <div class="card-header">
+                    <div>
+                        <div style="display: inline-block;">
+                            <h5 th:text="${study.studyDTO.studyName}" class="card-title" style="margin: 0;">Card title</h5>
+                        </div>
+                        <div style="display: inline-block; float: right;">
+                            <span th:text="${study.studyDTO.studyStateDTO.studyState}"
+                              class="badge badge-pill badge-success">Success</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p th:text="${study.studyDTO.studyDesc}" class="card-text">With
+                        supporting text below as a natural lead-in to additional
+                        content.</p>
+                    <div style="margin-top: 15px;">
+                        <span th:text="${study.studyDTO.categoryTypeDTO.categoryType}"
+                              class="badge badge-pill badge-secondary">abc</span>
+                        <span th:text="${study.studyDTO.categoryLangDTO.categoryLang}"
+                              class="badge badge-pill badge-secondary">abc</span>
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <div>
+                            <img th:src="${study.memberDTO.picture}" class="rounded-circle"
+                                 style="margin-right: 10px; width: 30px; height: 30px;"/>
+                            <span th:text="${study.memberDTO.name}"></span>
+                        </div>
+                        <div>
+                            <span th:text="${study.studyDTO.studyRegdate}">abc</span>
+                        </div>
+                    </div>
+                    <div style="display: inline-block; float: right; margin-top: 15px;">
+                        <a href="#" class="btn btn-primary">지원하기</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

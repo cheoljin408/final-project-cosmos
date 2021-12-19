@@ -96,16 +96,16 @@
         where <![CDATA[ROWNUM <= 3]]>
     </select>
 
-    <select id="getStudyListByStudyNameAndDesc" parameterType="String" resultType="hashmap">
-        select m.name,
-               m.PICTURE,
-               s.STUDY_NO,
-               s.STUDY_NAME,
-               s.STUDY_DESC,
-               to_char(s.STUDY_REGDATE, 'yyyy-mm-dd hh24:mi:ss') as STUDY_REGDATE,
-               sst.STUDY_STATE,
-               ctt.category_type,
-               clt.category_lang
+    <select id="getStudyListByStudyNameAndDesc" resultMap="studyMemberDTOMap">
+        select m.name            as m_name,
+               m.PICTURE         as m_picture,
+               s.STUDY_NO        as s_study_no,
+               s.STUDY_NAME      as s_study_name,
+               s.STUDY_DESC      as s_study_desc,
+               to_char(s.STUDY_REGDATE, 'yyyy-mm-dd hh24:mi:ss') as s_study_regdate,
+               sst.STUDY_STATE   as s_sst_study_state,
+               ctt.category_type as s_ctt_category_type,
+               clt.category_lang as s_clt_category_lang
         from member m,
              STUDY_MEMBER sm,
              STUDY s,
@@ -121,16 +121,16 @@
         order by s.STUDY_NO desc
     </select>
 
-    <select id="getStudyListByCategory" resultType="hashmap" parameterType="string">
-        select m.name,
-               m.PICTURE,
-               s.STUDY_NO,
-               s.STUDY_NAME,
-               s.STUDY_DESC,
-               to_char(s.STUDY_REGDATE, 'yyyy-mm-dd hh24:mi:ss') as STUDY_REGDATE,
-               sst.STUDY_STATE,
-               ctt.category_type,
-               clt.category_lang
+    <select id="getStudyListByCategory" resultMap="studyMemberDTOMap">
+        select m.name            as m_name,
+               m.PICTURE         as m_picture,
+               s.STUDY_NO        as s_study_no,
+               s.STUDY_NAME      as s_study_name,
+               s.STUDY_DESC      as s_study_desc,
+               to_char(s.STUDY_REGDATE, 'yyyy-mm-dd hh24:mi:ss') as s_study_regdate,
+               sst.STUDY_STATE   as s_sst_study_state,
+               ctt.category_type as s_ctt_category_type,
+               clt.category_lang as s_clt_category_lang
         from member m,
              STUDY_MEMBER sm,
              STUDY s,
@@ -146,11 +146,11 @@
     </select>
 
     <!-- 스터디 등록 -->
-    <insert id="registerStudy" parameterType="StudyDTO">
-        insert into study(STUDY_NO, STUDY_NAME, STUDY_DESC, STUDY_INFO, STUDY_REGDATE, CATEGORY_TYPE_NO, CATEGORY_LANG_NO
+    <insert id="registerStudy" parameterType="HashMap">
+        insert into study(STUDY_NO, STUDY_NAME, STUDY_INFO, STUDY_DESC, STUDY_REGDATE, CATEGORY_TYPE_NO, CATEGORY_LANG_NO
         )
-        values (STUDY_SEQ.nextval, #{studyName}, #{studyDesc}, #{studyInfo}, sysdate,
-        #{categoryTypeDTO.categoryTypeNo}, #{categoryLangDTO.categoryLangNo})
+        values (STUDY_SEQ.nextval, #{studyName}, #{studyInfo}, #{studyDesc}, sysdate,
+        #{categoryTypeNo}, #{categoryLangNo})
         <selectKey keyProperty="studyNo" resultType="int" order="AFTER">
             SELECT STUDY_SEQ.CURRVAL FROM DUAL
         </selectKey>
@@ -175,7 +175,9 @@
                to_char(s.STUDY_REGDATE, 'YYYY-MM-DD')                          AS STUDY_REGDATE,
                sst.STUDY_STATE,
                ctt.category_type,
-               clt.category_lang
+               ctt.category_type_no,
+               clt.category_lang,
+               clt.category_lang_no
         from member m,
              STUDY_MEMBER sm,
              STUDY s,
@@ -191,10 +193,27 @@
           and s.study_no = #{value}
     </select>
 
+    <!-- 스터디 번호로 스터디 구성원 역할 조회 -->
     <select id="findStudyMemberRoleByStudyNo" resultType="String">
         SELECT STUDY_MEMBER_ROLE
         FROM STUDY_MEMBER
         WHERE STUDY_NO = #{param1}
-          AND EMAIL = #{param2}
+        AND EMAIL = #{param2}
     </select>
+
+    <!-- 스터디 정보 수정 -->
+    <update id="modifyStudy" parameterType="HashMap">
+        UPDATE STUDY
+        SET STUDY_NAME = #{studyName},
+        STUDY_DESC = #{studyInfo},
+        STUDY_INFO = #{studyInfo},
+        CATEGORY_TYPE_NO = #{categoryTypeNo},
+        CATEGORY_LANG_NO = #{categoryLangNo}
+        WHERE STUDY_NO = #{studyNo}
+    </update>
+
+    <!-- 스터디 삭제 -->
+    <delete id="deleteStudyByStudyNo" parameterType="int">
+        DELETE FROM STUDY WHERE STUDY_NO = #{value}
+    </delete>
 </mapper>

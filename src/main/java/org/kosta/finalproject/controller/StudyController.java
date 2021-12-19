@@ -3,9 +3,6 @@ package org.kosta.finalproject.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.kosta.finalproject.config.auth.LoginUser;
 import org.kosta.finalproject.config.auth.dto.SessionMember;
-import org.kosta.finalproject.model.domain.CategoryLangDTO;
-import org.kosta.finalproject.model.domain.CategoryTypeDTO;
-import org.kosta.finalproject.model.domain.StudyDTO;
 import org.kosta.finalproject.model.domain.StudyMemberDTO;
 import org.kosta.finalproject.service.StudyService;
 import org.springframework.stereotype.Controller;
@@ -45,40 +42,10 @@ public class StudyController {
         return "studylist/study-list-main";
     }
 
-
-    @GetMapping("/getStudyListByStudyNameAndDesc")
-    @ResponseBody
-    public List<Map<String, Object>> getStudyListByStudyNameAndDesc(@LoginUser SessionMember member, Model model, @RequestParam String searchWord){
-        if(member != null) {
-            model.addAttribute("member", member);
-            model.addAttribute("picture", member.getPicture());
-        }
-        List<Map<String, Object>> result = studyService.getStudyListByStudyNameAndDesc(searchWord);
-        System.out.println(result);
-        return result;
-    }
-    /**
-     *   카테고리 버튼 ->  Ajax를 통해서 -> 비동기 처리로 리스트를 화면에 뿌려줌
-     *   @return :
-     */
-    @GetMapping("/getStudyListByCategory")
-    @ResponseBody
-    public List<Map<String, Object>> getStudyListByCategory(@LoginUser SessionMember member, Model model, @RequestParam String categoryVal){
-        if(member != null) {
-            model.addAttribute("member", member);
-            model.addAttribute("picture", member.getPicture());
-        }
-        System.out.println("StudyController.getStudyListByCategory");
-        System.out.println("categoryVal = " + categoryVal);
-        List<Map<String, Object>> result = studyService.getStudyListByCategory(categoryVal);
-        System.out.println("result = " + result.toString());
-        return result;
-    }
-
     /**
      * 스터디 등록 폼
      */
-    @GetMapping("registerStudy")
+    @GetMapping("/registerStudy")
     public String registerStudy(@LoginUser SessionMember member, Model model) {
         if(member != null) {
             model.addAttribute("member", member);
@@ -89,10 +56,7 @@ public class StudyController {
 
     /**
      * 스터디 등록
-     * 1. 사용자가 입력한 데이터를 StudyDTO로 set 한다
-     * 2. Service쪽 registerStudy()를 호출해 스터디 및 스터디리더 역할 등록
-     * @param member
-     * @param jsonData
+     * 사용자가 입력한 데이터로 스터디를 등록한 뒤 작성자는 스터디리더로 역할 등록
      */
     @Transactional
     @ResponseBody
@@ -103,38 +67,21 @@ public class StudyController {
             model.addAttribute("picture", member.getPicture());
         }
         // log.info("jsonData = {}", jsonData);
-        // log.info("studyName = {}", jsonData.get("studyName"));
-        log.info("categoryTypeNo = {}", jsonData.get("categoryTypeNo"));
-        StudyDTO studyDTO = new StudyDTO();
-        studyDTO.setStudyName(jsonData.get("studyName"));
-        studyDTO.setStudyDesc(jsonData.get("studyDesc"));
-        studyDTO.setStudyInfo(jsonData.get("studyInfo"));
-        CategoryTypeDTO categoryTypeDTO = new CategoryTypeDTO();
-        categoryTypeDTO.setCategoryTypeNo(Integer.parseInt(jsonData.get("categoryTypeNo")));
-        CategoryLangDTO categoryLangDTO = new CategoryLangDTO();
-        categoryLangDTO.setCategoryLangNo(Integer.parseInt(jsonData.get("categoryLangNo")));
-        studyDTO.setCategoryTypeDTO(categoryTypeDTO);
-        studyDTO.setCategoryLangDTO(categoryLangDTO);
-        log.info("delivered study data:{}", studyDTO);
-
-        studyService.registerStudy(studyDTO);
-        // log.info("email: {}", member.getEmail());
+        studyService.registerStudy(jsonData);
         studyService.registerStudyMemberRole(member.getEmail());
-        // model.addAttribute("studyNo", studyDTO.getStudyNo());
-        return studyDTO.getStudyNo();
+        return 0;
     }
 
     /**
-     * @param member
-     * @param model
-     * @param studyNo
      * studyNo를 제공받아 해당 스터디의 상세 정보를 조회한다
      * 1. 해당 스터디의 스터디 리더는 수정, 삭제 버튼이 보인다
      * 2. 스터디에 속하지 않은 사용자는 신청 버튼이 보인다
      * 3. 스터디원은 어떠한 버튼도 보이지 않는다
+     * @return: 스터디 상세보기 페이지
      */
-    @RequestMapping("/studyDetail")
-    public String studyDetail(@LoginUser SessionMember member, Model model, int studyNo) {
+    @Transactional
+    @GetMapping("/studyDetail/{studyNo}")
+    public String studyDetail(@PathVariable int studyNo, @LoginUser SessionMember member, Model model) {
         if(member != null) {
             model.addAttribute("member", member);
             model.addAttribute("picture", member.getPicture());
@@ -149,4 +96,38 @@ public class StudyController {
         model.addAttribute("role", role);
         return "study/study-detail";
     }
+
+    /**
+     * 스터디 정보 수정
+     * @return: 스터디 수정 폼 페이지
+     */
+    @GetMapping("/modifyStudy/{studyNo}")
+    public String modifyStudy(@PathVariable int studyNo, @LoginUser SessionMember member, Model model) {
+        if(member != null) {
+            model.addAttribute("member", member);
+            model.addAttribute("picture", member.getPicture());
+        }
+        // log.info("studyNo:{}",studyNo);
+        model.addAttribute("study", studyService.getStudyDetailByStudyNo(studyNo));
+        model.addAttribute(studyNo);
+        return "study/modify-study";
+    }
+
+    /**
+     * 스터디 정보 수정 성공 후 메인 페이지로 이동
+     */
+    @ResponseBody
+    @PutMapping("/modifyStudy/{studyNo}")
+    public int modifyStudy(@PathVariable int studyNo, @LoginUser SessionMember member, Model model, @RequestBody Map<String, String> jsonData) {
+        if(member != null) {
+            model.addAttribute("member", member);
+            model.addAttribute("picture", member.getPicture());
+        }
+        jsonData.put("studyNo", String.valueOf(studyNo));
+        log.info("jsonData:{}", jsonData);
+        studyService.modifyStudy(jsonData);
+        model.addAttribute("studyNo", studyNo);
+        return 0;
+    }
+
 }
