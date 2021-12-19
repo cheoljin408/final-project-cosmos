@@ -1,0 +1,161 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments/html-head.html :: fragment-html-head"></div>
+</head>
+<body>
+<div th:replace="fragments/header.html :: fragment-header"></div>
+<div class="container pt-3">
+    <br>
+    <button class="bb btn btn-outline-dark" value="자바">자바</button> &nbsp; &nbsp;
+    <button class="bb btn btn-outline-dark" value="C">C</button> &nbsp; &nbsp;
+    <button class="bb btn btn-outline-dark" value="파이썬">파이썬</button> &nbsp; &nbsp;
+    <button class="bb btn btn-outline-dark" value="기타">기타</button> &nbsp; &nbsp;
+    <button class="bb btn btn-outline-dark" value="언어">언어</button> &nbsp; &nbsp;
+    <button class="bb btn btn-outline-dark" value="자격증">기타</button> &nbsp; &nbsp;
+    <button class="bb btn btn-outline-dark" value="면접">면접</button> &nbsp; &nbsp;
+    <button class="bb btn btn-outline-dark" value="알고리즘">알고리즘</button> &nbsp; &nbsp;
+    <br><br>
+    <div class="input-group mb-3">
+        <input type="text" id="searchWord" class="form-control" placeholder="검색어를 입력하세요">
+        <div class="input-group-append">
+            <button class="getStudyListByStudyNameAndDescBtn btn btn-primary" type="button">검색</button>
+        </div>
+    </div>
+
+    <br><br><br>
+    <div class="row" id="cardList">
+        <div th:each="study: ${studyList}" class="col-4 pt-3" th:width="40px">
+            <div class="card" style="width: 18rem;">
+                <div class="card-header">
+                    <p th:text="${study.studyDTO.studyName}"></p>
+                </div>
+                <div class="card-body">
+                    <p th:text="${study.studyDTO.studyDesc}" class="card-text">With
+                        supporting text below as a natural lead-in to additional
+                        content.</p>
+                    <span th:text="${study.studyDTO.categoryTypeDTO.categoryType}"></span>
+                    <span th:text="${study.studyDTO.categoryLangDTO.categoryLang}"></span>
+                    <p th:text="${study.studyDTO.studyStateDTO.studyState}"></p>
+                    <img class="rounded-circle me-3" width="40" height="40" src="" th:src="${study.memberDTO.picture}"
+                         alt="프로필 이미지">
+                    <span th:text="${study.memberDTO.name}"></span> <br>
+                    <span th:text="${study.studyDTO.studyRegdate}"></span>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="fragments/footer.html :: fragment-footer"></div>
+<script type="text/javascript">
+    $(function () {
+
+        $(".bb").click(function () {
+            $("#cardList").empty();
+            let categoryVal = $(this).val();
+            $.ajax({
+                type: "get",
+                dataType: "json",
+                url: "/study/getStudyListByCategory",
+                data: "categoryVal=" + categoryVal,
+                success: function (result) {
+                    let searchList = "";
+                    for (let i = 0; i < result.length; i++) {
+                        searchList += "<div class='col-4 pt-3'>"
+                        searchList += "<div class='card' style='width: 18rem;'>"
+                        searchList += "<div class='card-header'>"
+                        searchList += "<p>"
+                        searchList += `${result[i].STUDY_NAME}`
+                        searchList += "</p>"
+                        searchList += "</div>"
+                        searchList += "<div class='card-body'>"
+                        searchList += "<p class='card-text'>"
+                        searchList += `${result[i].STUDY_DESC}`
+                        searchList += "</p>"
+                        searchList += "<span>"
+                        searchList += `${result[i].CATEGORY_TYPE}`
+                        searchList += "</span>"
+                        searchList += "<span>"
+                        searchList += `${result[i].CATEGORY_LANG}`
+                        searchList += "</span>"
+                        searchList += "<p>"
+                        searchList += `${result[i].STUDY_STATE}`
+                        searchList += "</p>"
+                        searchList += "<img class='rounded-circle me-3' width='40' height='40' src="
+                        searchList += `${result[i].PICTURE}`
+                        searchList += " alt='프로필 이미지'>"
+                        searchList += "<span>"
+                        searchList += `${result[i].NAME}`
+                        searchList += "</span> <br>"
+                        searchList += "<span>"
+                        searchList += `${result[i].STUDY_REGDATE}`
+                        searchList += "</span>"
+                        searchList += "<a href='#' class='btn btn-primary'>"
+                        searchList += "Go somewhere"
+                        searchList += "</a>"
+                        searchList += "</div>"
+                        searchList += "</div>"
+                        searchList += "</div>"
+                    }
+                    $("#cardList").append(searchList);
+                } // success callback
+            });	// ajax
+        });	// click
+
+        $(".getStudyListByStudyNameAndDescBtn").click(function () {
+            let searchWord = $("#searchWord").val();
+            $("#cardList").empty();
+            $.ajax({
+                type: "get",
+                dataType: "json",
+                url: "/study/getStudyListByStudyNameAndDesc",
+                data: "searchWord=" + searchWord,
+                success: function (result) {
+                    let searchList = "";
+                    for (let i = 0; i < result.length; i++) {
+                        searchList += "<div class='col-4 pt-3'>"
+                        searchList += "<div class='card' style='width: 18rem;'>"
+                        searchList += "<div class='card-header'>"
+                        searchList += "<p>"
+                        searchList += `${result[i].STUDY_NAME}`
+                        searchList += "</p>"
+                        searchList += "</div>"
+                        searchList += "<div class='card-body'>"
+                        searchList += "<p class='card-text'>"
+                        searchList += `${result[i].STUDY_DESC}`
+                        searchList += "</p>"
+                        searchList += "<span>"
+                        searchList += `${result[i].CATEGORY_TYPE}`
+                        searchList += "</span>"
+                        searchList += "<span>"
+                        searchList += `${result[i].CATEGORY_LANG}`
+                        searchList += "</span>"
+                        searchList += "<p>"
+                        searchList += `${result[i].STUDY_STATE}`
+                        searchList += "</p>"
+                        searchList += "<img class='rounded-circle me-3' width='40' height='40' src="
+                        searchList += `${result[i].PICTURE}`
+                        searchList += " alt='프로필 이미지'>"
+                        searchList += "<span>"
+                        searchList += `${result[i].NAME}`
+                        searchList += "</span> <br>"
+                        searchList += "<span>"
+                        searchList += `${result[i].STUDY_REGDATE}`
+                        searchList += "</span>"
+                        searchList += "<a href='#' class='btn btn-primary'>Go somewhere</a>"
+                        searchList += "</div>"
+                        searchList += "</div>"
+                        searchList += "</div>"
+                    }
+                    $("#cardList").append(searchList);
+                } // success callback
+            });	// ajax
+        });//click getStudyListByStudyNameAndDescBtn
+    });	 // ready
+
+</script>
+</body>
+</html>
+
+

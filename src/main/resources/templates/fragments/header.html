@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<div th:fragment="fragment-header">
+    <nav class="navbar navbar-primary bg-light" style="box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);">
+        <div class="container">
+            <a class="navbar-brand" href="/"
+               style="font-family: 'Secular One', sans-serif; color: black; font-size: 1.5rem"><b>COSMOS</b></a>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <div th:if="${member} == null">
+                    <a href="/study/list" style="margin-right: 10px; color: black;"><b>스터디 더보기</b></a>
+                    <a data-toggle="modal" data-target="#exampleModal"><b>회원가입/로그인</b></a>
+                </div>
+                <div th:if="${member} != null">
+                    <div class="">
+                        <a href="/study/list" style="margin-right: 10px; color: black;"><b>스터디 더보기</b></a>
+                        <svg style="margin-right: 10px" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                             fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">
+                            <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zM8 1.918l-.797.161A4.002 4.002 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4.002 4.002 0 0 0-3.203-3.92L8 1.917zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5.002 5.002 0 0 1 13 6c0 .88.32 4.2 1.22 6z"/>
+                        </svg>
+                        <img th:src="${picture}" class="rounded-circle"
+                             style="margin-right: 10px; width: 30px; height: 30px;"/>
+                        <div class="dropdown" style="display: inline;">
+                            <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton"
+                                    data-toggle="dropdown" aria-expanded="false">
+                                <span th:text="${member.name}" style="font-weight: bold;"></span><span
+                                    style="margin-right: 10px;">님</span>
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="#">나의 스터디</a>
+                                <a class="dropdown-item" href="#">개인 정보</a>
+                                <a class="dropdown-item" href="/logout">로그아웃</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <p class="navbar-brand" href="/"
+                       style="font-family: 'Secular One', sans-serif; color: black; font-size: 1.5rem; margin: 0 auto;">
+                        <b>COSMOS</b></p>
+                </div>
+                <div class="modal-body text-center">
+                    <div style="margin-top: 30px;">
+                        <p style="font-size: 1.6rem;"><b>프로그래머를 위한</b></p>
+                        <p style="font-size: 1.6rem;"><b>스터디 모집 플랫폼, 코스모스!</b></p>
+                    </div>
+                    <div style="margin-top: 10px; margin-bottom: 30px">
+                        <p>코스모스에서 동료들을 구해보세요</p>
+                    </div>
+                </div>
+                <div class="modal-footer" style="padding: 20px 115px;">
+                    <div style="margin-bottom: 15px">
+                        <a href="/oauth2/authorization/google">
+                            <img src="images/google-login.png" style="width: 250px;"/>
+                        </a>
+                    </div>
+                    <div>
+                        <a href="/oauth2/authorization/naver">
+                            <img src="images/naver-login.png" style="width: 246px; height: 52px;"/>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</html>

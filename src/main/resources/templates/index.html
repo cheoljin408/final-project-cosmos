@@ -1,25 +1,75 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <div th:replace="fragments/html-head.html :: fragment-html-head"></div>
 </head>
-<body>
-    <h3>home</h3>
-    <a href="getMemberList">getMemberList</a>
-
-    <div th:if="${member} == null">
-        <a href="/oauth2/authorization/google" role="button">Google Login</a>
-        <a href="/oauth2/authorization/naver" role="button">Naver Login</a>
+<body style="margin: 0;">
+<script>
+    AOS.init();
+</script>
+<div th:replace="fragments/header.html :: fragment-header"></div>
+<div class="container" style="padding-top: 100px;">
+    <div class="text-center" data-aos="fade-up" data-aos-duration="1500" style="margin-bottom: 50px;">
+        <h1 style="font-family: 'Secular One', sans-serif; font-size:40px; font-weight: 900;">W&nbsp;E&nbsp;L&nbsp;C&nbsp;O&nbsp;M&nbsp;E&nbsp;&nbsp;&nbsp;&nbsp;T&nbsp;O&nbsp;&nbsp;&nbsp;C&nbsp;O&nbsp;S&nbsp;M&nbsp;O&nbsp;S&nbsp;!</h1>
     </div>
-    <div th:if="${member} != null">
-        <span th:text="${member.name}"></span>
-        <a href="/logout" role="button">Logout</a>
-        <span th:text="|session: ${session.member.name}|"></span>
+    <div class="text-center" data-aos="fade-up" data-aos-duration="1500" style="margin-bottom: 100px;">
+        <img src="images/main-image.PNG" style="width: 300px; height:300px;"/>
     </div>
-
+    <div>
+        <div style="margin-left: 80px; margin-bottom: 30px; display: inline-block">
+            <h3>모집중인 스터디</h3>
+        </div>
+        <div style="margin-right: 80px;display: inline-block; float: right;">
+            <p>더보기 ></p>
+        </div>
+    </div>
+    <div class="d-flex flex-wrap justify-content-center">
+        <div th:each="study: ${studyList}" class="card" style="width: 18rem; margin: 0 20px;">
+            <div class="card-header">
+                <div>
+                    <div style="display: inline-block;">
+                        <h5 th:text="${study.studyDTO.studyName}" class="card-title" style="margin: 0;">Card title</h5>
+                    </div>
+                    <div style="display: inline-block; float: right;">
+                        <span th:text="${study.studyDTO.studyStateDTO.studyState}"
+                              class="badge badge-pill badge-success">Success</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <p th:text="${study.studyDTO.studyDesc}" class="card-text">With supporting text below as a natural
+                    lead-in to additional content.</p>
+                <div style="margin-top: 15px;">
+                    <span th:text="${study.studyDTO.categoryTypeDTO.categoryType}"
+                          class="badge badge-pill badge-secondary">Secondary</span>
+                    <span th:text="${study.studyDTO.categoryLangDTO.categoryLang}"
+                          class="badge badge-pill badge-secondary">Secondary</span>
+                </div>
+                <div style="margin-top: 15px;">
+                    <div style="display: inline-block;">
+                        <img th:src="${study.memberDTO.picture}" class="rounded-circle"
+                             style="margin-right: 10px; width: 30px; height: 30px;"/>
+                        <span th:text="${study.memberDTO.name}"></span>
+                    </div>
+                    <div style="display: inline-block; float: right;">
+                        <span th:text="${study.studyDTO.studyRegdate}"></span>
+                    </div>
+                </div>
+                <div style="display: inline-block; float: right; margin-top: 15px;">
+                    <a href="#" class="btn btn-primary">지원하기</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<span class="rounded-circle text-center"
+      style="background-color: rgba(0, 0, 0, 0.8); position: fixed; right: 40px; bottom: 30px; width:50px; height: 50px; padding-top: 5px;"
+      onclick="window.scrollTo(0, 0);">
+    <svg style="color: #341BE0; font-weight: bold;" xmlns="http://www.w3.org/2000/svg" width="35" height="35"
+         fill="currentColor" class="bi bi-caret-up" viewBox="0 0 16 16">
+        <path d="M3.204 11h9.592L8 5.519 3.204 11zm-.753-.659 4.796-5.48a1 1 0 0 1 1.506 0l4.796 5.48c.566.647.106 1.659-.753 1.659H3.204a1 1 0 0 1-.753-1.659z"/>
+    </svg>
+</span>
+<div th:replace="fragments/footer.html :: fragment-footer"></div>
 </body>
 </html>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.kosta.finalproject.model.mapper.ApplyMapper">
+    <resultMap id="applyDTOMap" type="org.kosta.finalproject.model.domain.ApplyDTO">
+        <result property="applyRegdate" column="applyRegdate"/>
+        <association property="memberDTO" resultMap="memberDTOMap" columnPrefix="m_"/>
+        <association property="studyDTO" resultMap="studyDTOMap" columnPrefix="s_"/>
+        <association property="applyStateDTO" resultMap="applyStateDTOMap" columnPrefix="ast_"/>
+    </resultMap>
+
+    <resultMap id="memberDTOMap" type="org.kosta.finalproject.model.domain.MemberDTO">
+        <result property="name" column="name"/>
+        <result property="picture" column="picture"/>
+        <result property="role" column="role"/>
+    </resultMap>
+
+    <resultMap id="studyDTO" type="org.kosta.finalproject.model.domain.StudyDTO">
+        <result property="studyName" column="study_name"/>
+        <result property="studyRegdate" column="study_regdate"/>
+    </resultMap>
+
+    <!-- 참가신청 알람 리스트 sql-->
+    <select id="getAlarmList" resultType="hashmap">
+        select a.APPLY_NO           as a_applyNo,
+               a.STUDY_NO           as a_studyNo,
+               a.APPLY_REGDATE      as a_applyRegdate,
+               a.APPLY_CONTENT      as a_applyContent,
+               a.EMAIL              as email,
+               m.NAME               as a_m_name,
+               m.PICTURE            as a_m_picture,
+               m.ROLE               as a_m_role,
+               s.STUDY_NAME         as a_s_studyName,
+               ast.APPLY_STATE_CODE as ast_APPLY_STATE_CODE,
+               ast.APPLY_STATE      as ast_APPLY_STATE
+        from APPLY a,
+             MEMBER m,
+             STUDY s,
+             APPLY_STATE_TABLE ast
+        where a.study_NO = s.study_NO
+          and a.email = m.email
+          and a.apply_state_code = ast.apply_state_code
+        order by a.apply_no desc
+    </select>
+
+    <!-- 본인 : 스터디 리더 , 내가 만든 스터디에 참여 신청을 거절하는 SQL문 -->
+    <update id="applyRefuse" parameterType="int">
+        update APPLY set APPLY_STATE_CODE = 'NO' WHERE APPLY_NO = #{value}
+    </update>
+
+    <!-- 본인 : 스터디 리더 , 내가 만든 스터디에 참여 신청을 수락하는 SQL문 -->
+    <update id="applyAccept" parameterType="int">
+        update APPLY set APPLY_STATE_CODE = 'OK' WHERE APPLY_NO = #{value}
+    </update>
+
+    <insert id="insertStudyMember">
+        insert into STUDY_MEMBER(EMAIL, STUDY_NO, STUDY_MEMBER_ROLE) values(#{email}, #{studyNo}, '스터디원')
+    </insert>
+
+    <!-- 내 스터디의 참가신청리스트 추출 -->
+    <select id="requestedApplyList" parameterType="String" resultType="hashmap">
+        select a.APPLY_NO           as a_applyNo,
+               a.STUDY_NO           as a_studyNo,
+               a.APPLY_REGDATE      as a_applyRegdate,
+               a.APPLY_CONTENT      as a_applyContent,
+               a.EMAIL              as a_email,
+               a.APPLY_STATE_CODE   as a_apply_state_code,
+               ast.APPLY_STATE      as ast_apply_state,
+               m.NAME               as m_name,
+               m.PICTURE            as m_picture,
+               m.ROLE               as m_role,
+               s.STUDY_NAME         as s_study_name,
+               s.STUDY_STATE_CODE   as s_study_state_code,
+               sm.STUDY_MEMBER_ROLE as sm_study_member_role
+        from APPLY a,
+             MEMBER m,
+             STUDY s,
+             STUDY_MEMBER sm,
+             APPLY_STATE_TABLE ast
+        where a.STUDY_NO in (
+            select  STUDY_NO
+            from    STUDY_MEMBER
+            where   EMAIL = #{value}
+              and   STUDY_MEMBER_ROLE = '스터디리더')
+          and   a.STUDY_NO = s.STUDY_NO
+          and   s.STUDY_NO = sm.STUDY_NO
+          and   a.EMAIL = m.EMAIL
+          and   a.APPLY_STATE_CODE = ast.APPLY_STATE_CODE
+        order by a.APPLY_NO desc
+    </select>
+</mapper>
