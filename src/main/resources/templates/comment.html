@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments/html-head.html :: fragment-html-head"></div>
+</head>
+<body style="margin: 0;">
+<div th:replace="fragments/header.html :: fragment-header"></div>
+<div id="studyCommentRoot">
+    <div th:replace="fragments/study-comment :: fragment-study-comment" id="studyCommentListView"></div>
+</div>
+
+<div th:replace="fragments/footer.html :: fragment-footer"></div>
+
+<script th:inline="javascript">
+    $(function () {
+        // 댓글 등록 study_comment_seq.nextval, 'cheoljin408 comment', sysdate, 'cheoljin408@gmail.com', 28
+        $("#studyCommentRegisterBtn").click(function () {
+            console.log(`댓글 등록`);
+            let data = {
+                studyCommentContent: $("#studyCommentContent").val(),
+                email: /*[[${member.email}]]*/,
+                studyNo: $("#studyCommentRegisterBtn").val()
+            };
+            console.log(data);
+
+            $.ajax({
+                type: 'POST',
+                url: '/api/studyComment/' + /*[[${studyNo}]]*/,
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(data)
+            }).done(function (fragment) {
+                $("#studyCommentListView").replaceWith(fragment);
+            }).fail(function (error) {
+                alert(error.message());
+            });
+        });
+
+        // 댓글 수정
+        $("#studyCommentRoot").on("click", ".studyCommentUpdateBtn", function() {
+            console.log(`${$(this).val()} 댓글 수정`);
+        });
+
+        // 댓글 삭제
+        $("#studyCommentRoot").on("click", ".studyCommentDeleteBtn", function() {
+            console.log(`${$(this).val()} 댓글 삭제`);
+        });
+    });
+</script>
+</body>
+</html>

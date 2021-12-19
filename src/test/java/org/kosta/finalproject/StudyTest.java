@@ -2,16 +2,14 @@ package org.kosta.finalproject;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.kosta.finalproject.model.domain.CategoryLangDTO;
-import org.kosta.finalproject.model.domain.CategoryTypeDTO;
 import org.kosta.finalproject.model.domain.MemberDTO;
-import org.kosta.finalproject.model.domain.StudyDTO;
 import org.kosta.finalproject.model.mapper.MemberMapper;
 import org.kosta.finalproject.service.StudyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -33,30 +31,23 @@ public class StudyTest {
         MemberDTO memberDTO = new MemberDTO();
         memberDTO.setEmail("test@test.com");
         memberDTO.setName("test");
-        StudyDTO studyDTO = new StudyDTO();
-        studyDTO.setStudyName("test study name");
-        studyDTO.setStudyInfo("test info");
-        studyDTO.setStudyDesc("test desc");
-
-        CategoryLangDTO categoryLangDTO = new CategoryLangDTO();
-        categoryLangDTO.setCategoryLangNo(1);
-        studyDTO.setCategoryLangDTO(categoryLangDTO);
-
-        CategoryTypeDTO categoryTypeDTO = new CategoryTypeDTO();
-        categoryTypeDTO.setCategoryTypeNo(1);
-        studyDTO.setCategoryTypeDTO(categoryTypeDTO);
+        Map<String,String> studyDTO = new HashMap<String,String>();
+        studyDTO.put("STUDY_NAME","test study name");
+        studyDTO.put("STUDY_INFO","test info");
+        studyDTO.put("STUDY_DESC","test desc");
+        studyDTO.put("CATEGORY_TYPE_NO","3");
+        studyDTO.put("CATEGORY_LANG_NO","3");
+        int beforeReg = studyService.getAllList().size();
 
         //when
         studyService.registerStudy(studyDTO);
         studyService.registerStudyMemberRole(memberDTO.getEmail());
+        int afterReg = studyService.getAllList().size();
 
         //then
-        // 스터디 등록 시 스터디 번호가 생성되므로 이를 통해 등록된 스터디 내용을 조회할 수 있다
-        Map<String, Object> studyDetailInfo = studyService.getStudyDetailByStudyNo(studyDTO.getStudyNo());
-        // test1. 스터디 리더 등록 확인
-        assertThat(studyDetailInfo.get("STUDY_MEMBER_ROLE")).isEqualTo("스터디리더");
-        // test2. 스터디 모집 상태 확인
-        assertThat(studyDetailInfo.get("STUDY_STATE")).isEqualTo("모집중");
+        // 스터디 등록 전과 후의 스터디 수 비교: 전 < 후
+        assertThat(beforeReg).isLessThan(afterReg);
+
     }
 
     @Test
@@ -79,10 +70,26 @@ public class StudyTest {
     @DisplayName("스터디 모집 정보 수정")
     void 스터디모집정보수정(){
         //given
+        Map<String, Object> studyDetailInfo = studyService.getStudyDetailByStudyNo(51);
+        System.out.println("studyDetailInfo = " + studyDetailInfo);
+        // 51번 스터디 모집 내용을 아래의 updateStudyData 내용으로 수정
+        Map<String, String> studyDTO = new HashMap<String, String>() {
+        };
+        studyDTO.put("studyNo", "51");
+        studyDTO.put("studyName", "TEST t_study name");
+        studyDTO.put("studyDesc", "TEST t_study desc");
+        studyDTO.put("studyInfo", "TEST t_study info");
+        studyDTO.put("categoryTypeNo", "3");
+        studyDTO.put("categoryLangNo", "3");
 
         //when
+        studyService.modifyStudy(studyDTO);
+        Map<String, Object> studyDetailInfo2 = studyService.getStudyDetailByStudyNo(51);
+        System.out.println("studyDetailInfo = " + studyDetailInfo);
+        System.out.println("studyDetailInfo2 = " + studyDetailInfo2);
 
         //then
+        assertThat(studyDetailInfo).isNotSameAs(studyDetailInfo2);
 
     }
 }

@@ -1,6 +1,5 @@
 package org.kosta.finalproject.service;
 
-import org.kosta.finalproject.model.domain.StudyDTO;
 import org.kosta.finalproject.model.domain.StudyMemberDTO;
 import org.kosta.finalproject.model.mapper.StudyMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +39,7 @@ public class StudyServiceImpl implements StudyService{
     }
 
     @Override
-    public void registerStudy(StudyDTO studyDTO) {
+    public void registerStudy(Map<String, String> studyDTO) {
         studyMapper.registerStudy(studyDTO);
     }
 
@@ -57,6 +56,11 @@ public class StudyServiceImpl implements StudyService{
     @Override
     public String findStudyMemberRoleByStudyNo(int studyNo, String email) {
         return studyMapper.findStudyMemberRoleByStudyNo(studyNo, email);
+    }
+
+    @Override
+    public void modifyStudy(Map<String, String> studyDTO) {
+        studyMapper.modifyStudy(studyDTO);
     }
 
 }

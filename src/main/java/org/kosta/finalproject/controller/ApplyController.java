@@ -7,11 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -94,8 +93,19 @@ public class ApplyController {
             model.addAttribute("member", member);
             model.addAttribute("picture", member.getPicture());
         }
+
         List<Map<String, Object>> requestedApplyList = applyService.requestedApplyList(member.getEmail());
         model.addAttribute("requestedApplyList", requestedApplyList);
         return "studyapplyalarm/apply-request-list";
+    }
+
+    @ResponseBody
+    @PostMapping("applyStudy")
+    public int applyStudy(@LoginUser SessionMember member, @RequestBody HashMap<String, String> jsonData, Model model){
+        if(member != null) {
+            model.addAttribute("member", member);
+            model.addAttribute("picture", member.getPicture());
+        }
+        return applyService.registerApplyStudy(jsonData); //성공했으면 return 1, 이미 등록되어있어서 등록이 안됏다면 return 0
     }
 }
