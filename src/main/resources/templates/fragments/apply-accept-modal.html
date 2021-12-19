@@ -42,7 +42,6 @@
             </div>
             <script type="text/javascript">
                 $(function () {
-
                     /* 동적으로 생성되는 알림에 대한 click 이벤트 등록  */
                     $("#alarm_info").on("click", ".testBtn", function(){
                         console.log("load btn .. ok");
@@ -51,8 +50,6 @@
                     /* 동적으로 생성되는 알림 div에 대한 Modal창 정보 로드 */
                     $(".testBtn").click(function(){
                         console.log("testBtn click ok");
-                        // alert($(this).find(".study_name").text());
-                        // alert($(this).find(".study_applicant_content").value())
                         alert($(this).find(".apply_no").val());
                         $("#studyName").val($(this).find(".study_name").text())
                         $("#applicant_name").val($(this).find(".study_applicant_name").text());
@@ -60,18 +57,18 @@
                         $("#study_no_modal").val($(this).find(".study_no").val());
                         $("#apply_no_modal").val($(this).find(".apply_no").val());
                         $("#applicant_email").val($(this).find(".applicant_email").val());
-                    });
+                    });``
 
                     /* 수락 버튼 클릭시 이벤트 등록 */
                     $("#apply_accept").click(function(){
                         console.log("신청 수락 버튼 클릭");
                         alert($("#study_no_modal").val());
+                        alert($("#applicant_email").val());
                        var param = {
                             email: $("#applicant_email").val(),
-                           study_no : $("#study_no_modal").val(),
-                           apply_no : $("#apply_no_modal").val()
+                            study_no : $("#study_no_modal").val(),
+                            apply_no : $("#apply_no_modal").val()
                        };
-                       alert(param);
                         $.ajax({
                             type: "post",
                             url: "/apply/accept",
@@ -98,7 +95,6 @@
                             }
                         });
                     });
-
                 });
             </script>
         </div><!-- Modal end -->
