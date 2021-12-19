@@ -18,7 +18,7 @@ public interface StudyMapper {
 
     List<Map<String, Object>> getStudyListByCategory(String categoryVal);
 
-    void registerStudy(StudyDTO studyDTO);
+    void registerStudy(Map<String, String> studyDTO);
 
     void registerStudyMemberRole(String email);
 
@@ -26,4 +26,5 @@ public interface StudyMapper {
 
     String findStudyMemberRoleByStudyNo(int studyNo, String email);
 
+    void modifyStudy(Map<String, String> studyDTO);
 }

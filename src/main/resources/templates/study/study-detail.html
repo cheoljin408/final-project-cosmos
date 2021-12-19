@@ -78,9 +78,9 @@
                         <!-- 스터디 리더인 경우 수정, 삭제 버튼 -->
                         <div th:if="${role.equals('스터디리더')}">
                             <div>
-                                <button type="button" class="btn btn-primary" id="update-study">글 수정</button>
+                                <button type="button" class="btn btn-primary" th:onclick="|window.location.href='/study/modifyStudy/${study.get('STUDY_NO')}'|">글 수정</button>
                                 &nbsp;&nbsp;
-                                <button type="button" class="btn btn-primary" id="delete-study">글 삭제</button>
+                                <button type="button" class="btn btn-primary" id="delete-study-btn">글 삭제</button>
                             </div>
                         </div>
 
@@ -126,4 +126,5 @@
     }); //ready
 </script>
 </body>
+
 </html>
