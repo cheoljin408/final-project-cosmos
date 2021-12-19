@@ -20,11 +20,11 @@
             <h3>모집중인 스터디</h3>
         </div>
         <div style="margin-right: 80px;display: inline-block; float: right;">
-            <p>더보기 ></p>
+            <a href="/study/list" style="margin-right: 10px;color: black;"><p>더보기 ></p></a>
         </div>
     </div>
     <div class="d-flex flex-wrap justify-content-center">
-        <div th:each="study: ${studyList}" class="card" style="width: 18rem; margin: 0 20px;">
+        <div th:each="study: ${studyList}" class="card" style="width: 18rem; margin: 0 20px; cursor: pointer;" th:onclick="|window.location.href='/study/studyDetail?studyNo=${study.studyDTO.studyNo}'|">
             <div class="card-header">
                 <div>
                     <div style="display: inline-block;">

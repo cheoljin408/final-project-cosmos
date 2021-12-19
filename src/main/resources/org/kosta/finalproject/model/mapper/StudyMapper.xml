@@ -96,16 +96,16 @@
         where <![CDATA[ROWNUM <= 3]]>
     </select>
 
-    <select id="getStudyListByStudyNameAndDesc" parameterType="String" resultType="hashmap">
-        select m.name,
-               m.PICTURE,
-               s.STUDY_NO,
-               s.STUDY_NAME,
-               s.STUDY_DESC,
+    <select id="getStudyListByStudyNameAndDesc" resultMap="studyMemberDTOMap">
+        select m.name            as m_name,
+               m.PICTURE         as m_picture,
+               s.STUDY_NO        as s_study_no,
+               s.STUDY_NAME      as s_study_name,
+               s.STUDY_DESC      as s_study_desc,
                to_char(s.STUDY_REGDATE, 'yyyy-mm-dd hh24:mi:ss') as STUDY_REGDATE,
-               sst.STUDY_STATE,
-               ctt.category_type,
-               clt.category_lang
+               sst.STUDY_STATE   as s_sst_study_state,
+               ctt.category_type as s_ctt_category_type,
+               clt.category_lang as s_clt_category_lang
         from member m,
              STUDY_MEMBER sm,
              STUDY s,
@@ -121,16 +121,16 @@
         order by s.STUDY_NO desc
     </select>
 
-    <select id="getStudyListByCategory" resultType="hashmap" parameterType="string">
-        select m.name,
-               m.PICTURE,
-               s.STUDY_NO,
-               s.STUDY_NAME,
-               s.STUDY_DESC,
+    <select id="getStudyListByCategory" resultMap="studyMemberDTOMap">
+        select m.name            as m_name,
+               m.PICTURE         as m_picture,
+               s.STUDY_NO        as s_study_no,
+               s.STUDY_NAME      as s_study_name,
+               s.STUDY_DESC      as s_study_desc,
                to_char(s.STUDY_REGDATE, 'yyyy-mm-dd hh24:mi:ss') as STUDY_REGDATE,
-               sst.STUDY_STATE,
-               ctt.category_type,
-               clt.category_lang
+               sst.STUDY_STATE   as s_sst_study_state,
+               ctt.category_type as s_ctt_category_type,
+               clt.category_lang as s_clt_category_lang
         from member m,
              STUDY_MEMBER sm,
              STUDY s,

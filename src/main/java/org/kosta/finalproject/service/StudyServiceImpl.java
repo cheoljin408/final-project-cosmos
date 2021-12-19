@@ -29,12 +29,12 @@ public class StudyServiceImpl implements StudyService{
     }
 
     @Override
-    public List<Map<String, Object>> getStudyListByCategory(String categoryVal) {
+    public List<StudyMemberDTO> getStudyListByCategory(String categoryVal) {
         return studyMapper.getStudyListByCategory(categoryVal);
     }
 
     @Override
-    public List<Map<String, Object>> getStudyListByStudyNameAndDesc(String searchWord) {
+    public List<StudyMemberDTO> getStudyListByStudyNameAndDesc(String searchWord) {
         return studyMapper.getStudyListByStudyNameAndDesc(searchWord);
     }
 

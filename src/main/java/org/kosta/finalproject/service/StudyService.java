@@ -11,9 +11,9 @@ public interface StudyService {
 
     List<StudyMemberDTO> getAllList();
 
-    List<Map<String, Object>> getStudyListByStudyNameAndDesc(String searchWord);
+    List<StudyMemberDTO> getStudyListByStudyNameAndDesc(String searchWord);
 
-    List<Map<String, Object>> getStudyListByCategory(String categoryVal);
+    List<StudyMemberDTO> getStudyListByCategory(String categoryVal);
 
     void registerStudy(Map<String,String> studyDTO);
 
