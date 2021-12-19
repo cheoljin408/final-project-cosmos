@@ -149,8 +149,8 @@
     <insert id="registerStudy" parameterType="HashMap">
         insert into study(STUDY_NO, STUDY_NAME, STUDY_INFO, STUDY_DESC, STUDY_REGDATE, CATEGORY_TYPE_NO, CATEGORY_LANG_NO
         )
-        values (STUDY_SEQ.nextval, #{STUDY_NAME}, #{STUDY_INFO}, #{STUDY_DESC}, sysdate,
-        #{CATEGORY_TYPE_NO}, #{CATEGORY_LANG_NO})
+        values (STUDY_SEQ.nextval, #{studyName}, #{studyInfo}, #{studyDesc}, sysdate,
+        #{categoryTypeNo}, #{categoryLangNo})
         <selectKey keyProperty="studyNo" resultType="int" order="AFTER">
             SELECT STUDY_SEQ.CURRVAL FROM DUAL
         </selectKey>
@@ -198,21 +198,18 @@
         SELECT STUDY_MEMBER_ROLE
         FROM STUDY_MEMBER
         WHERE STUDY_NO = #{param1}
-          AND EMAIL = #{param2}
+        AND EMAIL = #{param2}
     </select>
 
     <!-- 스터디 정보 수정 -->
     <update id="modifyStudy" parameterType="HashMap">
-        UPDATE (
-            SELECT s.STUDY_NAME, s.STUDY_DESC, s.STUDY_INFO, ctt.CATEGORY_TYPE_NO, clt.CATEGORY_LANG_NO
-            FROM study s, CATEGORY_TYPE_TABLE ctt, CATEGORY_LANG_TABLE clt
-            WHERE s.CATEGORY_TYPE_NO = CTT.CATEGORY_TYPE_NO
-            AND s.CATEGORY_LANG_NO = clt.CATEGORY_LANG_NO
-            AND s.STUDY_NO = #{STUDY_NO}
-        ) SET STUDY_NAME = #{STUDY_NAME},
-        STUDY_DESC = #{STUDY_DESC},
-        STUDY_INFO = #{STUDY_INFO},
-        CATEGORY_TYPE_NO = #{CATEGORY_TYPE_NO},
-        CATEGORY_LANG_NO = #{CATEGORY_LANG_NO}
+        UPDATE STUDY
+        SET STUDY_NAME = #{studyName},
+        STUDY_DESC = #{studyInfo},
+        STUDY_INFO = #{studyInfo},
+        CATEGORY_TYPE_NO = #{categoryTypeNo},
+        CATEGORY_LANG_NO = #{categoryLangNo}
+        WHERE STUDY_NO = #{studyNo}
     </update>
+
 </mapper>

@@ -2,10 +2,7 @@ package org.kosta.finalproject;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.kosta.finalproject.model.domain.CategoryLangDTO;
-import org.kosta.finalproject.model.domain.CategoryTypeDTO;
 import org.kosta.finalproject.model.domain.MemberDTO;
-import org.kosta.finalproject.model.domain.StudyDTO;
 import org.kosta.finalproject.model.mapper.MemberMapper;
 import org.kosta.finalproject.service.StudyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,12 +75,12 @@ public class StudyTest {
         // 51번 스터디 모집 내용을 아래의 updateStudyData 내용으로 수정
         Map<String, String> studyDTO = new HashMap<String, String>() {
         };
-        studyDTO.put("STUDY_NO", "51");
-        studyDTO.put("STUDY_NAME", "TEST t_study name");
-        studyDTO.put("STUDY_DESC", "TEST t_study desc");
-        studyDTO.put("STUDY_INFO", "TEST t_study info");
-        studyDTO.put("CATEGORY_TYPE_NO", "3");
-        studyDTO.put("CATEGORY_LANG_NO", "3");
+        studyDTO.put("studyNo", "51");
+        studyDTO.put("studyName", "TEST t_study name");
+        studyDTO.put("studyDesc", "TEST t_study desc");
+        studyDTO.put("studyInfo", "TEST t_study info");
+        studyDTO.put("categoryTypeNo", "3");
+        studyDTO.put("categoryLangNo", "3");
 
         //when
         studyService.modifyStudy(studyDTO);
