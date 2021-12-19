@@ -93,7 +93,6 @@
                 contentType: 'application/json; charset=utf-8',
                 data: JSON.stringify(data)
             }).done(function (fragment) {
-                console.log(fragment);
                 $("#studyCommentListView").replaceWith(fragment);
             }).fail(function (error) {
                 alert(error.message());
@@ -103,6 +102,21 @@
         // 댓글 삭제
         $("#studyCommentRoot").on("click", ".studyCommentDeleteBtn", function() {
             console.log(`${$(this).val()} 댓글 삭제`);
+            let data = {
+                studyCommentNo: $(this).val()
+            };
+            console.log(data);
+
+            $.ajax({
+                type: 'DELETE',
+                url: '/api/deleteStudyComment/' + /*[[${studyNo}]]*/,
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(data)
+            }).done(function (fragment) {
+                $("#studyCommentListView").replaceWith(fragment);
+            }).fail(function (error) {
+                alert(error.message());
+            });
         });
     });
 </script>
