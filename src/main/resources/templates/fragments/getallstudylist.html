@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="fragment-getallstudylist" id="getallstudylist">
+    <div class="row">
+        <div th:each="study: ${studyList}" class="col-4 pt-3" th:width="40px" style="cursor: pointer;"
+             th:onclick="|window.location.href='/study/studyDetail?studyNo=${study.studyDTO.studyNo}'|">
+            <div class="card" style="width: 18rem;">
+                <div class="card-header">
+                    <p th:text="${study.studyDTO.studyName}"></p>
+                </div>
+                <div class="card-body">
+                    <p th:text="${study.studyDTO.studyDesc}" class="card-text">With
+                        supporting text below as a natural lead-in to additional
+                        content.</p>
+                    <span th:text="${study.studyDTO.categoryTypeDTO.categoryType}"></span>
+                    <span th:text="${study.studyDTO.categoryLangDTO.categoryLang}"></span>
+                    <p th:text="${study.studyDTO.studyStateDTO.studyState}"></p>
+                    <img class="rounded-circle me-3" width="40" height="40" src="" th:src="${study.memberDTO.picture}" alt="프로필 이미지">
+                    <span th:text="${study.memberDTO.name}"></span> <br>
+                    <span th:text="${study.studyDTO.studyRegdate}"></span>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</html>
