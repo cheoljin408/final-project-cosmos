@@ -24,27 +24,8 @@
     </div>
 
     <br><br><br>
-    <div class="row" id="cardList">
-        <div th:each="study: ${studyList}" class="col-4 pt-3" th:width="40px">
-            <div class="card" style="width: 18rem;">
-                <div class="card-header">
-                    <p th:text="${study.studyDTO.studyName}"></p>
-                </div>
-                <div class="card-body">
-                    <p th:text="${study.studyDTO.studyDesc}" class="card-text">With
-                        supporting text below as a natural lead-in to additional
-                        content.</p>
-                    <span th:text="${study.studyDTO.categoryTypeDTO.categoryType}"></span>
-                    <span th:text="${study.studyDTO.categoryLangDTO.categoryLang}"></span>
-                    <p th:text="${study.studyDTO.studyStateDTO.studyState}"></p>
-                    <img class="rounded-circle me-3" width="40" height="40" src="" th:src="${study.memberDTO.picture}"
-                         alt="프로필 이미지">
-                    <span th:text="${study.memberDTO.name}"></span> <br>
-                    <span th:text="${study.studyDTO.studyRegdate}"></span>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
-            </div>
-        </div>
+    <div id="cardList">
+        <div th:replace="fragments/getallstudylist.html :: fragment-getallstudylist" id="getallstudylist"></div>
     </div>
 </div>
 <div th:replace="fragments/footer.html :: fragment-footer"></div>
@@ -52,105 +33,30 @@
     $(function () {
 
         $(".bb").click(function () {
-            $("#cardList").empty();
             let categoryVal = $(this).val();
             $.ajax({
                 type: "get",
-                dataType: "json",
-                url: "/study/getStudyListByCategory",
-                data: "categoryVal=" + categoryVal,
-                success: function (result) {
-                    let searchList = "";
-                    for (let i = 0; i < result.length; i++) {
-                        searchList += "<div class='col-4 pt-3'>"
-                        searchList += "<div class='card' style='width: 18rem;'>"
-                        searchList += "<div class='card-header'>"
-                        searchList += "<p>"
-                        searchList += `${result[i].STUDY_NAME}`
-                        searchList += "</p>"
-                        searchList += "</div>"
-                        searchList += "<div class='card-body'>"
-                        searchList += "<p class='card-text'>"
-                        searchList += `${result[i].STUDY_DESC}`
-                        searchList += "</p>"
-                        searchList += "<span>"
-                        searchList += `${result[i].CATEGORY_TYPE}`
-                        searchList += "</span>"
-                        searchList += "<span>"
-                        searchList += `${result[i].CATEGORY_LANG}`
-                        searchList += "</span>"
-                        searchList += "<p>"
-                        searchList += `${result[i].STUDY_STATE}`
-                        searchList += "</p>"
-                        searchList += "<img class='rounded-circle me-3' width='40' height='40' src="
-                        searchList += `${result[i].PICTURE}`
-                        searchList += " alt='프로필 이미지'>"
-                        searchList += "<span>"
-                        searchList += `${result[i].NAME}`
-                        searchList += "</span> <br>"
-                        searchList += "<span>"
-                        searchList += `${result[i].STUDY_REGDATE}`
-                        searchList += "</span>"
-                        searchList += "<a href='#' class='btn btn-primary'>"
-                        searchList += "Go somewhere"
-                        searchList += "</a>"
-                        searchList += "</div>"
-                        searchList += "</div>"
-                        searchList += "</div>"
-                    }
-                    $("#cardList").append(searchList);
-                } // success callback
-            });	// ajax
+                url: "/api/studyListSearchByCategory",
+                data: "categoryVal=" + categoryVal
+            }).done(function (fragment) {
+                console.log(fragment);
+                $("#getallstudylist").replaceWith(fragment);
+            }).fail(function (error) {
+                alert(error.message());
+            }); 
         });	// click
 
         $(".getStudyListByStudyNameAndDescBtn").click(function () {
             let searchWord = $("#searchWord").val();
-            $("#cardList").empty();
             $.ajax({
                 type: "get",
-                dataType: "json",
-                url: "/study/getStudyListByStudyNameAndDesc",
-                data: "searchWord=" + searchWord,
-                success: function (result) {
-                    let searchList = "";
-                    for (let i = 0; i < result.length; i++) {
-                        searchList += "<div class='col-4 pt-3'>"
-                        searchList += "<div class='card' style='width: 18rem;'>"
-                        searchList += "<div class='card-header'>"
-                        searchList += "<p>"
-                        searchList += `${result[i].STUDY_NAME}`
-                        searchList += "</p>"
-                        searchList += "</div>"
-                        searchList += "<div class='card-body'>"
-                        searchList += "<p class='card-text'>"
-                        searchList += `${result[i].STUDY_DESC}`
-                        searchList += "</p>"
-                        searchList += "<span>"
-                        searchList += `${result[i].CATEGORY_TYPE}`
-                        searchList += "</span>"
-                        searchList += "<span>"
-                        searchList += `${result[i].CATEGORY_LANG}`
-                        searchList += "</span>"
-                        searchList += "<p>"
-                        searchList += `${result[i].STUDY_STATE}`
-                        searchList += "</p>"
-                        searchList += "<img class='rounded-circle me-3' width='40' height='40' src="
-                        searchList += `${result[i].PICTURE}`
-                        searchList += " alt='프로필 이미지'>"
-                        searchList += "<span>"
-                        searchList += `${result[i].NAME}`
-                        searchList += "</span> <br>"
-                        searchList += "<span>"
-                        searchList += `${result[i].STUDY_REGDATE}`
-                        searchList += "</span>"
-                        searchList += "<a href='#' class='btn btn-primary'>Go somewhere</a>"
-                        searchList += "</div>"
-                        searchList += "</div>"
-                        searchList += "</div>"
-                    }
-                    $("#cardList").append(searchList);
-                } // success callback
-            });	// ajax
+                url: "/api/studyListSearchByStudyNameAndDesc",
+                data: "searchWord=" + searchWord
+            }).done(function(fragment){
+                $("#getallstudylist").replaceWith(fragment);
+            }).fail(function(error){
+                alert(error.message());
+            });
         });//click getStudyListByStudyNameAndDescBtn
     });	 // ready
 
