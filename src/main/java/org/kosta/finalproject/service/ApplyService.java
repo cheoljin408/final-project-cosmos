@@ -8,7 +8,7 @@ public interface ApplyService {
 
     void applyRefuse(int applyNo);
 
-    void applyAccept(String email, int applyNo, int studyNo);
+    void applyAccept(Map<String, Object> param);
 
     List<Map<String, Object>> requestedApplyList(String email);
 

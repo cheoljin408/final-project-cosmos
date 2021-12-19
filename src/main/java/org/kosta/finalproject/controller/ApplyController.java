@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -66,19 +67,21 @@ public class ApplyController {
      *
      * @return
      */
-    @GetMapping("/apply/refuse")
+    @PostMapping("/apply/refuse")
     @ResponseBody
-    public String applyRefuse(@RequestParam int applyNo){
-        applyService.applyRefuse(applyNo);
-        return null;
+    public int applyRefuse(@RequestParam String applyNo){
+        System.out.println("applyNo = " + applyNo);
+        System.out.println("ApplyController.applyRefuse");
+        applyService.applyRefuse(Integer.parseInt(applyNo));
+        return 0;
     }
-    @GetMapping("/apply/accept")
+    @PostMapping("/apply/accept")
     @ResponseBody
     @Transactional
-    public String applyAccept(@RequestParam String email,
-                              @RequestParam int applyNo,
-                              @RequestParam int studyNo){
-        applyService.applyAccept(email, applyNo, studyNo);
+    public String applyAccept(@RequestParam Map<String, Object> param){
+        System.out.println("ApplyController.applyAccept");
+        System.out.println("param = " + param);
+        applyService.applyAccept(param);
         return null;
     }
 
