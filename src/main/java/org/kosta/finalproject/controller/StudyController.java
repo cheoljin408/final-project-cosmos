@@ -31,13 +31,8 @@ public class StudyController {
      */
 
     @GetMapping("/list")
-    public String studylistmain(@LoginUser SessionMember member, Model model){
-        if(member != null) {
-            model.addAttribute("member", member);
-            model.addAttribute("picture", member.getPicture());
-        }
+    public String studylistmain(Model model){
         List<StudyMemberDTO> result = studyService.getAllList();
-
         model.addAttribute("studyList", result);
         return "studylist/study-list-main";
     }
@@ -45,11 +40,7 @@ public class StudyController {
 
     @GetMapping("/getStudyListByStudyNameAndDesc")
     @ResponseBody
-    public List<Map<String, Object>> getStudyListByStudyNameAndDesc(@LoginUser SessionMember member, Model model, @RequestParam String searchWord){
-        if(member != null) {
-            model.addAttribute("member", member);
-            model.addAttribute("picture", member.getPicture());
-        }
+    public List<Map<String, Object>> getStudyListByStudyNameAndDesc(@RequestParam String searchWord){
         List<Map<String, Object>> result = studyService.getStudyListByStudyNameAndDesc(searchWord);
         System.out.println(result);
         return result;
@@ -60,11 +51,7 @@ public class StudyController {
      */
     @GetMapping("/getStudyListByCategory")
     @ResponseBody
-    public List<Map<String, Object>> getStudyListByCategory(@LoginUser SessionMember member, Model model, @RequestParam String categoryVal){
-        if(member != null) {
-            model.addAttribute("member", member);
-            model.addAttribute("picture", member.getPicture());
-        }
+    public List<Map<String, Object>> getStudyListByCategory(@RequestParam String categoryVal){
         System.out.println("StudyController.getStudyListByCategory");
         System.out.println("categoryVal = " + categoryVal);
         List<Map<String, Object>> result = studyService.getStudyListByCategory(categoryVal);
@@ -76,11 +63,7 @@ public class StudyController {
      * 스터디 등록 폼
      */
     @GetMapping("/registerStudy")
-    public String registerStudy(@LoginUser SessionMember member, Model model) {
-        if(member != null) {
-            model.addAttribute("member", member);
-            model.addAttribute("picture", member.getPicture());
-        }
+    public String registerStudy() {
         return "study/register-study";
     }
 
@@ -91,11 +74,7 @@ public class StudyController {
     @Transactional
     @ResponseBody
     @PostMapping("/registerStudy")
-    public int registerStudy(@LoginUser SessionMember member, @RequestBody HashMap<String, String> jsonData, Model model) {
-        if(member != null) {
-            model.addAttribute("member", member);
-            model.addAttribute("picture", member.getPicture());
-        }
+    public int registerStudy(@LoginUser SessionMember member, @RequestBody HashMap<String, String> jsonData) {
         // log.info("jsonData = {}", jsonData);
         studyService.registerStudy(jsonData);
         studyService.registerStudyMemberRole(member.getEmail());
@@ -114,7 +93,6 @@ public class StudyController {
     public String studyDetail(@PathVariable int studyNo, @LoginUser SessionMember member, Model model) {
         if(member != null) {
             model.addAttribute("member", member);
-            model.addAttribute("picture", member.getPicture());
         }
         model.addAttribute("study", studyService.getStudyDetailByStudyNo(studyNo));
         // log.info("studyInfo:{}", studyService.getStudyDetailByStudyNo(studyNo));
@@ -132,11 +110,7 @@ public class StudyController {
      * @return: 스터디 수정 폼 페이지
      */
     @GetMapping("/modifyStudy/{studyNo}")
-    public String modifyStudy(@PathVariable int studyNo, @LoginUser SessionMember member, Model model) {
-        if(member != null) {
-            model.addAttribute("member", member);
-            model.addAttribute("picture", member.getPicture());
-        }
+    public String modifyStudy(@PathVariable int studyNo, Model model) {
         // log.info("studyNo:{}",studyNo);
         model.addAttribute("study", studyService.getStudyDetailByStudyNo(studyNo));
         model.addAttribute(studyNo);
@@ -148,11 +122,7 @@ public class StudyController {
      */
     @ResponseBody
     @PutMapping("/modifyStudy/{studyNo}")
-    public int modifyStudy(@PathVariable int studyNo, @LoginUser SessionMember member, Model model, @RequestBody Map<String, String> jsonData) {
-        if(member != null) {
-            model.addAttribute("member", member);
-            model.addAttribute("picture", member.getPicture());
-        }
+    public int modifyStudy(@PathVariable int studyNo, Model model, @RequestBody Map<String, String> jsonData) {
         jsonData.put("studyNo", String.valueOf(studyNo));
         log.info("jsonData:{}", jsonData);
         studyService.modifyStudy(jsonData);
