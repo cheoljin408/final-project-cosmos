@@ -38,4 +38,9 @@ public class StudyCommentServiceImpl implements StudyCommentService {
         Map<String, Object> studyComment = studyCommentMapper.getStudyCommentByStudyCommentNo(studyCommentNo);
         return studyComment;
     }
+
+    @Override
+    public void deleteStudyComment(Map<String, Object> jsonData) {
+        studyCommentMapper.deleteStudyComment(jsonData);
+    }
 }

@@ -15,4 +15,6 @@ public interface StudyCommentMapper {
     void updateStudyComment(Map<String, Object> jsonData);
 
     Map<String, Object> getStudyCommentByStudyCommentNo(int studyCommentNo);
+
+    void deleteStudyComment(Map<String, Object> jsonData);
 }
