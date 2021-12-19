@@ -45,36 +45,6 @@ public class StudyController {
         return "studylist/study-list-main";
     }
 
-
-    @GetMapping("/getStudyListByStudyNameAndDesc")
-    @ResponseBody
-    public List<Map<String, Object>> getStudyListByStudyNameAndDesc(@LoginUser SessionMember member, Model model, @RequestParam String searchWord){
-        if(member != null) {
-            model.addAttribute("member", member);
-            model.addAttribute("picture", member.getPicture());
-        }
-        List<Map<String, Object>> result = studyService.getStudyListByStudyNameAndDesc(searchWord);
-        System.out.println(result);
-        return result;
-    }
-    /**
-     *   카테고리 버튼 ->  Ajax를 통해서 -> 비동기 처리로 리스트를 화면에 뿌려줌
-     *   @return :
-     */
-    @GetMapping("/getStudyListByCategory")
-    @ResponseBody
-    public List<Map<String, Object>> getStudyListByCategory(@LoginUser SessionMember member, Model model, @RequestParam String categoryVal){
-        if(member != null) {
-            model.addAttribute("member", member);
-            model.addAttribute("picture", member.getPicture());
-        }
-        System.out.println("StudyController.getStudyListByCategory");
-        System.out.println("categoryVal = " + categoryVal);
-        List<Map<String, Object>> result = studyService.getStudyListByCategory(categoryVal);
-        System.out.println("result = " + result.toString());
-        return result;
-    }
-
     /**
      * 스터디 등록 폼
      */
