@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -17,17 +18,19 @@ public class HomeController {
     // 지라 테스트 이슈
 
     private final StudyService studyService;
+    private final HttpSession httpSession;
 
     @Autowired
-    public HomeController(StudyService studyService) {
+    public HomeController(StudyService studyService, HttpSession httpSession) {
         this.studyService = studyService;
+        this.httpSession = httpSession;
     }
 
     @GetMapping("/")
     public String home(Model model, @LoginUser SessionMember member) {
         if(member != null) {
-            model.addAttribute("member", member);
-            model.addAttribute("picture", member.getPicture());
+            httpSession.setAttribute("member", member);
+            httpSession.setAttribute("picture", member.getPicture());
         }
 
         List<StudyMemberDTO> studyList = studyService.getStudyList3();

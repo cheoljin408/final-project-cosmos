@@ -67,9 +67,7 @@
                         </div>
                         <!-- 스터디 상세 소개 -->
                         <div class="card mb-4" style="min-height: 300px;">
-                            <div class="card-body">
-                                <p th:text="${study.get('STUDY_INFO')}">${studyInfo}</p>
-                            </div>
+                            <textarea class="card-body" th:text="${study.get('STUDY_INFO')}" readonly></textarea>
                         </div>
                     </article>
                     <!-- 신청 OR 수정 삭제 -->
@@ -103,7 +101,7 @@
         $("#applyStudyBtn").click(function(){
             var applyJsonData = {
                 studyNo: /*[[${study.get("STUDY_NO")}]]*/ 'studyNo',
-                email : /*[[${member.email}]]*/ 'email',
+                email : /*[[${session.member.email}]]*/ 'email',
                 applyContent : $("#applyContent").val()
             };
 
