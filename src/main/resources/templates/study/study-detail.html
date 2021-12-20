@@ -212,6 +212,9 @@
         // 댓글 삭제
         $("#studyCommentRoot").on("click", ".studyCommentDeleteBtn", function() {
             console.log(`${$(this).val()} 댓글 삭제`);
+            if(!confirm("댓글을 삭제하시겠습니까?")) {
+                return;
+            }
             let data = {
                 studyCommentNo: $(this).val()
             };
