@@ -17,7 +17,6 @@
                             <div class="mt-3">
                                 <h4 class="text-break" th:text="${study.get('NAME')}">사용자 이름</h4>
                                 <p class="text-secondary mb-1"></p>
-                                <a class="btn btn-primary" type="button" href="/studypage/addSub">프로필보기</a>
                             </div>
                         </div>
                     </div>
@@ -77,8 +76,6 @@
                         <div th:if="${role.equals('스터디리더')}">
                             <div>
                                 <button type="button" class="btn btn-primary" th:onclick="|window.location.href='/study/modifyStudy/${study.get('STUDY_NO')}'|">글 수정</button>
-                                &nbsp;&nbsp;
-                                <button type="button" class="btn btn-primary" id="delete-study-btn">글 삭제</button>
                             </div>
                         </div>
 

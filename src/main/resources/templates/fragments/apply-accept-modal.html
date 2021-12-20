@@ -14,19 +14,19 @@
                     <div class="modal-body">
                         <div>   <!-- 스터디 이름 -->
                             <label><b>스터디 이름</b></label>
-                            <input type="text" class="form-control" name="studyName" id="studyName" value="" readonly>
+                            <input type="text" class="form-control" id="studyName" value="" readonly>
                         </div>
                         <br>
 
                         <div>   <!-- 신청자 이름 -->
                             <label><b>신청자 이름</b></label>
-                            <input type="text" class="form-control" name="studyName" id="applicant_name" value="" readonly>
+                            <input type="text" class="form-control" id="applicant_name" value="" readonly>
                         </div>
                         <br>
 
                         <div>   <!-- 신청자 자기소개서 -->
                             <label><b>자기소개서</b></label>
-                            <textarea type="text" class="form-control" name="applicant_info" id="applicant_info" rows="5" readonly value=""></textarea>
+                            <textarea type="text" class="form-control" id="applicant_info" rows="5" readonly value=""></textarea>
                         </div>
                     </div>
 
@@ -50,7 +50,6 @@
                     /* 동적으로 생성되는 알림 div에 대한 Modal창 정보 로드 */
                     $(".testBtn").click(function(){
                         console.log("testBtn click ok");
-                        alert($(this).find(".apply_no").val());
                         $("#studyName").val($(this).find(".study_name").text())
                         $("#applicant_name").val($(this).find(".study_applicant_name").text());
                         $("#applicant_info").val($(this).find(".study_applicant_content").val());
@@ -62,8 +61,7 @@
                     /* 수락 버튼 클릭시 이벤트 등록 */
                     $("#apply_accept").click(function(){
                         console.log("신청 수락 버튼 클릭");
-                        alert($("#study_no_modal").val());
-                        alert($("#applicant_email").val());
+                        alert("'"+$("#applicant_name").val()+"' 님의 '"+$("#studyName").val()+"' 스터디 참가신청을 수락하시겠습니까?");
                        var param = {
                             email: $("#applicant_email").val(),
                             study_no : $("#study_no_modal").val(),
@@ -84,7 +82,7 @@
                     /* 거절 버튼 클릭시 이벤트 등록 */
                     $("#apply_refuse").click(function(){
                         console.log("신청 거절 버튼 클릭");
-                        alert($("#study_no_modal").val());
+                        alert("'"+$("#applicant_name").val()+"' 님의 '"+$("#studyName").val()+"' 스터디 참가신청을 거절하시겠습니까?");
                         var apply_no = $("#apply_no_modal").val();
                         $.ajax({
                             type: "post",

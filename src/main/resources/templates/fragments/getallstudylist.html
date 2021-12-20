@@ -2,9 +2,9 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="fragment-getallstudylist" id="getallstudylist">
     <div class="row">
-        <div th:each="study: ${studyList}" class="col-4 pt-3" th:width="40px" style="cursor: pointer;"
-             th:onclick="|window.location.href='/study/studyDetail/${study.studyDTO.studyNo}'|">
-            <div class="card" style="width: 18rem;">
+        <div th:each="study: ${studyList}" class="col-4 pt-4" th:width="40px">
+            <div class="card" style="width: 18rem; cursor: pointer;"
+                 th:onclick="|window.location.href='/study/studyDetail/${study.studyDTO.studyNo}'|">
                 <div class="card-header">
                     <div>
                         <div style="display: inline-block;">
@@ -35,9 +35,6 @@
                         <div>
                             <span th:text="${study.studyDTO.studyRegdate}">abc</span>
                         </div>
-                    </div>
-                    <div style="display: inline-block; float: right; margin-top: 15px;">
-                        <a href="#" class="btn btn-primary">지원하기</a>
                     </div>
                 </div>
             </div>
