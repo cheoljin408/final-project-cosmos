@@ -3,8 +3,11 @@ package org.kosta.finalproject.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.kosta.finalproject.config.auth.LoginUser;
 import org.kosta.finalproject.config.auth.dto.SessionMember;
+import org.kosta.finalproject.model.domain.StudyCommentDTO;
 import org.kosta.finalproject.model.domain.StudyMemberDTO;
+import org.kosta.finalproject.service.StudyCommentService;
 import org.kosta.finalproject.service.StudyService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -20,8 +23,15 @@ import java.util.Map;
 @RequestMapping("/study")
 public class StudyController {
 
-    @Resource
-    private StudyService studyService;
+
+    private final StudyService studyService;
+    private final StudyCommentService studyCommentService;
+
+    @Autowired
+    public StudyController(StudyService studyService, StudyCommentService studyCommentService) {
+        this.studyService = studyService;
+        this.studyCommentService = studyCommentService;
+    }
 
     /**
      *  등록된 스터디 리스트를 조회해서 -> model 에 넣고 -> 페이지에 뿌려줌
@@ -80,6 +90,12 @@ public class StudyController {
             role = "일반회원";
         }
         model.addAttribute("role", role);
+
+        // 댓글 데이터 불러오기
+        List<StudyCommentDTO> allStudyCommentList = studyCommentService.getAllStudyCommentList(studyNo);
+        System.out.println("allStudyCommentList = " + allStudyCommentList);
+        model.addAttribute("studyCommentList", allStudyCommentList);
+
         return "study/study-detail";
     }
 
