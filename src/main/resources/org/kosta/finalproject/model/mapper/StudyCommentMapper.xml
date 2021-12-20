@@ -51,4 +51,8 @@
     <update id="updateStudyComment" parameterType="Map">
         update study_comment set study_comment_content = #{studyCommentContent} where study_comment_no = #{studyCommentNo}
     </update>
+
+    <delete id="deleteStudyComment" parameterType="Map">
+        delete from study_comment where study_comment_no = #{studyCommentNo}
+    </delete>
 </mapper>
