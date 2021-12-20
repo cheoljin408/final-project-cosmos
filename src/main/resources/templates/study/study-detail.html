@@ -92,12 +92,16 @@
         </div>
     </div>
 </section>
+<div id="studyCommentRoot">
+    <div th:replace="fragments/study-comment :: fragment-study-comment" id="studyCommentListView"></div>
+</div>
 <!-- 본문 종료 -->
 <div th:replace="fragments/apply-modal.html :: fragment-applymodal"></div>
 <div th:replace="fragments/footer.html :: fragment-footer"></div>
 
 <script th:inline="javascript">
     $(function(){
+        // 스터디 지원하기
         $("#applyStudyBtn").click(function(){
             var applyJsonData = {
                 studyNo: /*[[${study.get("STUDY_NO")}]]*/ 'studyNo',
@@ -121,6 +125,112 @@
                 }
             }); //ajax
         });// applyStudyBtn.click
+
+        // 댓글 등록
+        $("#studyCommentRoot").on("click", "#studyCommentRegisterBtn", function() {
+            console.log(`댓글 등록`);
+            let data = {
+                studyCommentContent: $("#studyCommentContent").val(),
+                email: /*[[${member.email}]]*/,
+                studyNo: $("#studyCommentRegisterBtn").val()
+            };
+            console.log(data);
+
+            $.ajax({
+                type: 'POST',
+                url: '/api/registerStudyComment/' + /*[[${studyNo}]]*/,
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(data)
+            }).done(function (fragment) {
+                $("#studyCommentListView").replaceWith(fragment);
+            }).fail(function (error) {
+                alert(error.message());
+            });
+        });
+
+        // 댓글 수정
+        $("#studyCommentRoot").on("click", ".studyCommentUpdateBtn", function() {
+            console.log(`${$(this).val()} 댓글 수정`);
+
+            // 수정, 확인 버튼 토글
+            $(this).css('display', 'none');
+            $(this).siblings(".studyCommentUpdateSubmitBtn").css('display', 'inline');
+
+            // 삭제, 취소 버튼 토글
+            $(this).siblings(".studyCommentDeleteBtn").css('display', 'none');
+            $(this).siblings(".studyCommentCancelBtn").css('display', 'inline');
+
+            // p, input 태그 토글
+            $(this).parent().siblings().children('p').css('display', 'none');
+            $(this).parent().siblings().children('input').css('display', 'inline');
+
+            // p 태그 text를 input의 value로 넣어주기
+            $(this).parent().siblings().children('input')
+                .val($(this).parent().siblings().children('p').text());
+        });
+
+        // 댓글 수정 취소
+        $("#studyCommentRoot").on("click", ".studyCommentCancelBtn", function() {
+            console.log(`${$(this).val()} 댓글 수정 취소`);
+
+            // p, input 태그 토글
+            $(this).parent().siblings().children('input').css('display', 'none');
+            $(this).parent().siblings().children('p').css('display', 'inline');
+
+            // 수정, 확인 버튼 토글
+            $(this).siblings(".studyCommentUpdateSubmitBtn").css('display', 'none');
+            $(this).siblings(".studyCommentUpdateBtn").css('display', 'inline');
+
+            // 삭제, 취소 버튼 토글
+            $(this).css('display', 'none');
+            $(this).siblings(".studyCommentDeleteBtn").css('display', 'inline');
+        });
+
+        // 댓글 수정 제출
+        $("#studyCommentRoot").on("click", ".studyCommentUpdateSubmitBtn", function() {
+            console.log(`${$(this).val()} 댓글 수정 제출`);
+
+            // 수정, 확인 버튼 토글
+            $(this).css('display', 'none');
+            $(this).siblings(".studyCommentUpdateBtn").css('display', 'inline');
+
+            let data = {
+                studyCommentContent: $(this).parent().siblings().children('input').val(),
+                studyCommentNo: $(this).val()
+            };
+            console.log(data);
+
+            $.ajax({
+                type: 'PUT',
+                url: '/api/updateStudyComment/' + /*[[${studyNo}]]*/,
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(data)
+            }).done(function (fragment) {
+                $("#studyCommentListView").replaceWith(fragment);
+            }).fail(function (error) {
+                alert(error.message());
+            });
+        });
+
+        // 댓글 삭제
+        $("#studyCommentRoot").on("click", ".studyCommentDeleteBtn", function() {
+            console.log(`${$(this).val()} 댓글 삭제`);
+            let data = {
+                studyCommentNo: $(this).val()
+            };
+            console.log(data);
+
+            $.ajax({
+                type: 'DELETE',
+                url: '/api/deleteStudyComment/' + /*[[${studyNo}]]*/,
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(data)
+            }).done(function (fragment) {
+                $("#studyCommentListView").replaceWith(fragment);
+            }).fail(function (error) {
+                alert(error.message());
+            });
+        });
     }); //ready
 </script>
 </body>

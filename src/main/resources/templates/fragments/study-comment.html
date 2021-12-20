@@ -21,7 +21,8 @@
                 <div style="margin-bottom: 10px;">
                     <img th:src="${studyComment.memberDTO.picture}" class="rounded-circle"
                          style="margin-right: 10px; width: 30px; height: 30px;"/>
-                    <span th:text="${studyComment.memberDTO.name}">name</span>
+                    <span th:text="${studyComment.memberDTO.name}" style="margin-right: 10px;">name</span>
+                    <span th:text="${studyComment.studyCommentRegdate}">regdate</span>
                 </div>
                 <div>
                     <div style="display: inline-block; width: 85%;" class="align-middle">
