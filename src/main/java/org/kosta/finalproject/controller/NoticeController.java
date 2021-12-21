@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Slf4j
@@ -30,19 +31,39 @@ public class NoticeController {
      */
     @RequestMapping("/detail/{studyNo}/{noticeNo}")
     public String noticeDetail(Model model,
-                               @CookieValue(value="view", defaultValue = "") String cookie,
+                               @CookieValue(value="view", defaultValue = "") String cookies1,
+                               HttpServletRequest request,
                                HttpServletResponse response,
                                @PathVariable int noticeNo,
                                @PathVariable int studyNo) {
 
-        System.out.println(""+studyNo+""+noticeNo);
-        /* 조회수 중복 증가 방지를 위한 쿠키 정보 등록 */
-        if(!cookie.contains(""+studyNo+""+noticeNo)) {
-            // 해당 문자열({studyNo},{noticeNo})이 없을 경우 -> 처음 접근하는것임
-            noticeService.updateHits(studyNo, noticeNo);
-            cookie += (""+studyNo+""+noticeNo+"/");
+
+        Cookie newCookie = null;
+        Cookie[] nowCookies = request.getCookies();
+        if (nowCookies != null) {
+            for (Cookie cookie : nowCookies) {
+                if (cookie.getName().equals("postView")) {
+                    newCookie = cookie;
+                }
+            }
         }
-        response.addCookie(new Cookie("view", cookie));
+        if (newCookie != null) {
+            if (!newCookie.getValue().contains("[" + studyNo + "" + noticeNo + "]")) {
+                noticeService.updateHits(studyNo, noticeNo);
+                newCookie.setValue(newCookie.getValue() + "_[" + studyNo + "" + noticeNo + "]");
+                newCookie.setPath("/");
+                newCookie.setMaxAge(60 * 60 * 24);
+                response.addCookie(newCookie);
+            }
+        } else {
+            noticeService.updateHits(studyNo, noticeNo);
+            Cookie cookie = new Cookie("postView","[" + studyNo + "" + noticeNo + "]");
+            cookie.setPath("/");
+            cookie.setMaxAge(60 * 60 * 24);
+            response.addCookie(cookie);
+        }
+
+
         model.addAttribute("notice", noticeService.getNoticeDetailByNoticeNo(noticeNo));
         return "/notice/notice-detail-study";
     }
@@ -62,13 +83,19 @@ public class NoticeController {
     @GetMapping("/list/{studyNo}")
     public String comment(@PathVariable int studyNo, Model model,
                           HttpServletResponse response) {
-        /*  쿠키를 이용한 조회수 중복 체크  */
-        Cookie cookie = new Cookie("view", "");
-        cookie.setComment("checkDupHits");
-        cookie.setMaxAge(60*60*1);	// 유효기간을 1시간으로 한정
-        response.addCookie(cookie);
-        log.info("cookie = {}", cookie);
         model.addAttribute("noticeList", noticeService.getAllNoticeList(studyNo));
         return "/notice/notice-list";
     }
+
+    /**
+     *  공지사항 삭제
+     */
+    @PostMapping("/delete")
+    @ResponseBody
+    public String deleteNotice(@RequestParam int noticeNo){
+        log.info("deleteNotice() starrr..");
+        noticeService.deleteNotice(noticeNo);
+        return null;
+    }
+
 }

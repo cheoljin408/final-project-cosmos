@@ -34,4 +34,9 @@ public class NoticeServiceImpl implements NoticeService{
         System.out.println("studyNo = " + studyNo + ", noticeNo = " + noticeNo);
         System.out.println("NoticeServiceImpl.updateHits");
     }
+
+    @Override
+    public void deleteNotice(int noticeNo) {
+        noticeMapper.deleteNotice(noticeNo);
+    }
 }

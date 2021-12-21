@@ -84,11 +84,15 @@
 
           <br><br>
 
-          <form method="post" action="/notice/post">
             <textarea type="text" id="summernote" name="text"></textarea>
             <!--  th:text="${notice.get('NOTICE_CONTENT')}" -->
-            <button>전송</button>
-          </form>
+            <div class="pt-3">
+              <button class="btn btn-info" id="notice-modify">수정</button> &nbsp;
+              <form action="post" action="/notice/update">
+                <input type="hidden" th:name="notice_no" th:value="${notice.get('NOTICE_NO')}">
+                <button class="btn btn-danger" id="notice-delete">삭제</button/>
+              </form>
+            </div>
           <script>
             $(document).ready(function() {
               //여기 아래 부분
@@ -100,9 +104,44 @@
                 lang: "ko-KR",				  // 한글 설정
                 placeholder: '최대 2048자까지 쓸 수 있습니다'	//placeholder 설정
               });
+
+              /* 삭제버튼시 동작 사항 */
+              $("#notice-delete").click(function(){
+                console.log("삭제 버튼 클릭");
+                var notice_no = [[${notice.get('NOTICE_NO')}]];
+                if(!confirm(notice_no + "번 공지사항을 삭제하시겠습니까?")) {
+                   return false;
+                }
+                $.ajax({
+                  type: "post",
+                  url: "/notice/delete",
+                  data: "noticeNo=" + notice_no,
+                  success: function () {
+                    alert("/notice/list/" + [[${notice.get('STUDY_NO')}]]);
+                    location.replace("/notice/list/" + [[${notice.get('STUDY_NO')}]]);
+                  }
+                });
+
+                $("#notice-modify").click(function(){
+                  console.log("삭제 버튼 클릭");
+                  var notice_no = [[${notice.get('NOTICE_NO')}]];
+                  if(!confirm(notice_no + "번 공지사항을 삭제하시겠습니까?")) {
+                    return false;
+                  }
+                  $.ajax({
+                    type: "post",
+                    url: "/notice/delete",
+                    data: "noticeNo=" + notice_no,
+                    success: function () {
+                      alert("/notice/list/" + [[${notice.get('STUDY_NO')}]]);
+                      location.replace("/notice/list/" + [[${notice.get('STUDY_NO')}]]);
+                    }
+                  });
+              });
+
+
             });
           </script>
-
         </div>
       </main> <!-- Main end -->
   </div>

@@ -45,6 +45,7 @@
         order by notice_no desc
     </select>
 
+    <!-- 특정 공지사항 상세보기 페이지를 위한 정보를 불러옴 -->
     <select id="getNoticeDetailByNoticeNo" resultType="hashMap">
         select n.notice_no,
                n.notice_title,
@@ -65,8 +66,22 @@
           and n.notice_no = #{value}
     </select>
 
+    <!-- 조회수 증가-->
     <update id="updateHits">
         update notice set notice_hits = notice_hits + 1
         where notice_no= #{noticeNo} and study_no = #{studyNo}
     </update>
+
+    <!-- 공지사항 수정-->
+    <!--<update id="updateNotice" parameterType="Map">
+        update notice set  notice_title = #{},
+                          notice_content=#{}
+        where notice_no = #{}
+    </update>-->
+
+    <!-- 공지사항 삭제-->
+    <delete id="deleteNotice" parameterType="int">
+        delete from notice where notice_no = #{value}
+    </delete>
+
 </mapper>

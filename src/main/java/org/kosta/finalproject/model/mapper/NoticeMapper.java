@@ -15,4 +15,6 @@ public interface NoticeMapper {
     Map<String, Object> getNoticeDetailByNoticeNo(int noticeNo);
 
     void updateHits(@Param("studyNo") int studyNo, @Param("noticeNo") int noticeNo);
+
+    void deleteNotice(int noticeNo);
 }

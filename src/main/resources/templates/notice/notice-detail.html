@@ -77,7 +77,7 @@
         <br><br>
 
         <form method="post" action="/notice/post">
-            <textarea type="text" id="summernote" name="text" th:utext="${notice.get('NOTICE_CONTENT')}" th:readonly=""></textarea>
+            <div type="text" id="summernote" name="text" th:utext="${notice.get('NOTICE_CONTENT')}" th:readonly=""></div>
             <!--  th:text="${notice.get('NOTICE_CONTENT')}" -->
         </form>
         <script>
@@ -89,10 +89,14 @@
                     maxHeight: null,              // 최대 높이
                     focus: true,                  // 에디터 로딩후 포커스를 맞출지 여부
                     lang: "ko-KR",				  // 한글 설정
-                    placeholder: '최대 2048자까지 쓸 수 있습니다'	//placeholder 설정
+                    placeholder: '최대 2048자까지 쓸 수 있습니다'
                 });
             });
         </script>
+    </div>
+    <div class="pt-3">
+        <button class="btn btn-info" id="notice-modify">수정</button> &nbsp;
+        <button class="btn btn-info" id="notice-delete">삭제</button>
     </div>
 </body>
 </html>

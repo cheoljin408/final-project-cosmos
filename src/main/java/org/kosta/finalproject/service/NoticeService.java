@@ -12,4 +12,6 @@ public interface NoticeService {
     Map<String, Object> getNoticeDetailByNoticeNo(int noticeNo);
 
     void updateHits(int StudyNo, int noticeNo);
+
+    void deleteNotice(int noticeNo);
 }
