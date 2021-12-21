@@ -24,14 +24,12 @@ public class NoticeController {
     }
 
     /**
-     *  공지사항 상세보기
-     * 
-     *  공지사항 리스트에서 해당 공지사항 상세보기를 누르면 해당 공지사항에 대한 정보를 출력한다.
-
+     * 공지사항 상세보기
+     * <p>
+     * 공지사항 리스트에서 해당 공지사항 상세보기를 누르면 해당 공지사항에 대한 정보를 출력한다.
      */
     @RequestMapping("/detail/{studyNo}/{noticeNo}")
     public String noticeDetail(Model model,
-                               @CookieValue(value="view", defaultValue = "") String cookies1,
                                HttpServletRequest request,
                                HttpServletResponse response,
                                @PathVariable int noticeNo,
@@ -57,25 +55,23 @@ public class NoticeController {
             }
         } else {
             noticeService.updateHits(studyNo, noticeNo);
-            Cookie cookie = new Cookie("postView","[" + studyNo + "" + noticeNo + "]");
+            Cookie cookie = new Cookie("postView", "[" + studyNo + "" + noticeNo + "]");
             cookie.setPath("/");
             cookie.setMaxAge(60 * 60 * 24);
             response.addCookie(cookie);
         }
-
-
         model.addAttribute("notice", noticeService.getNoticeDetailByNoticeNo(noticeNo));
         return "/notice/notice-detail-study";
     }
+
     /**
-     * ** 테스트용 코드 ** 
-     * 
-     *  텍스트 에디터폼에서 작성한 후 해당 editor애 생성된 html 태그들을 
-     *  올바르게 전송이 되는지 검사
-     * 
+     * ** 테스트용 코드 **
+     * <p>
+     * 텍스트 에디터폼에서 작성한 후 해당 editor애 생성된 html 태그들을
+     * 올바르게 전송이 되는지 검사
      */
     @PostMapping("/post")
-    public String postTest(String text, Model model){
+    public String postTest(String text, Model model) {
         model.addAttribute("data", text);
         return "/notice/notice-result";
     }
@@ -88,14 +84,20 @@ public class NoticeController {
     }
 
     /**
-     *  공지사항 삭제
+     * 공지사항 삭제
      */
     @PostMapping("/delete")
     @ResponseBody
-    public String deleteNotice(@RequestParam int noticeNo){
+    public String deleteNotice(@RequestParam int noticeNo) {
         log.info("deleteNotice() starrr..");
         noticeService.deleteNotice(noticeNo);
         return null;
     }
 
+    @PostMapping("/update")
+    public String updateNotice(@RequestParam int noticeNo,
+                               Model model){
+        model.addAttribute("notice", noticeService.getNoticeDetailByNoticeNo(noticeNo));
+        return "notice/notice-update";
+    }
 }
