@@ -3,7 +3,7 @@
 <div th:fragment="fragment-getallstudylist" id="getallstudylist">
     <div class="row">
         <div th:each="study: ${studyList}" class="col-4 pt-4" th:width="40px">
-            <div class="card" style="width: 18rem; cursor: pointer;"
+            <div class="card" style="width: 18rem; border-radius: 10px; cursor: pointer;"
                  th:onclick="|window.location.href='/study/studyDetail/${study.studyDTO.studyNo}'|">
                 <div class="card-header">
                     <div>
