@@ -5,11 +5,14 @@
 <mapper namespace="org.kosta.finalproject.model.mapper.StudyMapper">
 
     <resultMap id="studyMemberDTOMap" type="org.kosta.finalproject.model.domain.StudyMemberDTO">
+        <id property="email" column="email"/>
+        <result property="studyMemberRole" column="study_member_role"/>
         <association property="memberDTO" resultMap="memberDTOMap" columnPrefix="m_"/>
         <association property="studyDTO" resultMap="studyDTOMap" columnPrefix="s_"/>
     </resultMap>
 
     <resultMap id="memberDTOMap" type="org.kosta.finalproject.model.domain.MemberDTO">
+        <id property="email" column="email"/>
         <result property="name" column="name"/>
         <result property="picture" column="picture"/>
     </resultMap>
@@ -57,6 +60,7 @@
           and s.STUDY_STATE_CODE = sst.STUDY_STATE_CODE
           and s.category_lang_no = clt.category_lang_no
           and s.category_type_no = ctt.category_type_no
+          and sm.STUDY_MEMBER_ROLE = '스터디리더'
         order by s.STUDY_NO desc
     </select>
 
@@ -91,6 +95,7 @@
         and s.STUDY_STATE_CODE = sst.STUDY_STATE_CODE
         and s.category_lang_no = clt.category_lang_no
         and s.category_type_no = ctt.category_type_no
+        and sm.STUDY_MEMBER_ROLE = '스터디리더'
         order by study_no desc
         ) s
         where <![CDATA[ROWNUM <= 3]]>
@@ -118,6 +123,7 @@
           and s.category_lang_no = clt.category_lang_no
           and s.category_type_no = ctt.category_type_no
           and (s.STUDY_NAME like '%' || #{value} || '%' or s.STUDY_DESC like '%' || #{value} || '%')
+          and sm.STUDY_MEMBER_ROLE = '스터디리더'
         order by s.STUDY_NO desc
     </select>
 
@@ -142,6 +148,7 @@
           and s.STUDY_STATE_CODE = sst.STUDY_STATE_CODE
           and s.category_lang_no = clt.category_lang_no
           and s.category_type_no = ctt.category_type_no
+          and sm.STUDY_MEMBER_ROLE = '스터디리더'
           and (clt.category_lang = #{categoryVal} or ctt.category_type = #{categoryVal})
     </select>
 
@@ -216,4 +223,26 @@
     <delete id="deleteStudyByStudyNo" parameterType="int">
         DELETE FROM STUDY WHERE STUDY_NO = #{value}
     </delete>
+
+    <!--나의 스터디 리스트 조회-->
+    <select id="getMystudyListByEmail" resultMap="studyMemberDTOMap">
+        select sm.email as sm_email,
+               sm.STUDY_MEMBER_ROLE,
+               s.STUDY_NO as s_study_no,
+               s.STUDY_NAME as s_study_name,
+               sSt.STUDY_STATE as s_sst_study_state,
+               ctt.CATEGORY_TYPE as s_ctt_category_type,
+               clt.CATEGORY_LANG as s_clt_category_lang
+        from STUDY_MEMBER sm,
+             STUDY s,
+             STUDY_STATE_TABLE SST,
+             CATEGORY_TYPE_TABLE CTT,
+             CATEGORY_LANG_TABLE CLT
+        where sm.STUDY_NO = s.STUDY_NO
+          and  s.STUDY_STATE_CODE = sst.STUDY_STATE_CODE
+          and s.CATEGORY_TYPE_NO = ctt.CATEGORY_TYPE_NO
+          and s.CATEGORY_LANG_NO = clt.CATEGORY_LANG_NO
+          and sm.EMAIL = #{value}
+        order by s.STUDY_NO desc
+    </select>
 </mapper>
