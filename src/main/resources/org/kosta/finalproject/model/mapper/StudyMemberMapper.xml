@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.kosta.finalproject.model.mapper.StudyMemberMapper">
+
+    <resultMap id="studyMemberDTOMap" type="org.kosta.finalproject.model.domain.StudyMemberDTO">
+        <result property="studyMemberRole" column="study_member_role"/>
+        <association property="memberDTO" resultMap="memberDTOMap" columnPrefix="m_"/>
+        <association property="studyDTO" resultMap="studyDTOMap" columnPrefix="s_"/>
+    </resultMap>
+
+    <resultMap id="memberDTOMap" type="org.kosta.finalproject.model.domain.MemberDTO">
+        <id property="email" column="email"/>
+        <result property="name" column="name"/>
+        <result property="picture" column="picture"/>
+    </resultMap>
+
+    <resultMap id="studyDTOMap" type="org.kosta.finalproject.model.domain.StudyDTO">
+        <id property="studyNo" column="study_no"/>
+        <result property="studyName" column="study_name"/>
+        <result property="studyDesc" column="study_desc"/>
+        <result property="studyRegdate" column="study_regdate"/>
+        <association property="studyStateDTO" resultMap="studyStateDTOMap" columnPrefix="sst_"/>
+        <association property="categoryTypeDTO" resultMap="categoryTypeDTOMap" columnPrefix="ctt_"/>
+        <association property="categoryLangDTO" resultMap="categoryLangDTOMap" columnPrefix="clt_"/>
+    </resultMap>
+
+    <resultMap id="studyStateDTOMap" type="org.kosta.finalproject.model.domain.StudyStateDTO">
+        <result property="studyState" column="study_state"/>
+    </resultMap>
+
+    <resultMap id="categoryTypeDTOMap" type="org.kosta.finalproject.model.domain.CategoryTypeDTO">
+        <result property="categoryType" column="category_type"/>
+    </resultMap>
+
+    <resultMap id="categoryLangDTOMap" type="org.kosta.finalproject.model.domain.CategoryLangDTO">
+        <result property="categoryLang" column="category_lang"/>
+    </resultMap>
+
+    <select id="getAllStudyInfo" parameterType="int" resultMap="studyMemberDTOMap">
+        select sm.STUDY_MEMBER_ROLE as study_member_role,
+               m.NAME               as m_name,
+               m.EMAIL              as m_email,
+               m.PICTURE            as m_picture,
+               s.STUDY_NO           as s_study_no,
+               s.STUDY_NAME         as s_study_name,
+               s.STUDY_DESC         as s_study_desc,
+               s.STUDY_REGDATE      as s_study_regdate,
+               sst.STUDY_STATE      as s_sst_study_state,
+               ctt.CATEGORY_TYPE    as s_ctt_category_type,
+               clt.CATEGORY_LANG    as s_clt_category_lang
+        from MEMBER m,
+             STUDY_MEMBER sm,
+             STUDY s,
+             STUDY_STATE_TABLE sst,
+             CATEGORY_TYPE_TABLE ctt,
+             CATEGORY_LANG_TABLE clt
+        where m.EMAIL = sm.EMAIL
+          and s.STUDY_NO = sm.STUDY_NO
+          and s.STUDY_STATE_CODE = sst.STUDY_STATE_CODE
+          and s.CATEGORY_LANG_NO = clt.CATEGORY_LANG_NO
+          and s.CATEGORY_TYPE_NO = ctt.CATEGORY_TYPE_NO
+          and s.STUDY_NO = #{value}
+          and sm.STUDY_MEMBER_ROLE = '스터디리더'
+    </select>
+
+    <select id="getStudyNameList" parameterType="Map" resultType="Map">
+        select s.STUDY_NO, s.STUDY_NAME
+        from STUDY s, STUDY_MEMBER sm
+        where s.STUDY_NO = sm.STUDY_NO and
+            sm.EMAIL = #{email} and
+            sm.STUDY_NO not in(#{studyNo})
+    </select>
+
+</mapper>
