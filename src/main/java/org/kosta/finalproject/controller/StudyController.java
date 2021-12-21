@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -122,6 +122,15 @@ public class StudyController {
         studyService.modifyStudy(jsonData);
         model.addAttribute("studyNo", studyNo);
         return 0;
+    }
+
+    @GetMapping("/mystudy")
+    public String mystudy(@LoginUser SessionMember member,Model model){
+        System.out.println("member.getEmail() = " + member.getEmail());
+
+        model.addAttribute("studyList",studyService.getMystudyListByEmail(member.getEmail()));
+
+        return "studylist/mystudy-list";
     }
 
 }

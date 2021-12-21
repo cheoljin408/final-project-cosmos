@@ -29,4 +29,6 @@ public interface StudyMapper {
     void modifyStudy(Map<String, String> studyDTO);
 
     void deleteStudyByStudyNo(int studyNo);
+
+    List<StudyMemberDTO> getMystudyListByEmail(String email);
 }
