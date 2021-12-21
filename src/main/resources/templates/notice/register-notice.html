@@ -2,52 +2,57 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <div th:replace="fragments/html-head.html :: fragment-html-head"></div>
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
 </head>
 <body>
 <div th:replace="fragments/header.html :: fragment-header"></div>
 <div class="container pt-5">
     <div>
-        <!-- 스터디 이름 -->
+        <h4>공지사항 글쓰기</h4><br>
+        <!-- 공지사항 제목 -->
+
         <div>
-            <input type="text" class="form-control" name="studyName" id="studyName" placeholder="스터디 그룹 이름"
+            제목:
+            <input type="text" class="form-control" name="studyName" id="studyName" placeholder="제목"
                    required="required">
         </div>
         <br>
-
-        <!-- 카테고리 -->
-        <div class="form-group">
-            <select class="form-control" name="categoryTypeNo" id="categoryTypeNo" required="required">
-                <option value="" disabled>스터디 유형</option>
-                <option value="1">언어</option>
-                <option value="2">면접</option>
-                <option value="3">알고리즘</option>
-                <option value="4">자격증</option>
-            </select>
-            <br>
-            <select class="form-control" name="categoryLangNo" id="categoryLangNo" required="required">
-                <option value="" disabled>사용 언어</option>
-                <option value="1">자바</option>
-                <option value="2">C</option>
-                <option value="3">파이썬</option>
-                <option value="4">기타</option>
-            </select>
-        </div>
-        <br>
-        <!-- 간단한 소개 -->
+        <!-- 파일 업로드 -->
         <div>
-            <textarea class="form-control" rows="3" name="studyDesc" id="studyDesc" placeholder="스터디에 대한 간단한 소개를 해주세요"
+            <textarea class="form-control" rows="3" name="studyDesc" id="studyDesc" placeholder="파일첨부"
                       required="required"></textarea>
         </div>
         <br>
-        <!-- 스터디 상세 소개 -->
+        <!-- 내용(원본 코드)
         <div>
             <textarea class="form-control" rows="10" name="studyInfo" id="studyInfo" placeholder="스터디 상세 소개"
                       required="required"></textarea>
         </div>
+        -->
+
+        <!-- 텍스트 에디터 추가 -->
+        <form method="post" action="/notice/post">
+            <textarea type="text" id="summernote" name="text"></textarea>
+
+        </form>
         <br>
         <button class="btn btn-info" id="studyRegister">등록</button>
     </div>
+
     <script>
+        $(document).ready(function() {
+            //여기 아래 부분
+            $('#summernote').summernote({
+                height: 300,                  // 에디터 높이
+                minHeight: null,              // 최소 높이
+                maxHeight: null,              // 최대 높이
+                focus: true,                  // 에디터 로딩후 포커스를 맞출지 여부
+                lang: "ko-KR",            // 한글 설정
+                placeholder: '최대 2048자까지 쓸 수 있습니다' //placeholder 설정
+            });
+        });
+
         $(document).ready(function () {
             $("#studyRegister").click(function () {
                 var jsonData = {

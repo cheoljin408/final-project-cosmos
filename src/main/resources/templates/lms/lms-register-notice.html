@@ -1,0 +1,19 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments/html-head.html :: fragment-html-head"></div>
+</head>
+<body style="margin: 0;">
+
+<div th:replace="fragments/lms-header.html :: fragments-lms-header"></div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div th:replace="fragments/lms-sidebar.html :: fragment-lms-sidebar"></div>
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4" style="padding: 20px 100px;">
+            여기에 내용 작성
+        </main>
+    </div>
+</div>
+</body>
+</html>
