@@ -3,8 +3,10 @@ package org.kosta.finalproject;
 import org.junit.jupiter.api.Test;
 import org.kosta.finalproject.model.domain.NoticeDTO;
 import org.kosta.finalproject.model.domain.StudyMemberDTO;
+import org.kosta.finalproject.model.domain.TaskDTO;
 import org.kosta.finalproject.service.NoticeService;
 import org.kosta.finalproject.service.StudyMemberService;
+import org.kosta.finalproject.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,11 +23,13 @@ public class LmsControllerTest {
 
     private final StudyMemberService studyMemberService;
     private final NoticeService noticeService;
+    private final TaskService taskService;
 
     @Autowired
-    public LmsControllerTest(StudyMemberService studyMemberService, NoticeService noticeService) {
+    public LmsControllerTest(StudyMemberService studyMemberService, NoticeService noticeService, TaskService taskService) {
         this.studyMemberService = studyMemberService;
         this.noticeService = noticeService;
+        this.taskService = taskService;
     }
 
     @Test
@@ -70,5 +74,19 @@ public class LmsControllerTest {
 
         // then
         assertThat(listSize).isEqualTo(recentNoticeList.size());
+    }
+
+    @Test
+    void getRecentTaskListTest() {
+        // given
+        int studyNo = 21;
+        int listSize = 3;
+
+        // when
+        List<TaskDTO> recentTaskList = taskService.getRecentTaskList(studyNo);
+        System.out.println("recentTaskList = " + recentTaskList);
+
+        // then
+        assertThat(listSize).isEqualTo(recentTaskList.size());
     }
 }

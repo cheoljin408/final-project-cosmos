@@ -20,7 +20,7 @@
                  from NOTICE n,
                       STUDY_MEMBER sm
                  where n.STUDY_NO = sm.STUDY_NO
-                   and n.STUDY_NO = 21
+                   and n.STUDY_NO = #{value}
                  order by NOTICE_REGDATE desc
              ) v
         where <![CDATA[ROWNUM <= 3]]>

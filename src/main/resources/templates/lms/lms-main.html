@@ -34,16 +34,14 @@
             </div>
             <div class="justify-content-between flex-wrap flex-md-nowrap align-items-center pb-4 pt-3 pb-2 mb-3">
                 <h4 style="margin-bottom: 20px;">과제 게시판</h4>
-                <div th:each="recentNotice: ${recentNoticeList}">
+                <div th:each="recentTask: ${recentTaskList}">
                     <div class="card" style="margin-bottom: 20px;">
                         <div class="card-body">
                             <div>
-                                <h6 th:text="${recentNotice.noticeTitle}">noticeTitle</h6>
+                                <h6 th:text="${recentTask.taskTitle}">taskTitle</h6>
                             </div>
                             <div style="font-size: 0.9rem; color: rgba(0, 0, 0, 0.5);">
-                                <span th:text="${recentNotice.noticeRegdate}" style="margin-right: 10px;">noticeRegdate</span>
-                                <span>조회수</span>
-                                <span th:text="${recentNotice.noticeHits}">noticeHits</span>
+                                <span th:text="${recentTask.taskRegdate}" style="margin-right: 10px;">taskRegdate</span>
                             </div>
                         </div>
                     </div>
