@@ -68,4 +68,9 @@ public class StudyServiceImpl implements StudyService{
         studyMapper.deleteStudyByStudyNo(studyNo);
     }
 
+    @Override
+    public List<StudyMemberDTO> getMystudyListByEmail(String email) {
+        return studyMapper.getMystudyListByEmail(email);
+    }
+
 }
