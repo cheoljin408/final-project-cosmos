@@ -27,4 +27,11 @@ public class NoticeServiceImpl implements NoticeService{
     public Map<String, Object> getNoticeDetailByNoticeNo(int noticeNo) {
         return noticeMapper.getNoticeDetailByNoticeNo(noticeNo);
     }
+
+    @Override
+    public void updateHits(int studyNo, int noticeNo) {
+        noticeMapper.updateHits(studyNo, noticeNo);
+        System.out.println("studyNo = " + studyNo + ", noticeNo = " + noticeNo);
+        System.out.println("NoticeServiceImpl.updateHits");
+    }
 }

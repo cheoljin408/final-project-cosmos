@@ -10,4 +10,6 @@ public interface NoticeService {
     List<NoticeDTO> getAllNoticeList(int studyNo);
 
     Map<String, Object> getNoticeDetailByNoticeNo(int noticeNo);
+
+    void updateHits(int StudyNo, int noticeNo);
 }

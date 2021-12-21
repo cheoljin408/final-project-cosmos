@@ -65,7 +65,8 @@
           and n.notice_no = #{value}
     </select>
 
-    <update id="updateHit">
-        update from
+    <update id="updateHits">
+        update notice set notice_hits = notice_hits + 1
+        where notice_no= #{noticeNo} and study_no = #{studyNo}
     </update>
 </mapper>
