@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.kosta.finalproject.model.mapper.NoticeMapper">
+
+    <resultMap id="noticeDTOMap" type="org.kosta.finalproject.model.domain.NoticeDTO">
+        <id property="noticeNo" column="notice_no"/>
+        <result property="noticeTitle" column="notice_title"/>
+        <result property="noticeContent" column="notice_content"/>
+        <result property="noticeRegdate" column="notice_regdate"/>
+        <result property="noticeHits" column="notice_hits"/>
+        <result property="address" column="address"/>
+    </resultMap>
+
+    <select id="getRecentNoticeList" parameterType="int" resultMap="noticeDTOMap">
+        select v.NOTICE_NO, v.NOTICE_TITLE, v.NOTICE_CONTENT, v.NOTICE_REGDATE, v.NOTICE_HITS, v.ADDRESS
+        from (
+                 select NOTICE_NO, NOTICE_TITLE, NOTICE_CONTENT, NOTICE_REGDATE, NOTICE_HITS, ADDRESS
+                 from NOTICE n,
+                      STUDY_MEMBER sm
+                 where n.STUDY_NO = sm.STUDY_NO
+                   and n.STUDY_NO = 21
+                 order by NOTICE_REGDATE desc
+             ) v
+        where <![CDATA[ROWNUM <= 3]]>
+    </select>
+
+</mapper>

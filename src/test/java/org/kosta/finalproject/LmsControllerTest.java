@@ -1,7 +1,9 @@
 package org.kosta.finalproject;
 
 import org.junit.jupiter.api.Test;
+import org.kosta.finalproject.model.domain.NoticeDTO;
 import org.kosta.finalproject.model.domain.StudyMemberDTO;
+import org.kosta.finalproject.service.NoticeService;
 import org.kosta.finalproject.service.StudyMemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,10 +20,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class LmsControllerTest {
 
     private final StudyMemberService studyMemberService;
+    private final NoticeService noticeService;
 
     @Autowired
-    public LmsControllerTest(StudyMemberService studyMemberService) {
+    public LmsControllerTest(StudyMemberService studyMemberService, NoticeService noticeService) {
         this.studyMemberService = studyMemberService;
+        this.noticeService = noticeService;
     }
 
     @Test
@@ -52,5 +56,19 @@ public class LmsControllerTest {
 
         //then
         assertThat(studyName).isEqualTo(allStudyInfo.getStudyDTO().getStudyName());
+    }
+
+    @Test
+    void getRecentNoticeListTest() {
+        // given
+        int studyNo = 21;
+        int listSize = 2;
+
+        // when
+        List<NoticeDTO> recentNoticeList = noticeService.getRecentNoticeList(studyNo);
+        System.out.println("recentNoticeList = " + recentNoticeList);
+
+        // then
+        assertThat(listSize).isEqualTo(recentNoticeList.size());
     }
 }

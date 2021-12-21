@@ -3,9 +3,9 @@ package org.kosta.finalproject.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.kosta.finalproject.config.auth.LoginUser;
 import org.kosta.finalproject.config.auth.dto.SessionMember;
-import org.kosta.finalproject.model.domain.StudyCommentDTO;
+import org.kosta.finalproject.model.domain.NoticeDTO;
 import org.kosta.finalproject.model.domain.StudyMemberDTO;
-import org.kosta.finalproject.service.StudyCommentService;
+import org.kosta.finalproject.service.NoticeService;
 import org.kosta.finalproject.service.StudyMemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,10 +22,12 @@ import java.util.Map;
 public class testLmsController {
 
     private final StudyMemberService studyMemberService;
+    private final NoticeService noticeService;
 
     @Autowired
-    public testLmsController(StudyMemberService studyMemberService) {
+    public testLmsController(StudyMemberService studyMemberService, NoticeService noticeService) {
         this.studyMemberService = studyMemberService;
+        this.noticeService = noticeService;
     }
 
     @GetMapping("/lms/{studyNo}")
@@ -45,6 +47,11 @@ public class testLmsController {
         StudyMemberDTO allStudyInfo = studyMemberService.getAllStudyInfo(studyNo);
         log.info("allStudyInfo: {}", allStudyInfo);
         model.addAttribute("allStudyInfo", allStudyInfo);
+
+        // 해당 스터디의 공지사항 리스트 가져오기
+        List<NoticeDTO> recentNoticeList = noticeService.getRecentNoticeList(studyNo);
+        log.info("recentNoticeList: {}", recentNoticeList);
+        model.addAttribute("recentNoticeList", recentNoticeList);
 
         return "lms/lms-main";
     }
