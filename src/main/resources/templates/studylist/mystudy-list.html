@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments/html-head.html :: fragment-html-head"></div>
+</head>
+<body>
+<div th:replace="fragments/header.html :: fragment-header"></div>
+<div style="background-color: #1a73e8; position: absolute; display: block; width:100%; height: 400px;">
+    <img src="../../../images/mystudylistpage-left.png" style="float: left; width: 400px">
+    <img src="../../../images/mystudylistpage-right.png" style="float: right; width: 400px">
+</div>
+<div class="container" style=" position: relative;">
+    <div class="d-flex flex-wrap justify-content-center" style="margin-top: 250px;">
+        <div class="card" style="width: 18rem; margin: 20px 20px; display: flex; border-radius : 10px; cursor: pointer;" onclick="location.href='/study/registerStudy'">
+            <div style="text-align: center; margin-top: 25%; color: #1a73e8;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
+                </svg><br>
+                스터디 만들기
+            </div>
+        </div>
+        <div th:each="study: ${studyList}" class="card" style="width: 18rem; border-radius : 10px; margin: 20px 20px; cursor: pointer;"
+             th:onclick="|window.location.href='/study/studyDetail/${study.studyDTO.studyNo}'|">
+            <div class="card-header">
+                <div style="overflow:hidden; text-overflow: ellipsis;">
+                    <div style="display: inline-block; overflow:hidden; text-overflow: ellipsis;">
+                        <h5 th:text="${study.studyDTO.studyName}" class="card-title" style="margin: 0; ">Card title</h5>
+                    </div>
+                    <div style="display: inline-block; float: right;">
+                        <span th:text="${study.studyDTO.studyStateDTO.studyState}"
+                              class="badge badge-pill badge-success">Success</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div style="margin-top: 50px;">
+                    <span th:text="${study.studyMemberRole}" class="badge badge-pill badge-danger">Secondary</span>
+                    <br>
+                    <span th:text="${study.studyDTO.categoryTypeDTO.categoryType}"
+                          class="badge badge-pill badge-secondary">Secondary</span>
+                    <span th:text="${study.studyDTO.categoryLangDTO.categoryLang}"
+                          class="badge badge-pill badge-secondary">Secondary</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
