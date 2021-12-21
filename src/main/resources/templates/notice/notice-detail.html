@@ -77,9 +77,8 @@
         <br><br>
 
         <form method="post" action="/notice/post">
-            <textarea type="text" id="summernote" name="text"></textarea>
+            <textarea type="text" id="summernote" name="text" th:utext="${notice.get('NOTICE_CONTENT')}" th:readonly=""></textarea>
             <!--  th:text="${notice.get('NOTICE_CONTENT')}" -->
-            <button>전송</button>
         </form>
         <script>
             $(document).ready(function() {

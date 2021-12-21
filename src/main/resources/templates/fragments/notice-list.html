@@ -3,7 +3,7 @@
 <div th:fragment="fragment-notice-list" id="noticeListView" class="container" style="margin-top: 100px; width:45%;">
     <h3>공지사항</h3><hr><br>
     <div th:each="notice: ${noticeList}">
-        <a href="/notice/noticeDetail/${notice.noticeNo}" style="color: black; text-decoration:none;">
+        <a th:href="@{/notice/detail/{studyNo}/{noticeNo}(studyNo=${notice.studyDTO.studyNo}, noticeNo = ${notice.noticeNo})}" style="color: black; text-decoration:none;">
             <div class="card" style="margin-top: 30px; padding:20px 20px 10px 10px; border:none;">
                 <div class="card-body">
                     <div>
