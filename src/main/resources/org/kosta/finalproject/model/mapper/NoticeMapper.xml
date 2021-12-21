@@ -45,4 +45,27 @@
         order by notice_no desc
     </select>
 
+    <select id="getNoticeDetailByNoticeNo" resultType="hashMap">
+        select n.notice_no,
+               n.notice_title,
+               n.notice_content,
+               n.notice_regdate,
+               n.notice_hits,
+               n.address,
+               m.email,
+               m.name ,
+               m.picture,
+               s.study_no,
+               s.study_name
+        from member m,
+             study s,
+             notice n
+        where m.email = n.email
+          and s.study_no = n.study_no
+          and n.notice_no = #{value}
+    </select>
+
+    <update id="updateHit">
+        update from
+    </update>
 </mapper>
