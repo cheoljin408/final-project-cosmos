@@ -25,4 +25,10 @@ public class NoticeController {
         return "notice-list";
     }
 
+    //LMS 사이드바 적용 공지사항 등록페이지
+    @GetMapping("/lmsRegisterNotice")
+    public String lmsRegisterNotice() {
+        return "lms/lms-register-notice";
+    }
+
 }
