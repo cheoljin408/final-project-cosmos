@@ -1,5 +1,6 @@
 package org.kosta.finalproject.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.kosta.finalproject.config.auth.LoginUser;
 import org.kosta.finalproject.config.auth.dto.SessionMember;
 import org.kosta.finalproject.model.domain.StudyMemberDTO;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
+@Slf4j
 @Controller
 public class HomeController {
 
@@ -34,6 +36,7 @@ public class HomeController {
         }
 
         List<StudyMemberDTO> studyList = studyService.getStudyList3();
+        log.info("studyList: {}", studyList);
         model.addAttribute("studyList", studyList);
         return "index";
     }
