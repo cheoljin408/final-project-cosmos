@@ -52,17 +52,17 @@
         <tbody>
         <tr>
             <th>작성자</th>
-            <td>아이유</td>
+            <td th:text="${notice.get('NAME')}">작성자</td>
             <th>등록일</th>
-            <td>2021-12-15</td>
+            <td th:text="${notice.get('NOTICE_REGDATE')}">등록일</td>
             <th>조회수</th>
-            <td>32</td>
+            <td th:text="${notice.get('NOTICE_HITS')}">조회수</td>
         </tr>
         <tr>
             <th>스터디번호</th>
-            <td>4</td>
+            <td th:text="${notice.get('STUDY_NO')}">스터디 번호</td>
             <th>스터디 이름</th>
-            <td>지존 스터디</td>
+<!--            <td th:text="${notice.get('STUDY_NAME')}">스터디 이름</td>-->
             <th></th>
             <td></td>
         </tr>
@@ -78,6 +78,7 @@
 
         <form method="post" action="/notice/post">
             <textarea type="text" id="summernote" name="text"></textarea>
+            <!--  th:text="${notice.get('NOTICE_CONTENT')}" -->
             <button>전송</button>
         </form>
         <script>
