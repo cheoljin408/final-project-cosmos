@@ -3,6 +3,7 @@ package org.kosta.finalproject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.kosta.finalproject.model.domain.MemberDTO;
+import org.kosta.finalproject.model.domain.StudyMemberDTO;
 import org.kosta.finalproject.model.mapper.MemberMapper;
 import org.kosta.finalproject.service.StudyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -120,5 +122,15 @@ public class StudyTest {
         //then
         assertThat(studyInfo).isNull();
 
+    }
+
+    @Test
+    void 나의스터디조회(){
+        String email = "moon960427@gmail.com";
+        List<StudyMemberDTO> list = studyService.getMystudyListByEmail(email);
+        System.out.println(list.size());
+        for (StudyMemberDTO studyMemberDTO : list) {
+            System.out.println(studyMemberDTO);
+        }
     }
 }
