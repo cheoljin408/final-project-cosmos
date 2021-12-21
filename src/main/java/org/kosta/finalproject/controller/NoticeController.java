@@ -29,10 +29,9 @@ public class NoticeController {
         model.addAttribute("data", text);
         return "/notice/notice-result";
     }
-
     @GetMapping("/list/{studyNo}")
     public String comment(@PathVariable int studyNo, Model model) {
         model.addAttribute("noticeList", noticeService.getAllNoticeList(studyNo));
-        return "notice-list";
+        return "/notice/notice-list";
     }
 }
