@@ -31,6 +31,18 @@
                         <a class="dropdown-item" href="/logout">로그아웃</a>
                     </div>
                 </div>
+                <div class="dropdown" style="display: inline;">
+                    <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton2"
+                            data-toggle="dropdown" aria-expanded="false">
+                        <span th:text="${allStudyInfo.studyDTO.studyName}" style="font-weight: bold;"></span><span
+                            style="margin-right: 10px;"></span>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                        <div th:each="studyName: ${studyNameList}">
+                            <a th:text="${studyName.STUDY_NAME}" th:href="@{/lms/{studyNo}(studyNo = ${studyName.STUDY_NO})}" class="dropdown-item">studyName</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

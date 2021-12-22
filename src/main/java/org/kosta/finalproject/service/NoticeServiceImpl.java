@@ -39,4 +39,10 @@ public class NoticeServiceImpl implements NoticeService{
     public void deleteNotice(int noticeNo) {
         noticeMapper.deleteNotice(noticeNo);
     }
+
+    @Override
+    public List<NoticeDTO> getRecentNoticeList(int studyNo) {
+        List<NoticeDTO> recentNoticeList = noticeMapper.getRecentNoticeList(studyNo);
+        return recentNoticeList;
+    }
 }

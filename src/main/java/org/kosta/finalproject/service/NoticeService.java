@@ -14,4 +14,6 @@ public interface NoticeService {
     void updateHits(int StudyNo, int noticeNo);
 
     void deleteNotice(int noticeNo);
+
+    List<NoticeDTO> getRecentNoticeList(int studyNo);
 }

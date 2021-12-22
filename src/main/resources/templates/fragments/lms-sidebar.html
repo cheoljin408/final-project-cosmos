@@ -2,21 +2,29 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <div th:fragment="fragment-lms-sidebar"
-     class="sidebar-sticky pt-3 col-md-3 col-lg-2 d-md-block bg-primary sidebar collapse" style="color: white;">
-    <h5 style="padding: 15px; margin-bottom: 40px;">스터디 이름</h5>
+     class="sidebar-sticky pt-3 col-md-3 col-lg-2 d-md-block bg-primary sidebar collapse"
+     style="color: white; font-weight: bold; min-height: 100vh;">
+    <h5 th:text="${allStudyInfo.studyDTO.studyName}" style="padding: 15px 15px 0 15px; margin-bottom: 10px">스터디 이름</h5>
+    <div style="padding: 0 15px; margin-bottom: 30px; font-weight: normal; color: white;">
+        <span th:text="${allStudyInfo.studyDTO.categoryTypeDTO.categoryType}"
+              class="badge badge-pill badge-light">type</span>
+        <span th:text="${allStudyInfo.studyDTO.categoryLangDTO.categoryLang}"
+              class="badge badge-pill badge-light">lang</span>
+    </div>
     <ul class="nav flex-column" style="color: white; margin-bottom: 30px;">
-        <li class="nav-item" style="padding-left:15px;">
+        <li class="nav-item" style="padding-left:15px; margin-bottom: 10px;">
             스터디 리더
         </li>
-        <li class="nav-item" style="padding-left:15px;">
-            <img th:src="${session.member.picture}" class="rounded-circle"
+        <li class="nav-item" style="padding-left:15px; font-weight: bold;">
+            <img th:src="${allStudyInfo.memberDTO.picture}" class="rounded-circle"
                  style="margin-right: 10px; width: 30px; height: 30px;"/>
-            <span th:text="${session.member.name}">name</span>
+            <span th:text="${allStudyInfo.memberDTO.name}">name</span>
         </li>
     </ul>
     <ul class="nav flex-column">
         <li class="nav-item">
-            <a class="nav-link active" href="#" style="color: white;">
+            <a class="nav-link active" th:onclick="|window.location.href='/lms/${studyNo}'|"
+               style="color: white; font-weight: bold; cursor:pointer;">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                      class="feather feather-home" style="margin-right: 10px;">
@@ -27,7 +35,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#" style="color: white;">
+            <a class="nav-link" href="#" style="color: white; font-weight: bold;">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                      class="feather feather-file" style="margin-right: 10px;">
@@ -38,7 +46,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#" style="color: white;">
+            <a class="nav-link" href="#" style="color: white; font-weight: bold;">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                      class="feather feather-file-text" style="margin-right: 10px;">
@@ -52,76 +60,53 @@
             </a>
         </li>
     </ul>
+    <ul class="nav flex-column">
+        <li class="nav-item">
+            <a class="nav-link" href="" style="color: white; font-weight: bold;">
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="" style="color: white; font-weight: bold;">
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="" style="color: white; font-weight: bold;">
+            </a>
+        </li>
 
-    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-        <span style="color: white;">Saved reports</span>
-        <a class="d-flex align-items-center text-muted" href="#" aria-label="Add a new report" style="color: white;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                 class="feather feather-plus-circle">
-                <circle cx="12" cy="12" r="10"></circle>
-                <line x1="12" y1="8" x2="12" y2="16"></line>
-                <line x1="8" y1="12" x2="16" y2="12"></line>
-            </svg>
-        </a>
-    </h6>
-
-    <ul class="nav flex-column mb-2">
-        <li class="nav-item">
-            <a class="nav-link" href="#">
+        <!--<li class="nav-item">
+            <a class="nav-link" href="" style="color: white; font-weight: bold;">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                     class="feather feather-file-text">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                    <polyline points="14 2 14 8 20 8"></polyline>
-                    <line x1="16" y1="13" x2="8" y2="13"></line>
-                    <line x1="16" y1="17" x2="8" y2="17"></line>
-                    <polyline points="10 9 9 9 8 9"></polyline>
+                     class="feather feather-file-text" style="margin-right: 5px;">
+                    <path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z"/>
                 </svg>
-                Current month
+                스터디 설정
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                     class="feather feather-file-text">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                    <polyline points="14 2 14 8 20 8"></polyline>
-                    <line x1="16" y1="13" x2="8" y2="13"></line>
-                    <line x1="16" y1="17" x2="8" y2="17"></line>
-                    <polyline points="10 9 9 9 8 9"></polyline>
-                </svg>
-                Last quarter
-            </a>
+            <a style="color: white; font-weight: bold; padding-left: 45px;">스터디 수정</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                     class="feather feather-file-text">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                    <polyline points="14 2 14 8 20 8"></polyline>
-                    <line x1="16" y1="13" x2="8" y2="13"></line>
-                    <line x1="16" y1="17" x2="8" y2="17"></line>
-                    <polyline points="10 9 9 9 8 9"></polyline>
-                </svg>
-                Social engagement
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                     class="feather feather-file-text">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                    <polyline points="14 2 14 8 20 8"></polyline>
-                    <line x1="16" y1="13" x2="8" y2="13"></line>
-                    <line x1="16" y1="17" x2="8" y2="17"></line>
-                    <polyline points="10 9 9 9 8 9"></polyline>
-                </svg>
-                Year-end sale
-            </a>
-        </li>
+            <a style="color: white; font-weight: bold; padding-left: 45px;">스터디 삭제</a>
+        </li>-->
     </ul>
+
+    <div class="dropdown">
+        <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton3"
+                data-toggle="dropdown" aria-expanded="false" style="padding: 0;">
+            <a class="nav-link" href="" style="color: white; font-weight: bold;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                     class="feather feather-file-text" style="margin-right: 5px;">
+                    <path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z"/>
+                </svg>
+                스터디 설정
+            </a>
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
+            <a class="dropdown-item" href="#">스터디 수정</a>
+            <a class="dropdown-item" href="#">스터디 삭제</a>
+        </div>
+    </div>
 </div>

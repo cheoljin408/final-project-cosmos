@@ -33,7 +33,7 @@ public class NoticeTest {
         for (NoticeDTO noticeDTO : noticeList) {
             System.out.println("noticeDTO = " + noticeDTO);
         }
-        assertThat(noticeList.get(0).getMemberDTO().getEmail()).isEqualTo(email);
+        assertThat(noticeList.get(0).getStudyMemberDTO().getMemberDTO().getEmail()).isEqualTo(email);
         assertThat(noticeList.get(0).getNoticeTitle()).isEqualTo("공지사항 제목3");
     }
 

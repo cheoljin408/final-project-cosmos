@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.kosta.finalproject.model.mapper.TaskMapper">
+
+    <resultMap id="taskDTOMap" type="org.kosta.finalproject.model.domain.TaskDTO">
+        <id property="taskNo" column="task_no"/>
+        <result property="taskTitle" column="task_title"/>
+        <result property="taskContent" column="task_content"/>
+        <result property="taskRegdate" column="task_regdate"/>
+    </resultMap>
+
+    <select id="getRecentTaskList" parameterType="int" resultMap="taskDTOMap">
+        select v.TASK_NO, v.TASK_TITLE, v.TASK_CONTENT, v.TASK_REGDATE
+        from (
+                 select TASK_NO, TASK_TITLE, TASK_CONTENT, TASK_REGDATE
+                 from TASK t,
+                      STUDY_MEMBER sm
+                 where t.STUDY_NO = sm.STUDY_NO
+                   and t.STUDY_NO = #{value}
+                 order by TASK_REGDATE desc
+             ) v
+        where <![CDATA[ROWNUM <= 3]]>
+    </select>
+
+</mapper>

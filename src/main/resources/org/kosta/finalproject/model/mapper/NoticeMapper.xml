@@ -3,6 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.kosta.finalproject.model.mapper.NoticeMapper">
+
     <!-- resultMap -->
     <resultMap id="noticeDTOMap" type="org.kosta.finalproject.model.domain.NoticeDTO">
         <id property="noticeNo" column="notice_no"/>
@@ -10,6 +11,10 @@
         <result property="noticeContent" column="notice_content"/>
         <result property="noticeRegdate" column="notice_regdate"/>
         <result property="noticeHits" column="notice_hits"/>
+        <association property="studyMemberDTO" resultMap="studyMemberDTOMap" columnPrefix="sm_"/>
+    </resultMap>
+
+    <resultMap id="studyMemberDTOMap" type="org.kosta.finalproject.model.domain.StudyMemberDTO">
         <association property="memberDTO" resultMap="memberDTOMap" columnPrefix="m_"/>
         <association property="studyDTO" resultMap="studyDTOMap" columnPrefix="s_"/>
     </resultMap>
@@ -21,27 +26,29 @@
     </resultMap>
 
     <resultMap id="studyDTOMap" type="org.kosta.finalproject.model.domain.StudyDTO">
-        <result property="studyNo" column="study_no"/>
+        <id property="studyNo" column="study_no"/>
     </resultMap>
 
     <!-- 공지 리스트 조회 -->
     <select id="getAllNoticeList" parameterType="int" resultMap="noticeDTOMap">
         select n.notice_no,
-            n.notice_title,
-            n.notice_content,
-            n.notice_regdate,
-            n.notice_hits,
-            n.address,
-            m.email    as m_email,
-            m.name     as m_name,
-            m.picture  as m_picture,
-            s.study_no as s_study_no
-        from member m,
-            study s,
-            notice n
-        where m.email = n.email
-            and s.study_no = n.study_no
-            and s.study_no = #{value}
+               n.notice_title,
+               n.notice_content,
+               n.notice_regdate,
+               n.notice_hits,
+               n.address,
+               sm.email    as sm_m_email,
+               m.name     as sm_m_name,
+               m.picture  as sm_m_picture,
+               s.study_no as sm_s_study_no
+        from notice n,
+             study_member sm,
+             study s,
+             member m
+        where sm.email = m.email
+          and sm.study_no = n.study_no
+          and sm.study_no = s.study_no
+          and n.study_no = #{value}
         order by notice_no desc
     </select>
 
@@ -83,5 +90,18 @@
     <delete id="deleteNotice" parameterType="int">
         delete from notice where notice_no = #{value}
     </delete>
+
+    <select id="getRecentNoticeList" parameterType="int" resultMap="noticeDTOMap">
+        select v.NOTICE_NO, v.NOTICE_TITLE, v.NOTICE_CONTENT, v.NOTICE_REGDATE, v.NOTICE_HITS, v.ADDRESS
+        from (
+                 select NOTICE_NO, NOTICE_TITLE, NOTICE_CONTENT, NOTICE_REGDATE, NOTICE_HITS, ADDRESS
+                 from NOTICE n,
+                      STUDY_MEMBER sm
+                 where n.STUDY_NO = sm.STUDY_NO
+                   and n.STUDY_NO = #{value}
+                 order by NOTICE_REGDATE desc
+             ) v
+        where <![CDATA[ROWNUM <= 3]]>
+    </select>
 
 </mapper>

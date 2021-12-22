@@ -17,4 +17,7 @@ public interface NoticeMapper {
     void updateHits(@Param("studyNo") int studyNo, @Param("noticeNo") int noticeNo);
 
     void deleteNotice(int noticeNo);
+
+    List<NoticeDTO> getRecentNoticeList(int studyNo);
+
 }
