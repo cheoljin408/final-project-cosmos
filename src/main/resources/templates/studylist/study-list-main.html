@@ -3,27 +3,95 @@
 <head>
     <div th:replace="fragments/html-head.html :: fragment-html-head"></div>
 </head>
-<body>
+<body style="margin: 0; overflow-x:hidden; background-color: #f7fafc">
 <div th:replace="fragments/header.html :: fragment-header"></div>
-<div class="container pt-3">
-    <br>
-    <button class="bb btn btn-outline-dark" value="자바">자바</button> &nbsp; &nbsp;
-    <button class="bb btn btn-outline-dark" value="C">C</button> &nbsp; &nbsp;
-    <button class="bb btn btn-outline-dark" value="파이썬">파이썬</button> &nbsp; &nbsp;
-    <button class="bb btn btn-outline-dark" value="기타">기타</button> &nbsp; &nbsp;
-    <button class="bb btn btn-outline-dark" value="언어">언어</button> &nbsp; &nbsp;
-    <button class="bb btn btn-outline-dark" value="자격증">기타</button> &nbsp; &nbsp;
-    <button class="bb btn btn-outline-dark" value="면접">면접</button> &nbsp; &nbsp;
-    <button class="bb btn btn-outline-dark" value="알고리즘">알고리즘</button> &nbsp; &nbsp;
-    <br><br>
-    <div class="input-group mb-3">
-        <input type="text" id="searchWord" class="form-control" placeholder="검색어를 입력하세요">
-        <div class="input-group-append">
-            <button class="getStudyListByStudyNameAndDescBtn btn btn-primary" type="button">검색</button>
+<div class="container">
+    <div class = "pt-5">
+        <h4 class="mb-2">🔎 원하는 스터디 그룹을 찾아보세요!</h4>
+        <br>
+        <div class="card mb-2 shadow" style="border-radius: 10px;">
+            <div class="card-body p-2 mt-1">
+                <div class="row mb-2">
+                    <div class="col-2 text-center">
+                        <label class="col-form-label">
+                            <h5 class="mb-0">카테고리</h5>
+                        </label>
+                    </div>
+                    <div class="col-10">
+                        <button class="bb btn btn-outline-dark" value="언어" style="border-radius: 20px">언어</button>
+                        &nbsp; &nbsp;
+                        <button class="bb btn btn-outline-dark" value="프로젝트" style="border-radius: 20px">프로젝트</button>
+                        &nbsp; &nbsp;
+                        <button class="bb btn btn-outline-dark" value="면접" style="border-radius: 20px">면접</button>
+                        &nbsp; &nbsp;
+                        <button class="bb btn btn-outline-dark" value="알고리즘" style="border-radius: 20px">알고리즘</button>
+                        &nbsp; &nbsp;
+                        <button class="bb btn btn-outline-dark" value="자바" style="border-radius: 20px">프론트엔드</button>
+                        &nbsp; &nbsp;
+                        <button class="bb btn btn-outline-dark" value="C" style="border-radius: 20px">백엔드</button>
+                        &nbsp; &nbsp;
+                        <button class="bb btn btn-outline-dark" value="파이썬" style="border-radius: 20px">웹</button>
+                        &nbsp; &nbsp;
+                        <button class="bb btn btn-outline-dark" value="기타" style="border-radius: 20px">앱</button> &nbsp;
+                        &nbsp;
+                        <button class="bb btn btn-outline-dark" value="파이썬" style="border-radius: 20px">CS</button>
+                        &nbsp; &nbsp;
+                        <button class="bb btn btn-outline-dark" value="기타" style="border-radius: 20px">기타</button>
+                        &nbsp; &nbsp;
+                    </div>
+                    <br><br>
+                    <div class="col-2 text-center">
+                        <label class="col-form-label">
+                            <h5 class="mb-0">언어</h5>
+                        </label>
+                    </div>
+                    <div class="col-10">
+                        <button class="bb btn btn-outline-dark" value="Java" style="border-radius: 20px">Java</button>
+                        &nbsp; &nbsp;
+                        <button class="bb btn btn-outline-dark" value="Python" style="border-radius: 20px">Python
+                        </button> &nbsp; &nbsp;
+                        <button class="bb btn btn-outline-dark" value="C" style="border-radius: 20px">C</button> &nbsp;
+                        &nbsp;
+                        <button class="bb btn btn-outline-dark" value="C++" style="border-radius: 20px">C++</button>
+                        &nbsp; &nbsp;
+                        <button class="bb btn btn-outline-dark" value="Swift" style="border-radius: 20px">Swift</button>
+                        &nbsp; &nbsp;
+                        <button class="bb btn btn-outline-dark" value="JavaScript" style="border-radius: 20px">
+                            JavaScript
+                        </button> &nbsp; &nbsp;
+                        <button class="bb btn btn-outline-dark" value="Ruby" style="border-radius: 20px">Ruby</button>
+                        &nbsp; &nbsp;
+                        <button class="bb btn btn-outline-dark" value="HTML" style="border-radius: 20px">HTML</button>
+                        &nbsp; &nbsp;
+                        <button class="bb btn btn-outline-dark" value="Go" style="border-radius: 20px">Go</button>
+                        &nbsp; &nbsp;
+                        <button class="bb btn btn-outline-dark" value="React" style="border-radius: 20px">React</button>
+                        &nbsp; &nbsp;
+                        <button class="bb btn btn-outline-dark" value="Go" style="border-radius: 20px">Go</button>
+                        &nbsp; &nbsp;
+                    </div>
+                    <br><br><br>
+                    <div class="col-2 text-center">
+                        <label class="col-form-label">
+                            <h5 class="mb-0">검색어</h5>
+                        </label>
+                    </div>
+                    <div class="input-group col-10">
+                        <div class="col-8 offset-1">
+                            <input type="text" id="searchWord" class="form-control" placeholder="검색어를 입력하세요"
+                                   style="border-radius: 15px">
+                        </div>
+                        <div class="input-group-append">
+                            <button class="getStudyListByStudyNameAndDescBtn btn btn-primary"
+                                    style="border-radius: 15px" type="button">검색
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-
     <br><br><br>
+    </div>
     <div id="cardList">
         <div th:replace="fragments/getallstudylist.html :: fragment-getallstudylist" id="getallstudylist"></div>
     </div>
@@ -43,7 +111,7 @@
                 $("#getallstudylist").replaceWith(fragment);
             }).fail(function (error) {
                 alert(error.message());
-            }); 
+            });
         });	// click
 
         $(".getStudyListByStudyNameAndDescBtn").click(function () {
@@ -52,9 +120,9 @@
                 type: "get",
                 url: "/api/studyListSearchByStudyNameAndDesc",
                 data: "searchWord=" + searchWord
-            }).done(function(fragment){
+            }).done(function (fragment) {
                 $("#getallstudylist").replaceWith(fragment);
-            }).fail(function(error){
+            }).fail(function (error) {
                 alert(error.message());
             });
         });//click getStudyListByStudyNameAndDescBtn
