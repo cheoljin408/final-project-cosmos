@@ -179,7 +179,7 @@
                s.STUDY_NAME,
                s.STUDY_DESC,
                DBMS_LOB.SUBSTR(s.STUDY_INFO, DBMS_LOB.GETLENGTH(s.STUDY_INFO)) AS STUDY_INFO,
-               to_char(s.STUDY_REGDATE, 'YYYY-MM-DD')                          AS STUDY_REGDATE,
+               to_char(s.STUDY_REGDATE, 'YYYY-MM-DD HH24:MI:SS')            AS STUDY_REGDATE,
                sst.STUDY_STATE,
                ctt.category_type,
                ctt.category_type_no,
