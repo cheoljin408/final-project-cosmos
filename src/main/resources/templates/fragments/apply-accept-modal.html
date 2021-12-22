@@ -1,8 +1,8 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
        <!-- 모달창 : 참여 신청에 대한 참가 및 수락 기능 (신청자의 정보, 자기소개서, 등등 정보를 확인) -->
-        <div th:fragment="fragment-apply-modal" class="modal" id="myModal">
-            <div class="modal-dialog">
+        <div th:fragment="fragment-apply-modal" class="modal fade" id="myModal">
+            <div class="modal-dialog" style="border-radius: 30px;">
                 <div class="modal-content">
                     <!-- Modal Header -->
                     <div class="modal-header">
@@ -23,7 +23,6 @@
                             <input type="text" class="form-control" id="applicant_name" value="" readonly>
                         </div>
                         <br>
-
                         <div>   <!-- 신청자 자기소개서 -->
                             <label><b>자기소개서</b></label>
                             <textarea type="text" class="form-control" id="applicant_info" rows="5" readonly value=""></textarea>
@@ -50,13 +49,13 @@
                     /* 동적으로 생성되는 알림 div에 대한 Modal창 정보 로드 */
                     $(".testBtn").click(function(){
                         console.log("testBtn click ok");
-                        $("#studyName").val($(this).find(".study_name").text())
+                        $("#studyName").val($(this).find(".study_name").text());
                         $("#applicant_name").val($(this).find(".study_applicant_name").text());
                         $("#applicant_info").val($(this).find(".study_applicant_content").val());
                         $("#study_no_modal").val($(this).find(".study_no").val());
                         $("#apply_no_modal").val($(this).find(".apply_no").val());
                         $("#applicant_email").val($(this).find(".applicant_email").val());
-                    });``
+                    });
 
                     /* 수락 버튼 클릭시 이벤트 등록 */
                     $("#apply_accept").click(function(){
