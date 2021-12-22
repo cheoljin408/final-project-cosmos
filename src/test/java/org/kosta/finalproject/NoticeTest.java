@@ -39,7 +39,7 @@ public class NoticeTest {
 
     @Test
     @DisplayName("공지사항 1개 조회")
-    void 공지사항조회(){
+    void 공지사항조회() {
 
         //when
         Map<String, Object> notice1 = noticeService.getNoticeDetailByNoticeNo(1);

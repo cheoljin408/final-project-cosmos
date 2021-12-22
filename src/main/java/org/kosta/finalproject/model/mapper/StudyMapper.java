@@ -1,7 +1,6 @@
 package org.kosta.finalproject.model.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.kosta.finalproject.model.domain.StudyDTO;
 import org.kosta.finalproject.model.domain.StudyMemberDTO;
 
 import java.util.List;

@@ -1,8 +1,6 @@
 package org.kosta.finalproject.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.kosta.finalproject.config.auth.LoginUser;
-import org.kosta.finalproject.config.auth.dto.SessionMember;
 import org.kosta.finalproject.model.domain.StudyCommentDTO;
 import org.kosta.finalproject.service.StudyCommentService;
 import org.springframework.beans.factory.annotation.Autowired;

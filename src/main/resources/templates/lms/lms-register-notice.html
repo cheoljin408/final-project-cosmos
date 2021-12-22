@@ -16,28 +16,44 @@
             <div class="container pt-5">
                 <div>
                     <h4>공지사항 글쓰기</h4><br>
-                    <!-- 공지사항 제목 -->
-                    <div>
-                        <input type="text" class="form-control" name="studyName" id="studyName" placeholder="제목"
-                               required="required">
-                    </div>
-                    <br>
-                    <!-- 파일 업로드 -->
-                    <div>
-                        <textarea class="form-control" rows="3" name="studyDesc" id="studyDesc" placeholder="파일첨부"
-                                  required="required"></textarea>
+                    <form th:action method="post" enctype="multipart/form-data">
+                        <!-- 공지사항 제목 -->
+                        <div>
+                            <input type="text" class="form-control" name="noticeTitle" placeholder="제목"
+                                   required="required">
+                        </div>
                         <br>
-                        <button class="btn btn-info" id="fileUploadNotice">파일첨부</button>
-                    </div>
-                    <br>
-
-                    <!-- 텍스트 에디터 추가 -->
-                    <form method="post" action="/notice/post">
-                        <textarea type="text" id="summernote" name="text"></textarea>
-
+                        <!-- 파일 업로드 -->
+                        <ul>
+                            <li>첨부파일<input type="file" multiple="multiple" name="attachFiles"></li>
+                            <li>이미지 파일들<input type="file" multiple="multiple" name="imageFiles"></li>
+                        </ul>
+                        <!--<div class="input-group mb-3">
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" multiple="multiple" name="attachFiles" id="inputGroupFile01">
+                                <label class="custom-file-label" for="inputGroupFile01"
+                                       aria-describedby="inputGroupFileAddon01">파일 선택</label>
+                            </div>
+                            <div class="input-group-append">
+                                <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+                            </div>
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" multiple="multiple" name="imageFiles" id="inputGroupFile02">
+                                <label class="custom-file-label" for="inputGroupFile02"
+                                       aria-describedby="inputGroupFileAddon01">이미지 선택</label>
+                            </div>
+                            <div class="input-group-append">
+                                <span class="input-group-text" id="inputGroupFileAddon02">Upload</span>
+                            </div>
+                        </div>-->
+                        <br>
+                        <!-- 텍스트 에디터 추가 -->
+                        <textarea type="text" id="summernote" name="noticeContent"></textarea>
+                        <br>
+                        <button class="btn btn-info" id="noticeRegister">등록</button>
                     </form>
-                    <br>
-                    <button class="btn btn-info" id="noticeRegister">등록</button>
                 </div>
 
                 <script>
@@ -49,33 +65,25 @@
                             maxHeight: null,              // 최대 높이
                             focus: true,                  // 에디터 로딩후 포커스를 맞출지 여부
                             lang: "ko-KR",            // 한글 설정
-                            placeholder: '최대 2048자까지 쓸 수 있습니다' //placeholder 설정
+                            placeholder: '최대 2048자까지 쓸 수 있습니다' //, //placeholder 설정
+                            <!--callbacks: {	//여기 부분이 이미지를 첨부하는 부분
+                                onImageUpload : function(files) {
+                                    uploadSummernoteImageFile(files[0],this);
+                                },
+                                onPaste: function (e) {
+                                    var clipboardData = e.originalEvent.clipboardData;
+                                    if (clipboardData && clipboardData.items && clipboardData.items.length) {
+                                        var item = clipboardData.items[0];
+                                        if (item.kind === 'file' && item.type.indexOf('image/') !== -1) {
+                                            e.preventDefault();
+							}-->
+						}
+					}
+				}
                         });
                     });
 
-                    /* 등록버튼 ajax(study register)
-                    $(document).ready(function () {
-                        $("#studyRegister").click(function () {
-                            var jsonData = {
-                                studyName: $("#studyName").val(),
-                                categoryTypeNo: $("#categoryTypeNo").val(),
-                                categoryLangNo: $("#categoryLangNo").val(),
-                                studyDesc: $("#studyDesc").val(),
-                                studyInfo: $("#studyInfo").val()
-                            };
-                            $.ajax({
-                                type: "post",
-                                url: "registerStudy",
-                                dataType: "json",
-                                data: JSON.stringify(jsonData),
-                                contentType: "application/json; charset=utf-8",
-                                success: function () {
-                                    location.replace("/");
-                                }
-                            });
-                        });
-                    });
-                    */
+
                 </script>
             </div>
         </main>

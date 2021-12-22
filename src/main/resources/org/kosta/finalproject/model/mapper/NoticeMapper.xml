@@ -104,4 +104,27 @@
         where <![CDATA[ROWNUM <= 3]]>
     </select>
 
+    <!-- 공지사항 작성 -->
+    <insert id="registerNotice">
+        insert into NOTICE(NOTICE_NO, NOTICE_TITLE, NOTICE_CONTENT, NOTICE_REGDATE, EMAIL, STUDY_NO)
+        values (NOTICE_SEQ.nextval,#{noticeTitle},#{noticeContent},sysdate,#{email}, #{studyNo})
+    </insert>
+
+    <!-- 공지사항 번호 조회 -->
+    <select id="getNoticeNoWhenRegister" resultType="int">
+        select notice_seq.currval from dual
+    </select>
+
+    <!-- 파일 업로드 -->
+    <insert id="registerAttachFile">
+        INSERT INTO NOTICE_FILE
+        VALUES (NOTICE_FILE_SEQ.nextval, #{attachFile.uploadFileName}, #{attachFile.storeFileName}, #{type}, NOTICE_SEQ.CURRVAL)
+    </insert>
+
+    <!-- 이미지 업로드 -->
+    <insert id="registerStoreImage">
+        INSERT INTO NOTICE_FILE
+        VALUES (NOTICE_FILE_SEQ.nextval, #{storeImage.uploadFileName}, #{storeImage.storeFileName}, #{type}, NOTICE_SEQ.CURRVAL)
+    </insert>
+
 </mapper>
