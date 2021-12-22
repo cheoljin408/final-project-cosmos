@@ -36,4 +36,18 @@ public class NoticeTest {
         assertThat(noticeList.get(0).getNoticeTitle()).isEqualTo("공지사항 제목3");
     }
 
+    @Test
+    @DisplayName("공지사항 작성(파일 업로드)")
+    void 공지사항작성() {
+        //given
+        int studyNo = 108;
+        String email = "nogy21@gmail.com";
+
+        // noticeService.registerNotice(studyNo, email, );
+
+        //when
+
+        //then
+    }
+
 }
