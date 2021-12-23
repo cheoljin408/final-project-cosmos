@@ -81,11 +81,12 @@
             select  STUDY_NO
             from    STUDY_MEMBER
             where   EMAIL = #{value}
-              and   STUDY_MEMBER_ROLE = '스터디리더')
+            and   STUDY_MEMBER_ROLE = '스터디리더')
           and   a.STUDY_NO = s.STUDY_NO
           and   s.STUDY_NO = sm.STUDY_NO
           and   a.EMAIL = m.EMAIL
           and   a.APPLY_STATE_CODE = ast.APPLY_STATE_CODE
+          and   sm.STUDY_MEMBER_ROLE = '스터디리더'
         order by a.APPLY_NO desc
     </select>
 

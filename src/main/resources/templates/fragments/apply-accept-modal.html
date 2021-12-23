@@ -1,12 +1,12 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
        <!-- 모달창 : 참여 신청에 대한 참가 및 수락 기능 (신청자의 정보, 자기소개서, 등등 정보를 확인) -->
-        <div th:fragment="fragment-apply-modal" class="modal" id="myModal">
+        <div th:fragment="fragment-apply-modal" class="modal fade" id="myModal">
             <div class="modal-dialog">
-                <div class="modal-content">
+                <div class="modal-content" style="border-radius: 15px;">
                     <!-- Modal Header -->
                     <div class="modal-header">
-                        <h4 class="modal-title">스터디 참가신청</h4>
+                        <h4 class="modal-title">🙋‍♂️ 스터디 참가신청</h4>
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
 
@@ -23,7 +23,6 @@
                             <input type="text" class="form-control" id="applicant_name" value="" readonly>
                         </div>
                         <br>
-
                         <div>   <!-- 신청자 자기소개서 -->
                             <label><b>자기소개서</b></label>
                             <textarea type="text" class="form-control" id="applicant_info" rows="5" readonly value=""></textarea>
@@ -50,18 +49,20 @@
                     /* 동적으로 생성되는 알림 div에 대한 Modal창 정보 로드 */
                     $(".testBtn").click(function(){
                         console.log("testBtn click ok");
-                        $("#studyName").val($(this).find(".study_name").text())
+                        $("#studyName").val($(this).find(".study_name").text());
                         $("#applicant_name").val($(this).find(".study_applicant_name").text());
                         $("#applicant_info").val($(this).find(".study_applicant_content").val());
                         $("#study_no_modal").val($(this).find(".study_no").val());
                         $("#apply_no_modal").val($(this).find(".apply_no").val());
                         $("#applicant_email").val($(this).find(".applicant_email").val());
-                    });``
+                    });
 
                     /* 수락 버튼 클릭시 이벤트 등록 */
                     $("#apply_accept").click(function(){
                         console.log("신청 수락 버튼 클릭");
-                        alert("'"+$("#applicant_name").val()+"' 님의 '"+$("#studyName").val()+"' 스터디 참가신청을 수락하시겠습니까?");
+                        if(!confirm("'"+$("#applicant_name").val()+"' 님의 '"+$("#studyName").val()+"' 스터디 참가신청을 수락하시겠습니까?")){
+                            return;
+                        }
                        var param = {
                             email: $("#applicant_email").val(),
                             study_no : $("#study_no_modal").val(),
@@ -70,11 +71,11 @@
                         $.ajax({
                             type: "post",
                             url: "/apply/accept",
-                            dataType: "json",
                             data: JSON.stringify(param),
                             contentType: "application/json; charset=utf-8",
                             success: function () {
                                 alert("참가 신청을 수락하였습니다.");
+                                location.href = "/requestedApply";
                             }
                         });
                     });
@@ -82,7 +83,9 @@
                     /* 거절 버튼 클릭시 이벤트 등록 */
                     $("#apply_refuse").click(function(){
                         console.log("신청 거절 버튼 클릭");
-                        alert("'"+$("#applicant_name").val()+"' 님의 '"+$("#studyName").val()+"' 스터디 참가신청을 거절하시겠습니까?");
+                        if(!confirm("'"+$("#applicant_name").val()+"' 님의 '"+$("#studyName").val()+"' 스터디 참가신청을 거절하시겠습니까?")){
+                            return;
+                        }
                         var apply_no = $("#apply_no_modal").val();
                         $.ajax({
                             type: "post",
@@ -90,6 +93,7 @@
                             data: "applyNo=" + apply_no,
                             success: function () {
                                 alert("참가 신청을 거절하였습니다.");
+                                location.href = "/requestedApply";
                             }
                         });
                     });
