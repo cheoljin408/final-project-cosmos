@@ -6,7 +6,7 @@
 <body style="margin: 0; overflow-x:hidden; background-color: #f7fafc">
 <div th:replace="fragments/header.html :: fragment-header"></div>
 <div class="container">
-    <div class = "pt-5">
+    <div class="pt-5">
         <h4 class="mb-2">🔎 원하는 스터디 그룹을 찾아보세요!</h4>
         <br>
         <div class="card mb-2 shadow-sm" style="border-radius: 10px;">
@@ -90,11 +90,64 @@
                 </div>
             </div>
         </div>
-    <br><br><br>
+        <br><br><br>
     </div>
     <div id="cardList">
         <div th:replace="fragments/getallstudylist.html :: fragment-getallstudylist" id="getallstudylist"></div>
     </div>
+
+
+    <!--
+    <ul class="pagination justify-content-center" style="margin: 20px 0">
+        <c:if test="${pagingBean.previousPageGroup}">
+            <li class="page-item"><a class="page-link"
+                                     href="ListPageController.do?pageNo=${pagingBean.startPageOfPageGroup-1}&languageCode=${requestScope.languageCode}">Previous</a></li>
+        </c:if>
+        <c:forEach begin="${pagingBean.startPageOfPageGroup}"
+                   end="${pagingBean.endPageOfPageGroup}" var="page">
+            <c:choose>
+                <c:when test="${page == pagingBean.nowPage}">
+                    <li class="page-item active"><a class="page-link"
+                                                    href="ListPageController.do?pageNo=${page}&languageCode=${requestScope.languageCode}">${page}</a></li>
+                </c:when>
+                <c:otherwise>
+                    <li class="page-item"><a class="page-link"
+                                             href="ListPageController.do?pageNo=${page}&languageCode=${requestScope.languageCode}">${page}</a></li>
+                </c:otherwise>
+            </c:choose>
+        </c:forEach>
+        <c:if test="${pagingBean.nextPageGroup}">
+            <li class="page-item"><a class="page-link"
+                                     href="ListPageController.do?pageNo=${pagingBean.endPageOfPageGroup+1}&languageCode=${requestScope.languageCode}">Next</a></li>
+        </c:if>
+    </ul>
+    -->
+    <ul class="pagination justify-content-center" style="margin: 20px 0">
+        <li th:if="${pagingBean.previousPageGroup}" class="page-item">
+            <a class="page-link"
+               th:href="@{/study/list?pageNo={pageNo}(pageNo = ${pagingBean.startPageOfPageGroup-1})}">이전</a>
+        </li>
+        <div th:each="page: ${#numbers.sequence(pagingBean.getStartPageOfPageGroup(), pagingBean.getEndPageOfPageGroup())}">
+            <div th:if="${page == pagingBean.getNowPage()}">
+                <li class="page-item active">
+                    <a th:text="${page}" class="page-link"
+                       th:href="@{/study/list?pageNo={pageNo}(pageNo = ${page})}">page</a>
+                </li>
+            </div>
+            <div th:unless="${page == pagingBean.getNowPage()}">
+                <li class="page-item">
+                    <a th:text="${page}" class="page-link"
+                       th:href="@{/study/list?pageNo={pageNo}(pageNo = ${page})}">page</a>
+                </li>
+            </div>
+        </div>
+        <li th:if="${pagingBean.nextPageGroup}" class="page-item">
+            <a class="page-link"
+               th:href="@{/study/list?pageNo={pageNo}(pageNo = ${pagingBean.endPageOfPageGroup+1})}">다음</a>
+        </li>
+    </ul>
+
+
 </div>
 <div th:replace="fragments/footer.html :: fragment-footer"></div>
 <script type="text/javascript">
@@ -116,6 +169,10 @@
 
         $(".getStudyListByStudyNameAndDescBtn").click(function () {
             let searchWord = $("#searchWord").val();
+            if(searchWord === "") {
+                alert("검색어를 입력해주세요");
+                return;
+            }
             $.ajax({
                 type: "get",
                 url: "/api/studyListSearchByStudyNameAndDesc",
