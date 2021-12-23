@@ -5,10 +5,15 @@
 </head>
 <body>
 <div th:replace="fragments/header.html :: fragment-header"></div>
-<div class="container pt-5">
+<div class="container pt-5" style="padding: 0 150px;">
     <div>
+        <div style="padding: 30px 0 20px 0;">
+            <h3>스터디 모집 정보</h3>
+        </div>
+        <hr color="gray"; style="height: 1.5px;">
         <!-- 스터디 이름 -->
         <div>
+            <label></label>
             <input type="text" class="form-control" name="studyName" id="studyName" placeholder="스터디 그룹 이름"
                    required="required">
         </div>
@@ -17,7 +22,7 @@
         <!-- 카테고리 -->
         <div class="form-group">
             <select class="form-control" name="categoryTypeNo" id="categoryTypeNo" required="required">
-                <option value="" disabled>스터디 유형</option>
+                <option value="" selected disabled hidden>스터디 유형</option>
                 <option value="1">언어</option>
                 <option value="2">면접</option>
                 <option value="3">알고리즘</option>
@@ -25,27 +30,30 @@
             </select>
             <br>
             <select class="form-control" name="categoryLangNo" id="categoryLangNo" required="required">
-                <option value="" disabled>사용 언어</option>
+                <option value="" selected disabled hidden>사용 언어</option>
                 <option value="1">자바</option>
                 <option value="2">C</option>
                 <option value="3">파이썬</option>
                 <option value="4">기타</option>
             </select>
         </div>
-        <br>
         <!-- 간단한 소개 -->
-        <div>
-            <textarea class="form-control" rows="3" name="studyDesc" id="studyDesc" placeholder="스터디에 대한 간단한 소개를 해주세요"
+        <div style="padding-top: 8px;">
+            <textarea class="form-control" rows="3" name="studyDesc" id="studyDesc"
+                      placeholder="스터디를 간단히 소개해주세요&#13;&#10;&#13;&#10;"
                       required="required"></textarea>
         </div>
         <br>
         <!-- 스터디 상세 소개 -->
         <div>
-            <textarea class="form-control" rows="10" name="studyInfo" id="studyInfo" placeholder="스터디 상세 소개"
+            <textarea class="form-control" rows="10" name="studyInfo" id="studyInfo"
+                      placeholder="스터디에 대해 자세히 소개해주세요.&#13;&#10;&#13;&#10;&#13;&#10;ex) 스터디 모집 목적, 공부 방향, 희망 인원, 장소(온라인, 오프라인) 등 자세한 내용을 적어주세요."
                       required="required"></textarea>
         </div>
         <br>
-        <button class="btn btn-info" id="studyRegister">등록</button>
+        <div align="center">
+            <button class="btn btn-primary" id="studyRegister">등록</button>
+        </div>
     </div>
     <script>
         $(document).ready(function () {

@@ -88,7 +88,7 @@ public class NoticeController {
     }
 
     @GetMapping("/list/{studyNo}")
-    public String comment(@PathVariable int studyNo, Model model,
+    public String noticeList(@PathVariable int studyNo, Model model,
                           HttpServletResponse response) {
         model.addAttribute("noticeList", noticeService.getAllNoticeList(studyNo));
         return "/notice/notice-list";

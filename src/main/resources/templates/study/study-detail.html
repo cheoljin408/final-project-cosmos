@@ -1,58 +1,47 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
     <div th:replace="fragments/html-head.html :: fragment-html-head"></div>
 </head>
-<body>
+<body style="margin: 0; overflow-x:hidden; font-family: 'Noto Sans KR', sans-serif;">
 <div th:replace="fragments/header.html :: fragment-header"></div>
 <!-- Page Content-->
-<section class="py-3">
-    <div class="container col-lg-10 mt-3">
-        <div class="row gx-5">
-            <div class="col-lg-3">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="d-flex flex-column align-items-center text-center">
-                            <img th:src="${study.get('PICTURE')}" class="rounded-circle" width="120" height="120">
-                            <div class="mt-3">
-                                <h4 class="text-break" th:text="${study.get('NAME')}">사용자 이름</h4>
-                                <p class="text-secondary mb-1"></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-9 content-area">
+    <div class="container mt-5" style="padding: 0 50px;">
+        <div class="row">
+            <div class="col-12 content-area pt-3" style="padding: 0 30px;">
                 <!-- 본문 영역 -->
-                <div class="container col-lg-10 mt-3">
+                <div class="mt-3">
                     <!-- 스터디 상세 정보 -->
                     <article>
-                        <div class="row">
+                        <div style="display:flex; justify-content: space-between;">
+                            <!-- 스터디 모집 상태 -->
+                            <div style="word-break: break-word;">
+                                <div class="text-end mt-3" align="left">
+                                    <h3><span class="badge bg-primary" th:text="${study.get('STUDY_STATE')}"
+                                              style="color:white;">모집 상태</span>
+                                    </h3>
+                                </div>
                             <!-- 스터디 이름 -->
-                            <div class="col-9" style="word-break: break-word;">
                                 <h1 class="fw-bolder mb-1" th:text="${study.get('STUDY_NAME')}">스터디 이름</h1>
                             </div>
-                            <!-- 스터디 모집 상태 -->
-                            <div class="col-3 text-end mt-3" align="right">
-                                <h4><span class="badge bg-primary" th:text="${study.get('STUDY_STATE')}">모집 상태</span>
-                                </h4>
+                            <!-- 프로필 이미지, 이름 -->
+                            <div align="center" style="padding: 20px 20px 0 0; float:right;">
+                                <img th:src="${study.get('PICTURE')}" class="rounded-circle" width="80" height="80">
+                                <h4 class="text-break" th:text="${study.get('NAME')}">사용자 이름</h4>
                             </div>
                         </div>
+                        <hr>
                         <!-- 스터디 요약 -->
                         <div class="row">
                             <div class="col mt-3">
-                                <h5 class="mb-2" th:text="${study.get('STUDY_DESC')}">스터디 요약</h5>
+                                <h3 class="mb-2" th:text="${study.get('STUDY_DESC')}">스터디 요약</h3>
                             </div>
                         </div>
-                        <!-- 스터디 개설일시 -->
-                        <div class="row">
-                            <div class="col-12" align="right">
-                                <span>작성일: </span>
-                                <span class="mb-2" th:text="${study.get('STUDY_REGDATE')}"></span>
-                            </div>
-                        </div>
-                        <!-- 스터디 카테고리 -->
                         <div class="row mt-3 mb-3">
+                        <!-- 스터디 카테고리 -->
                             <div class="col-6">
                                 <h5 class="d-inline">
                                     <span class="badge badge-light text-dark mr-1"
@@ -63,11 +52,17 @@
                                           th:text="${study.get('CATEGORY_LANG')}">#사용언어</span>
                                 </h5>
                             </div>
+                        <!-- 스터디 개설일시 -->
+                            <div class="col-6 pr-4" align="right">
+                                <span>작성일: </span>
+                                <span class="mb-2" th:text="${study.get('STUDY_REGDATE')}"></span>
+                            </div>
                         </div>
+                        <br>
                         <!-- 스터디 상세 소개 -->
-                        <div class="card mb-4" style="min-height: 300px;">
-                            <textarea class="card-body" th:text="${study.get('STUDY_INFO')}" readonly></textarea>
-                        </div>
+                        <pre>
+                            <div class="card mb-4" style="min-height: 300px; font-size:19px;" th:text="${study.get('STUDY_INFO')}"/>
+                        </pre>
                     </article>
                     <!-- 신청 OR 수정 삭제 -->
                     <div class="row" style="display: flex; justify-content: center;">
@@ -75,7 +70,7 @@
                         <!-- 스터디 리더인 경우 수정, 삭제 버튼 -->
                         <div th:if="${role.equals('스터디리더')}">
                             <div>
-                                <button type="button" class="btn btn-primary" th:onclick="|window.location.href='/study/modifyStudy/${study.get('STUDY_NO')}'|">글 수정</button>
+                                <button type="button" class="btn btn-secondary" th:onclick="|window.location.href='/study/modifyStudy/${study.get('STUDY_NO')}'|">글 수정</button>
                             </div>
                         </div>
 
@@ -87,11 +82,13 @@
                 </div>
             </div>
         </div>
+        <br>
+        <br>
+        <hr>
+        <div id="studyCommentRoot">
+            <div th:replace="fragments/study-comment :: fragment-study-comment" id="studyCommentListView"></div>
+        </div>
     </div>
-</section>
-<div id="studyCommentRoot">
-    <div th:replace="fragments/study-comment :: fragment-study-comment" id="studyCommentListView"></div>
-</div>
 <!-- 본문 종료 -->
 <div th:replace="fragments/apply-modal.html :: fragment-applymodal"></div>
 <div th:replace="fragments/footer.html :: fragment-footer"></div>
