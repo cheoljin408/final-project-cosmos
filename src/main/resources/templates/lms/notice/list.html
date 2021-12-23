@@ -5,13 +5,13 @@
 </head>
 <body style="margin: 0;">
 
-<!--<div th:replace="fragments/lms-header.html :: fragment-lms-header"></div>-->
+<div th:replace="fragments/lms-header.html :: fragment-lms-header"></div>
 
 <div class="container-fluid">
     <div class="row">
-        <!--<div th:replace="fragments/lms-sidebar.html :: fragment-lms-sidebar"></div>-->
-        <main role="main" class="container" style="padding: 50px">
-            <div class="container" style="margin-top: 100px; width:45%;">
+        <div th:replace="fragments/lms-sidebar.html :: fragment-lms-sidebar"></div>
+        <main role="main" class="container" style="padding: 40px">
+            <div class="container" style="margin-top: 30px;">
             <h3>공지사항</h3><hr><br>
             <div th:each="notice: ${noticeList}">
                 <a th:href="@{/notice/detail/{studyNo}/{noticeNo}(studyNo=${notice.studyMemberDTO.studyDTO.studyNo}, noticeNo = ${notice.noticeNo})}" style="color: black; text-decoration:none;">

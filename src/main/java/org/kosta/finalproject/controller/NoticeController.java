@@ -8,6 +8,7 @@ import org.kosta.finalproject.model.domain.StudyMemberDTO;
 import org.kosta.finalproject.model.domain.UploadFile;
 import org.kosta.finalproject.service.FileStoreService;
 import org.kosta.finalproject.service.NoticeService;
+import org.kosta.finalproject.service.StudyMemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +20,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,11 +31,13 @@ public class NoticeController {
 
     private final NoticeService noticeService;
     private final FileStoreService fileStoreService;
+    private final StudyMemberService studyMemberService;
 
     @Autowired
-    public NoticeController(NoticeService noticeService, FileStoreService fileStoreService) {
+    public NoticeController(NoticeService noticeService, FileStoreService fileStoreService, StudyMemberService studyMemberService) {
         this.noticeService = noticeService;
         this.fileStoreService = fileStoreService;
+        this.studyMemberService = studyMemberService;
     }
 
     /**
@@ -45,6 +49,7 @@ public class NoticeController {
     public String noticeDetail(Model model,
                                HttpServletRequest request,
                                HttpServletResponse response,
+                               @LoginUser SessionMember member,
                                @PathVariable int noticeNo,
                                @PathVariable int studyNo) {
 
@@ -74,21 +79,43 @@ public class NoticeController {
             response.addCookie(cookie);
         }
         model.addAttribute("notice", noticeService.getNoticeDetailByNoticeNo(noticeNo));
+
+        // 내가 속한 스터디 이름 리스트 가져오기
+        Map<String, Object> emailAndStudyNo = new HashMap<String, Object>();
+        emailAndStudyNo.put("email", member.getEmail());
+        emailAndStudyNo.put("studyNo", studyNo);
+        List<Map<String, Object>> studyNameList = studyMemberService.getStudyNameList(emailAndStudyNo);
+        log.info("studyNameList: {}", studyNameList);
+        model.addAttribute("studyNameList", studyNameList);
+
+        // 해당 스터디에대한 전체 정보 가져오기
+        StudyMemberDTO allStudyInfo = studyMemberService.getAllStudyInfo(studyNo);
+        log.info("allStudyInfo: {}", allStudyInfo);
+        model.addAttribute("allStudyInfo", allStudyInfo);
+
         return "/lms/notice/detail";
     }
 
     @GetMapping("/list/{studyNo}")
     public String noticeList(@PathVariable int studyNo, Model model,
-                          HttpServletResponse response) {
+                          HttpServletResponse response, @LoginUser SessionMember member) {
         model.addAttribute("noticeList", noticeService.getAllNoticeList(studyNo));
-        return "/lms/notice/list";
-    }
 
-    //LMS 사이드바 적용 공지사항 등록페이지
-    @GetMapping("/lmsRegisterNotice/{studyNo}")
-    public String lmsRegisterNotice(@PathVariable int studyNo, @ModelAttribute NoticeFormDTO noticeFormDTO, Model model) {
-        model.addAttribute("studyNo", studyNo);
-        return "lms/notice/register";
+
+        // 내가 속한 스터디 이름 리스트 가져오기
+        Map<String, Object> emailAndStudyNo = new HashMap<String, Object>();
+        emailAndStudyNo.put("email", member.getEmail());
+        emailAndStudyNo.put("studyNo", studyNo);
+        List<Map<String, Object>> studyNameList = studyMemberService.getStudyNameList(emailAndStudyNo);
+        log.info("studyNameList: {}", studyNameList);
+        model.addAttribute("studyNameList", studyNameList);
+
+        // 해당 스터디에대한 전체 정보 가져오기
+        StudyMemberDTO allStudyInfo = studyMemberService.getAllStudyInfo(studyNo);
+        log.info("allStudyInfo: {}", allStudyInfo);
+        model.addAttribute("allStudyInfo", allStudyInfo);
+
+        return "/lms/notice/list";
     }
 
     /**
@@ -103,15 +130,34 @@ public class NoticeController {
     }
 
     @PostMapping("/update")
-    public String updateNotice(@RequestParam int noticeNo,
-                               Model model) {
+    public String updateNotice(@RequestParam int noticeNo, Model model) {
         model.addAttribute("notice", noticeService.getNoticeDetailByNoticeNo(noticeNo));
-        return "notice/notice-update";
+        return "lms/notice/update";
+    }
+
+    //LMS 사이드바 적용 공지사항 등록페이지
+    @GetMapping("/register/{studyNo}")
+    public String lmsRegisterNotice(@PathVariable int studyNo, @ModelAttribute NoticeFormDTO noticeFormDTO, Model model, @LoginUser SessionMember member) {
+        model.addAttribute("studyNo", studyNo);
+
+        // 내가 속한 스터디 이름 리스트 가져오기
+        Map<String, Object> emailAndStudyNo = new HashMap<String, Object>();
+        emailAndStudyNo.put("email", member.getEmail());
+        emailAndStudyNo.put("studyNo", studyNo);
+        List<Map<String, Object>> studyNameList = studyMemberService.getStudyNameList(emailAndStudyNo);
+        log.info("studyNameList: {}", studyNameList);
+        model.addAttribute("studyNameList", studyNameList);
+
+        // 해당 스터디에대한 전체 정보 가져오기
+        StudyMemberDTO allStudyInfo = studyMemberService.getAllStudyInfo(studyNo);
+        log.info("allStudyInfo: {}", allStudyInfo);
+        model.addAttribute("allStudyInfo", allStudyInfo);
+        return "lms/notice/register";
     }
 
     @Transactional
-    @PostMapping("/lmsRegisterNotice/{studyNo}")
-    public String registerNotice(@PathVariable int studyNo, @LoginUser SessionMember member, @ModelAttribute NoticeFormDTO noticeFormDTO, RedirectAttributes redirectAttributes)  throws IOException {
+    @PostMapping("/register/{studyNo}")
+    public String registerNotice(@PathVariable int studyNo, @LoginUser SessionMember member, @ModelAttribute NoticeFormDTO noticeFormDTO, RedirectAttributes redirectAttributes, Model model)  throws IOException {
         log.info("noticeFormDTO: {}", noticeFormDTO);
         // 파일에 저장
         // MultipartFile attachFile = form.getAttachFile();
@@ -133,7 +179,20 @@ public class NoticeController {
         redirectAttributes.addAttribute("noticeNo", noticeNo);
         redirectAttributes.addAttribute("studyNo", studyNo);
 
-        return "redirect:/notice/detail/{studyNo}/{noticeNo}";
+        // 내가 속한 스터디 이름 리스트 가져오기
+        Map<String, Object> emailAndStudyNo = new HashMap<String, Object>();
+        emailAndStudyNo.put("email", member.getEmail());
+        emailAndStudyNo.put("studyNo", studyNo);
+        List<Map<String, Object>> studyNameList = studyMemberService.getStudyNameList(emailAndStudyNo);
+        log.info("studyNameList: {}", studyNameList);
+        model.addAttribute("studyNameList", studyNameList);
+
+        // 해당 스터디에대한 전체 정보 가져오기
+        StudyMemberDTO allStudyInfo = studyMemberService.getAllStudyInfo(studyNo);
+        log.info("allStudyInfo: {}", allStudyInfo);
+        model.addAttribute("allStudyInfo", allStudyInfo);
+
+        return "redirect:lms/notice/detail/{studyNo}/{noticeNo}";
     }
 
 }
