@@ -97,6 +97,13 @@
     $(function(){
         // 스터디 지원하기
         $("#applyStudyBtn").click(function(){
+            if($("#applyContent").val()==""){
+                alert("소개글을 입력하고 신청을 해주세요!");
+                return;
+            }
+            if(!confirm("스터디 신청하시겠습니까?")){
+                return;
+            }
             var applyJsonData = {
                 studyNo: /*[[${study.get("STUDY_NO")}]]*/ 'studyNo',
                 email : /*[[${session.member.email}]]*/ 'email',
