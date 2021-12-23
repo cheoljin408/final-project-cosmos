@@ -1,7 +1,9 @@
 package org.kosta.finalproject.model.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.kosta.finalproject.model.domain.StudyMemberDTO;
+import org.springframework.security.core.parameters.P;
 
 import java.util.List;
 import java.util.Map;
@@ -30,4 +32,8 @@ public interface StudyMapper {
     void deleteStudyByStudyNo(int studyNo);
 
     List<StudyMemberDTO> getMystudyListByEmail(String email);
+
+    int getTotalCountOfStudyList();
+
+    List<StudyMemberDTO> getStudyListByPageNo(@Param("startRowNumber") int startRowNumber, @Param("endRowNumber") int endRowNumber);
 }

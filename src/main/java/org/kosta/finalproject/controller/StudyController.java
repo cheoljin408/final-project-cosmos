@@ -3,8 +3,10 @@ package org.kosta.finalproject.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.kosta.finalproject.config.auth.LoginUser;
 import org.kosta.finalproject.config.auth.dto.SessionMember;
+import org.kosta.finalproject.model.domain.PagingBean;
 import org.kosta.finalproject.model.domain.StudyCommentDTO;
 import org.kosta.finalproject.model.domain.StudyMemberDTO;
+import org.kosta.finalproject.service.PagingService;
 import org.kosta.finalproject.service.StudyCommentService;
 import org.kosta.finalproject.service.StudyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +27,13 @@ public class StudyController {
 
     private final StudyService studyService;
     private final StudyCommentService studyCommentService;
+    private final PagingService pagingService;
 
     @Autowired
-    public StudyController(StudyService studyService, StudyCommentService studyCommentService) {
+    public StudyController(StudyService studyService, StudyCommentService studyCommentService, PagingService pagingService) {
         this.studyService = studyService;
         this.studyCommentService = studyCommentService;
+        this.pagingService = pagingService;
     }
 
     /**
@@ -40,9 +44,33 @@ public class StudyController {
      */
 
     @GetMapping("/list")
-    public String studylistmain(Model model){
-        List<StudyMemberDTO> result = studyService.getAllList();
-        model.addAttribute("studyList", result);
+    public String studylistmain(Model model, @RequestParam(required = false) Object pageNo){
+        log.info("pageNo: {}", pageNo);
+
+        // paging을 위한 스터디 리스트의 전체 수 조회
+        int totalCount = pagingService.getTotalCountOfStudyList();
+        log.info("totalCount: {}", totalCount);
+
+        PagingBean pagingBean = null;
+
+        // pageNo Null Check
+        if(pageNo == null) {
+            pagingBean = new PagingBean(totalCount);
+        } else {
+            pagingBean = new PagingBean(totalCount,  Integer.valueOf((String)pageNo));
+            log.info("totalCount: {}", totalCount);
+            log.info("Integer.valueOf((String)pageNo): {}", Integer.valueOf((String)pageNo));
+        }
+
+        // pagingBean을 model에 할당
+        model.addAttribute("pagingBean", pagingBean);
+
+        // studyList를 model에 할당
+        // List<StudyMemberDTO> result = studyService.getAllList();
+        // model.addAttribute("studyList", result);
+        List<StudyMemberDTO> studyList = pagingService.getStudyListByPageNo(pagingBean.getStartRowNumber(), pagingBean.getEndRowNumber());
+        model.addAttribute("studyList", studyList);
+
         return "studylist/study-list-main";
     }
 
