@@ -21,4 +21,8 @@ public interface NoticeService {
 
     int registerNotice(int studyNo, String email, NoticeFormDTO noticeFormDTO, List<UploadFile> attachFiles, List<UploadFile> uploadFiles);
 
+    List<UploadFile> findFilesById(int noticeNo);
+
+    List<UploadFile> findImagesById(int noticeNo);
+
 }
