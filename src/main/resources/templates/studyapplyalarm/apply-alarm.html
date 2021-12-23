@@ -19,36 +19,57 @@
         .ok_and_no{
             background-color: #474747;
         }
+        /* 눈누 폰트(한나체Pro) 적용*/
+        @font-face {
+            font-family: 'BMHANNAPro';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_seven@1.0/BMHANNAPro.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
     </style>
 </head>
 <body style="margin: 0; overflow-x:hidden; background-color: #f7fafc">
 <div th:replace="fragments/header.html :: fragment-header"></div>
 <br><br>
 <div class="container" style="margin-top: 100px; width: 45%;">
-    <!-- 수락/거부된 스터디 리스트 -->
+    <!-- 1. 수락 or 거부된 스터디 리스트 -->
     <h4 style="text-decoration : underline; text-underline-position: under;"><span th:text="${member.name}"></span>님의 스터디 참여신청 결과</h4><br>
     <small class="small-text">내가 신청한 스터디에 대한 참가신청 결과입니다.<br>
         <b style="color: royalblue">스터디 참가가능 여부는 스터디리더에 의해 결정됩니다.</b>
     </small>
-    <div th:each="alarm : ${alarmListOkAndNo}" class="pt-1"><br>
-        <div class="card" style="margin-bottom: 20px;">
-            <div class="card-body">
-                <span>🙋‍♂️<strong>나의 참가신청 결과</strong></span>
-                <div th:if="${alarm.S_SST_STUDY_STATE.toString()}"style="display: inline-block; float: right;">
-                    <span th:text="${alarm.S_SST_STUDY_STATE}"
-                          class="badge badge-pill badge-success">Success</span>
-                </div><br>
+    <!-- 수락 or 거부된 스터디가 없는 경우 -->
+    <div th:if="${#lists.size(alarmListOkAndNo) == 0}" class="pt-1">
+        <div class="card" style="margin-top: 30px; margin-bottom: 20px;">
+            <div class="card-body" style="text-align: center">
                 <div style="margin-top: 10px; font-size: 16px; margin-right: 2px;">
-                <span th:text="${alarm.A_S_STUDYNAME}"/>&nbsp;스터디 참가신청이
-                <strong><span th:text="${alarm.AST_APPLY_STATE}"/></strong> 되었습니다.
+                    <strong><div style="font-family: 'BMHANNAPro'; font-size: 40px;" >텅~</div></strong>
+                    <div style="font-family: 'BMHANNAPro'; font-size: 20px;"><span style="color: royalblue">신청한 스터디</span>가 없습니다!</div>
                 </div>
-                <!-- 프로필 이미지, 신청자 이름, 신청 날짜-->
-                <div style="color: gray; font-size: 0.9rem; display: inline-block; float: right; margin: 0 auto;">
-                    <div class="d-flex align-items-center">
-                        <img class="rounded-circle me-3" style="margin-right: 10px;" width="40" height="40" th:src="${alarm.A_M_PICTURE}">
-                        <div>
-                            <div class="align-middle apply_name_css" th:text="${alarm.A_M_NAME}"></div>
-                            <div class="align-middle" th:text="${alarm.A_APPLYREGDATE}">신청일자</div>
+            </div>
+        </div>
+    </div>
+    <!-- 수락 or 거부된 스터디가 있는 경우 -->
+    <div th:unless="${#lists.size(alarmListOkAndNo) == 0}" class="pt-1">
+        <div th:each="alarm : ${alarmListOkAndNo}" class="pt-1"><br>
+            <div class="card" style="margin-bottom: 20px;">
+                <div class="card-body">
+                    <span>🙋‍♂<strong>나의 참가신청 결과</strong></span>
+                    <div th:if="${alarm.S_SST_STUDY_STATE.toString()}"style="display: inline-block; float: right;">
+                        <span th:text="${alarm.S_SST_STUDY_STATE}"
+                              class="badge badge-pill badge-success">Success</span>
+                    </div><br>
+                    <div style="margin-top: 10px; font-size: 16px; margin-right: 2px;">
+                    <span th:text="${alarm.A_S_STUDYNAME}"/>&nbsp;스터디 참가신청이
+                    <strong><span th:text="${alarm.AST_APPLY_STATE}"/></strong> 되었습니다.
+                    </div>
+                    <!-- 프로필 이미지, 신청자 이름, 신청 날짜-->
+                    <div style="color: gray; font-size: 0.9rem; display: inline-block; float: right; margin: 0 auto;">
+                        <div class="d-flex align-items-center">
+                            <img class="rounded-circle me-3" style="margin-right: 10px;" width="40" height="40" th:src="${alarm.A_M_PICTURE}">
+                            <div>
+                                <div class="align-middle apply_name_css" th:text="${alarm.A_M_NAME}"></div>
+                                <div class="align-middle" th:text="${alarm.A_APPLYREGDATE}">신청일자</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -57,21 +78,23 @@
     </div>
     <br><br>
 
-    <!-- 대기중인 스터디 리스트 -->
+    <!-- 2. 대기중인 스터디 리스트 -->
     <h4 style="text-decoration : underline; text-underline-position: under;"><span th:text="${member.name}"></span>님의 대기중인 스터디</h4><br>
     <small class="small-text">내가 신청한 스터디 중 대기중인 스터디입니다.<br>
         <b style="color: darkorange">스터디에 참가하려면 스터디리더의 수락이 필요합니다.</b>
     </small>
+    <!-- 대기중인 스터디가 없는 경우 -->
     <div th:if="${#lists.size(alarmListWait) == 0}" class="pt-1">
-        <div class="card" style="margin-top: 30px;">
-            <div class="card-body">
+        <div class="card" style="margin-top: 30px; margin-bottom: 20px;">
+            <div class="card-body" style="text-align: center">
                 <div style="margin-top: 10px; font-size: 16px; margin-right: 2px;">
-                    대기중인 스터디 리스트 없음
+                    <strong><div style="font-family: 'BMHANNAPro'; font-size: 40px;" >텅~</div></strong>
+                    <div style="font-family: 'BMHANNAPro'; font-size: 20px;"><span style="color: darkorange">대기중인 스터디</span>가 없습니다!</div>
                 </div>
             </div>
         </div>
-
     </div>
+    <!-- 대기중인 스터디가 있는 경우 -->
     <div th:unless="${#lists.size(alarmListWait) == 0}" class="pt-1">
         <div th:each="alarmWait : ${alarmListWait}" ><br>
             <div class="card">
