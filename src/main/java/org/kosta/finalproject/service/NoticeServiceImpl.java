@@ -77,4 +77,15 @@ public class NoticeServiceImpl implements NoticeService{
 
     }
 
+    @Override
+    public List<UploadFile> findFilesById(int noticeNo) {
+        List<UploadFile> attachFiles = noticeMapper.findFilesById("FILE", noticeNo);
+        return attachFiles;
+    }
+
+    @Override
+    public List<UploadFile> findImagesById(int noticeNo) {
+        List<UploadFile> imgFiles = noticeMapper.findFilesById("IMG", noticeNo);
+        return imgFiles;
+    }
 }

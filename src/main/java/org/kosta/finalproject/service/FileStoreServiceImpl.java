@@ -1,6 +1,8 @@
 package org.kosta.finalproject.service;
 
 import org.kosta.finalproject.model.domain.UploadFile;
+import org.kosta.finalproject.model.mapper.NoticeMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -67,4 +69,5 @@ public class FileStoreServiceImpl implements FileStoreService {
         int pos = originalFilename.lastIndexOf(".");
         return originalFilename.substring(pos + 1);
     }
+
 }

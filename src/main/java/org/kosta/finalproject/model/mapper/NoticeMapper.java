@@ -3,6 +3,7 @@ package org.kosta.finalproject.model.mapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.kosta.finalproject.model.domain.NoticeDTO;
+import org.kosta.finalproject.model.domain.NoticeFileDTO;
 import org.kosta.finalproject.model.domain.UploadFile;
 
 import java.util.List;
@@ -28,4 +29,6 @@ public interface NoticeMapper {
     void registerStoreImage(@Param("storeImage")UploadFile storeImage, @Param("type")String type, @Param("noticeNo")int noticeNo);
 
     int getNoticeNoWhenRegister();
+
+    List<UploadFile> findFilesById(@Param("fileType") String fileType, @Param("noticeNo") int noticeNo);
 }
