@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.kosta.finalproject.config.auth.LoginUser;
 import org.kosta.finalproject.config.auth.dto.SessionMember;
 import org.kosta.finalproject.model.domain.NoticeFormDTO;
+import org.kosta.finalproject.model.domain.StudyMemberDTO;
 import org.kosta.finalproject.model.domain.UploadFile;
 import org.kosta.finalproject.service.FileStoreService;
 import org.kosta.finalproject.service.NoticeService;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Controller
@@ -72,33 +74,21 @@ public class NoticeController {
             response.addCookie(cookie);
         }
         model.addAttribute("notice", noticeService.getNoticeDetailByNoticeNo(noticeNo));
-        return "/notice/notice-detail-study";
-    }
-
-    /**
-     * ** 테스트용 코드 **
-     * <p>
-     * 텍스트 에디터폼에서 작성한 후 해당 editor애 생성된 html 태그들을
-     * 올바르게 전송이 되는지 검사
-     */
-    @PostMapping("/post")
-    public String postTest(String text, Model model) {
-        model.addAttribute("data", text);
-        return "/notice/notice-result";
+        return "/lms/notice/detail";
     }
 
     @GetMapping("/list/{studyNo}")
     public String noticeList(@PathVariable int studyNo, Model model,
                           HttpServletResponse response) {
         model.addAttribute("noticeList", noticeService.getAllNoticeList(studyNo));
-        return "/notice/notice-list";
+        return "/lms/notice/list";
     }
 
     //LMS 사이드바 적용 공지사항 등록페이지
     @GetMapping("/lmsRegisterNotice/{studyNo}")
     public String lmsRegisterNotice(@PathVariable int studyNo, @ModelAttribute NoticeFormDTO noticeFormDTO, Model model) {
         model.addAttribute("studyNo", studyNo);
-        return "lms/lms-register-notice";
+        return "lms/notice/register";
     }
 
     /**
