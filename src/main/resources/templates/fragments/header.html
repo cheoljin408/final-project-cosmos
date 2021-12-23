@@ -8,8 +8,8 @@
                style="font-family: 'Secular One', sans-serif; color: black; font-size: 1.5rem"><b>COSMOS</b></a>
             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                 <div th:if="${session.member} == null">
-                    <a href="/study/list" style="margin-right: 10px; color: black;"><b>스터디 더보기</b></a>ㅊ
-                    <a data-toggle="modal" data-target="#exampleModal"><b>회원가입/로그인</b></a>
+                    <a href="/study/list" style="margin-right: 10px; color: black;"><b>스터디 더보기</b></a>
+                    <a data-toggle="modal" data-target="#exampleModal" style="cursor: pointer;"><b>회원가입/로그인</b></a>
                 </div>
                 <div th:if="${session.member} != null">
                     <div class="">

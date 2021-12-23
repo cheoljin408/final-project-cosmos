@@ -70,7 +70,7 @@
         s.STUDY_NO        as s_study_no,
         s.STUDY_NAME      as s_study_name,
         s.STUDY_DESC      as s_study_desc,
-        s.STUDY_REGDATE   as s_study_regdate,
+        to_char(s.STUDY_REGDATE, 'yyyy-mm-dd')   as s_study_regdate,
         s.STUDY_STATE   as s_sst_study_state,
         s.category_type as s_ctt_category_type,
         s.category_lang as s_clt_category_lang
