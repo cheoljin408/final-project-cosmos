@@ -103,8 +103,12 @@ public class StudyController {
      * @return: 스터디 수정 폼 페이지
      */
     @GetMapping("/modifyStudy/{studyNo}")
-    public String modifyStudy(@PathVariable int studyNo, Model model) {
+    public String modifyStudy(@PathVariable int studyNo, Model model, @LoginUser SessionMember member) {
         // log.info("studyNo:{}",studyNo);
+        if (studyService.findStudyMemberRoleByStudyNo(studyNo, member.getEmail()) == null) {
+            log.info("잘못된 접근 방식: 스터디 수정 페이지는 스터디를 등록한 리더만 요청 가능");
+            return "redirect:/";
+        }
         model.addAttribute("study", studyService.getStudyDetailByStudyNo(studyNo));
         model.addAttribute(studyNo);
         return "study/modify-study";
