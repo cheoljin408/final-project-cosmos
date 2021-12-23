@@ -31,8 +31,8 @@
                 <b style="color: red">수락 혹은 거절은 누르게 되면 해당 카드는 블러처리가 됩니다.</b>
             </small>
         </div>
-        <div th:each="alarm : ${requestedApplyList}" class="pt-3"  style="cursor: pointer;">
-            <div class="card modal_content testBtn card_state" data-toggle="modal" data-target="#myModal" style="margin-bottom: 20px;" th:value="${alarm.A_APPLY_STATE_CODE}">
+        <div th:each="alarm : ${requestedApplyList}" class="pt-3">
+            <div class="card modal_content testBtn card_state" data-toggle="modal" data-target="#myModal" style="cursor:pointer; margin-bottom: 20px;" th:value="${alarm.A_APPLY_STATE_CODE}">
                 <div class="card-body">
                     <div>
                         <span>🙋‍♂️<strong>참가신청</strong></span>
@@ -76,6 +76,7 @@
                 e.style.color = 'rgba(0, 0, 0, 0.2)';
                 e.style.filter = 'blur(1px)';
                 e.style.pointerEvents = 'none';
+                e.style.cursor = 'default';
             }
             console.log(e.getAttribute('value'));
         });
