@@ -74,38 +74,62 @@
                         <th></th>
                         <td></td>
                     </tr>
-                    <tr>
-                        <th>첨부파일</th>
+                    <tr th:each="file, fileStat : ${files}" th:if="${files.get(0)}">
+                        <th th:text="|첨부파일${fileStat.count}|">첨부파일</th>
                         <td colspan="5">
                             <!-- 업로드된 첨부파일 출력 -->
-                            <a th:each="file, fileStat : ${files}" th:if="${files.get(0)}" th:href="|/notice/attach/${notice.get('NOTICE_NO')}/${fileStat.index}|" th:text="${file.getUploadFileName()}" />
+                            <a th:href="|/notice/attach/${notice.get('NOTICE_NO')}/${fileStat.index}|" th:text="${file.getUploadFileName()}" />
                         </td>
                     </tr>
                     </tbody>
                 </table>
                 <br><br>
-                <!-- 업로드된 이미지 출력 -->
-                <!--<img th:each="imageFile : ${images}" th:src="|/images/${imageFile.getStoreFileName()}|" width="300" height="300"/>-->
+                <table class="table table-bordered pt-3">
+                    <thead>
+                        <tr>
+                            <th>이미지</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><img th:each="imageFile : ${images}" th:src="|/notice/images/${imageFile.getStoreFileName()}|" width="300" style="margin: 0px 30px 30px 30px"/></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table class="table table-bordered pt-3">
+                    <thead>
+                    <tr>
+                        <th>본문</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><div th:utext="${notice.get('NOTICE_CONTENT')}"></div></td>
+                        </tr>
+                    </tbody>
+                </table>
 
                 <br><br>
-                <div th:utext="${notice.get('NOTICE_CONTENT')}"></div>
-                <div class="pt-3">
-                    <form method="post" action="/notice/update" style="white-space: nowrap;" }>
+                <!-- 본문 내용 -->
+                <div style="float: right; margin-right: 2px;" class="row">
+                    <form method="post" action="/notice/update" style="white-space: nowrap;"}>
                         <input type="hidden" th:name="notice_no" th:value="${notice.get('NOTICE_NO')}">
-                        <button class="btn btn-info" id="notice-modify">수정</button> &nbsp;
+                        <button class="btn btn-primary" id="notice-modify">수정</button> &nbsp;
                     </form>
-                    <button class="btn btn-danger" id="notice-delete">삭제</button>
+                    <button class="btn btn-secondary" id="notice-delete">삭제</button>
                 </div>
+                <!-- 본문 내용 end -->
                 <script>
                     $(document).ready(function () {
-                        /*//여기 아래 부분
+                        /*
                         $('#summernote').summernote({
-                          height: 300,                  // 에디터 높이
-                          minHeight: null,              // 최소 높이
-                          maxHeight: null,              // 최대 높이
-                          focus: true,                  // 에디터 로딩후 포커스를 맞출지 여부
-                          lang: "ko-KR",				  // 한글 설정
-                          placeholder: '최대 2048자까지 쓸 수 있습니다'	//placeholder 설정
+                          height: 300,
+                          minHeight: null,
+                          maxHeight: null,
+                          focus: true,
+                          lang: "ko-KR",
+                          placeholder: '최대 2048자까지 쓸 수 있습니다'
                         });*/
                         /* 삭제버튼시 동작 사항 */
                         $("#notice-delete").click(function () {
