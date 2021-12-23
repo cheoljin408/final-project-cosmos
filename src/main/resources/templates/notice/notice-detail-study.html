@@ -1,146 +1,150 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <div th:replace="fragments/html-head.html :: fragment-html-head"></div>
-  <style>
-    .notice_header_area{
-      font-size: 30px;
-      font-weight: 500;
-      border-bottom: 1px solid #ddd;
-      line-height: 30px;
-      padding-bottom: 30px;
-    }
+    <div th:replace="fragments/html-head.html :: fragment-html-head"></div>
+    <style>
+        .notice_header_area {
+            font-size: 30px;
+            font-weight: 500;
+            border-bottom: 1px solid #ddd;
+            line-height: 30px;
+            padding-bottom: 30px;
+        }
 
-    th{
-      text-align:center;
-      background-color: #f5f8fa;
-      padding: 8px;
-      color: #437aa7;
-      border-right: #0390d9 solid 1px;
-    }
-    .th_c{
-      color:#474747;
-    }
-  </style>
+        th {
+            text-align: center;
+            background-color: #f5f8fa;
+            padding: 8px;
+            color: #437aa7;
+            border-right: #0390d9 solid 1px;
+        }
 
-  <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+        .th_c {
+            color: #474747;
+        }
+    </style>
+
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
 </head>
 <body style="margin: 0;">
 
 <div th:replace="fragments/lms-header.html :: fragment-lms-header"></div>
 
 <div class="container-fluid">
-  <div class="row">
-    <div th:replace="fragments/lms-sidebar.html :: fragment-lms-sidebar"></div>
-      <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4" style="padding: 20px 100px;">
+    <div class="row">
+        <div th:replace="fragments/lms-sidebar.html :: fragment-lms-sidebar"></div>
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4" style="padding: 20px 100px;">
 
-        <div class="container pt-5">
+            <div class="container pt-5">
 
-          <div class="notice_header_area">
-            <h1>공지사항</h1>
-            <hr>
-          </div>
+                <div class="notice_header_area">
+                    <h1>공지사항</h1>
+                    <hr>
+                </div>
 
-          <table class="table table-bordered pt-3">
-            <thead>
-            <colgroup>
-              <col width="10%">
-              <col width="28%">
-              <col width="12%">
-              <col width="20%">
-              <col width="10%">
-              <col width="20%">
-            </colgroup>
-            <tr>
-              <th class="th_c" colspan="6"><strong th:text="${notice.get('NOTICE_TITLE')}">공지사항</strong></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-              <th>작성자</th>
-              <td th:text="${notice.get('NAME')}">작성자</td>
-              <th>등록일</th>
-              <td th:text="${notice.get('NOTICE_REGDATE')}">등록일</td>
-              <th>조회수</th>
-              <td th:text="${notice.get('NOTICE_HITS')}">조회수</td>
-            </tr>
-            <tr>
-              <th>스터디번호</th>
-              <td th:text="${notice.get('STUDY_NO')}">스터디 번호</td>
-              <th>스터디 이름</th>
-              <td th:text="${notice.get('STUDY_NAME')}">스터디 이름</td>
-              <th></th>
-              <td></td>
-            </tr>
-            <tr>
-              <th>첨부파일</th>
-              <td colspan="5"><a href="/download.bbs?bbsid=1207404857348&amp;fidx=1639645418802" title="27회합격자공고_.pdf">
-                <img src="/fss/common/img/fileico/ico_pdf.gif" alt="pdf파일다운로드">27회합격자공고_.pdf
-              </a></td>
-            </tr>
-            </tbody>
-          </table>
+                <table class="table table-bordered pt-3">
+                    <thead>
+                    <colgroup>
+                        <col width="10%">
+                        <col width="28%">
+                        <col width="12%">
+                        <col width="20%">
+                        <col width="10%">
+                        <col width="20%">
+                    </colgroup>
+                    <tr>
+                        <th class="th_c" colspan="6"><strong th:text="${notice.get('NOTICE_TITLE')}">공지사항</strong></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th>작성자</th>
+                        <td th:text="${notice.get('NAME')}">작성자</td>
+                        <th>등록일</th>
+                        <td th:text="${notice.get('NOTICE_REGDATE')}">등록일</td>
+                        <th>조회수</th>
+                        <td th:text="${notice.get('NOTICE_HITS')}">조회수</td>
+                    </tr>
+                    <tr>
+                        <th>스터디번호</th>
+                        <td th:text="${notice.get('STUDY_NO')}">스터디 번호</td>
+                        <th>스터디 이름</th>
+                        <td th:text="${notice.get('STUDY_NAME')}">스터디 이름</td>
+                        <th></th>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th>첨부파일</th>
+                        <td colspan="5">
+                            <!-- 업로드된 첨부파일 출력 -->
+                            <a th:each="file, fileStat : ${files}" th:if="${files.get(0)}" th:href="|/notice/attach/${notice.get('NOTICE_NO')}/${fileStat.index}|" th:text="${file.getUploadFileName()}" />
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <br><br>
+                <!-- 업로드된 이미지 출력 -->
+                <!--<img th:each="imageFile : ${images}" th:src="|/images/${imageFile.getStoreFileName()}|" width="300" height="300"/>-->
 
-          <br><br>
-            <textarea type="text" id="summernote" name="text"></textarea>
-            <!--  th:text="${notice.get('NOTICE_CONTENT')}" -->
-            <div class="pt-3">
-              <form method="post" action="/notice/update" style="white-space: nowrap;"}>
-                <input type="hidden" th:name="notice_no" th:value="${notice.get('NOTICE_NO')}" >
-                <button class="btn btn-info" id="notice-modify">수정</button> &nbsp;
-              </form>
-              <button class="btn btn-danger" id="notice-delete">삭제</button>
+                <br><br>
+                <div th:utext="${notice.get('NOTICE_CONTENT')}"></div>
+                <div class="pt-3">
+                    <form method="post" action="/notice/update" style="white-space: nowrap;" }>
+                        <input type="hidden" th:name="notice_no" th:value="${notice.get('NOTICE_NO')}">
+                        <button class="btn btn-info" id="notice-modify">수정</button> &nbsp;
+                    </form>
+                    <button class="btn btn-danger" id="notice-delete">삭제</button>
+                </div>
+                <script>
+                    $(document).ready(function () {
+                        /*//여기 아래 부분
+                        $('#summernote').summernote({
+                          height: 300,                  // 에디터 높이
+                          minHeight: null,              // 최소 높이
+                          maxHeight: null,              // 최대 높이
+                          focus: true,                  // 에디터 로딩후 포커스를 맞출지 여부
+                          lang: "ko-KR",				  // 한글 설정
+                          placeholder: '최대 2048자까지 쓸 수 있습니다'	//placeholder 설정
+                        });*/
+                        /* 삭제버튼시 동작 사항 */
+                        $("#notice-delete").click(function () {
+                            console.log("삭제 버튼 클릭");
+                            var notice_no = [[${notice.get('NOTICE_NO')}]];
+                            if (!confirm(notice_no + "번 공지사항을 삭제하시겠습니까?")) {
+                                return false;
+                            }
+                            $.ajax({
+                                type: "post",
+                                url: "/notice/delete",
+                                data: "noticeNo=" + notice_no,
+                                success: function () {
+                                    alert("/notice/list/" + [[${notice.get('STUDY_NO')}]]);
+                                    location.replace("/notice/list/" + [[${notice.get('STUDY_NO')}]]);
+                                }
+                            });
+                        });
+                        $("#notice-modify").click(function () {
+                            console.log("삭제 버튼 클릭");
+                            var notice_no = [[${notice.get('NOTICE_NO')}]];
+                            if (!confirm(notice_no + "번 공지사항을 삭제하시겠습니까?")) {
+                                return false;
+                            }
+                            $.ajax({
+                                type: "post",
+                                url: "/notice/delete",
+                                data: "noticeNo=" + notice_no,
+                                success: function () {
+                                    alert("/notice/list/" + [[${notice.get('STUDY_NO')}]]);
+                                    location.replace("/notice/list/" + [[${notice.get('STUDY_NO')}]]);
+                                }
+                            });
+                        });
+                    });
+                </script>
             </div>
-          <script>
-            $(document).ready(function() {
-              //여기 아래 부분
-              $('#summernote').summernote({
-                height: 300,                  // 에디터 높이
-                minHeight: null,              // 최소 높이
-                maxHeight: null,              // 최대 높이
-                focus: true,                  // 에디터 로딩후 포커스를 맞출지 여부
-                lang: "ko-KR",				  // 한글 설정
-                placeholder: '최대 2048자까지 쓸 수 있습니다'	//placeholder 설정
-              });
-              /* 삭제버튼시 동작 사항 */
-              $("#notice-delete").click(function(){
-                console.log("삭제 버튼 클릭");
-                var notice_no = [[${notice.get('NOTICE_NO')}]];
-                if(!confirm(notice_no + "번 공지사항을 삭제하시겠습니까?")) {
-                   return false;
-                }
-                $.ajax({
-                  type: "post",
-                  url: "/notice/delete",
-                  data: "noticeNo=" + notice_no,
-                  success: function () {
-                    alert("/notice/list/" + [[${notice.get('STUDY_NO')}]]);
-                    location.replace("/notice/list/" + [[${notice.get('STUDY_NO')}]]);
-                  }
-                  });
-              });
-                $("#notice-modify").click(function(){
-                  console.log("삭제 버튼 클릭");
-                  var notice_no = [[${notice.get('NOTICE_NO')}]];
-                  if(!confirm(notice_no + "번 공지사항을 삭제하시겠습니까?")) {
-                    return false;
-                  }
-                  $.ajax({
-                    type: "post",
-                    url: "/notice/delete",
-                    data: "noticeNo=" + notice_no,
-                    success: function () {
-                      alert("/notice/list/" + [[${notice.get('STUDY_NO')}]]);
-                      location.replace("/notice/list/" + [[${notice.get('STUDY_NO')}]]);
-                    }
-                  });
-              });
-            });
-          </script>
-        </div>
-      </main> <!-- Main end -->
-  </div>
+        </main> <!-- Main end -->
+    </div>
 </div>
 </body>
 </html>
