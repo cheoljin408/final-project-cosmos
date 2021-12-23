@@ -77,10 +77,10 @@ public class ApplyController {
     }
     @PostMapping("/apply/accept")
     @ResponseBody
-    public String applyAccept(@RequestBody Map<String, Object> param){
+    public int applyAccept(@RequestBody Map<String, Object> param){
         log.info("param[email] = {}, param[study_no] = {}, param[apply_no] = {}", param.get("email"), param.get("study_no"), param.get("apply_no"));
         applyService.applyAccept(param);
-        return null;
+        return 1;
     }
 
     /**
