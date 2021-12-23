@@ -56,7 +56,7 @@
     <select id="getNoticeDetailByNoticeNo" resultType="hashMap">
         select n.notice_no,
                n.notice_title,
-               n.notice_content,
+               DBMS_LOB.SUBSTR(n.notice_content, dbms_LoB.GETLENGTH(n.NOTICE_CONTENT)) as notice_content,
                n.notice_regdate,
                n.notice_hits,
                n.address,
@@ -126,5 +126,11 @@
         INSERT INTO NOTICE_FILE
         VALUES (NOTICE_FILE_SEQ.nextval, #{storeImage.uploadFileName}, #{storeImage.storeFileName}, #{type}, NOTICE_SEQ.CURRVAL)
     </insert>
+
+
+    <select id="findFilesById" resultType="org.kosta.finalproject.model.domain.UploadFile">
+        select NOTICE_UPLOAD_FILE_NAME, NOTICE_STORE_FILE_NAME from NOTICE_FILE
+        where notice_file_type= #{fileType} and notice_no = #{noticeNo}
+    </select>
 
 </mapper>
