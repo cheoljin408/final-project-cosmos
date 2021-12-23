@@ -17,6 +17,11 @@
     <resultMap id="studyDTO" type="org.kosta.finalproject.model.domain.StudyDTO">
         <result property="studyName" column="study_name"/>
         <result property="studyRegdate" column="study_regdate"/>
+        <association property="studyStateDTO" resultMap="studyStateDTOMap" columnPrefix="sst_"/>
+    </resultMap>
+
+    <resultMap id="studyStateDTOMap" type="org.kosta.finalproject.model.domain.StudyStateDTO">
+        <result property="studyState" column="study_state"/>
     </resultMap>
 
     <!-- 참가신청 알람 리스트 sql-->
@@ -30,15 +35,19 @@
                m.PICTURE            as a_m_picture,
                m.ROLE               as a_m_role,
                s.STUDY_NAME         as a_s_studyName,
+               sst.STUDY_STATE      as s_sst_study_state,
+               s.STUDY_STATE_CODE   as s_study_state_code,
                ast.APPLY_STATE_CODE as ast_APPLY_STATE_CODE,
                ast.APPLY_STATE      as ast_APPLY_STATE
         from APPLY a,
              MEMBER m,
              STUDY s,
-             APPLY_STATE_TABLE ast
+             APPLY_STATE_TABLE ast,
+             STUDY_STATE_TABLE sst
         where a.study_NO = s.study_NO
           and a.email = m.email
           and a.apply_state_code = ast.apply_state_code
+          and s.study_state_code = sst.study_state_code
         order by a.apply_no desc
     </select>
 

@@ -4,31 +4,56 @@
 <head>
     <div th:replace="fragments/html-head.html :: fragment-html-head"></div>
 </head>
-<body>
-<div th:replace="fragments/header.html :: fragment-header"></div><br><br>
-<div class="container">
+<body style="margin: 0; overflow-x:hidden; background-color: #f7fafc">
+<div th:replace="fragments/header.html :: fragment-header"></div>
+<br><br>
+<div class="container" style="margin-top: 100px; width: 45%;">
     <!-- 수락/거부된 스터디 리스트 -->
-    <h3><span th:text="${member.name}"></span>님의 스터디 참여신청 결과</h3>
-    <div class="row h-100">
-        <div th:each="alarm : ${alarmListOkAndNo}" class="offset-sm-1 col-sm-10"><br>
-            <div class="card">
-                <div class="card-body">
-                    <blockquote class="blockquote mb-0">
-                        신청일시: <span th:text="${alarm.A_APPLYREGDATE}"/><br>
-                        <span th:text="${alarm.A_S_STUDYNAME}"/>&nbsp;스터디 참가신청이
-                        <span th:text="${alarm.AST_APPLY_STATE}"/> 되었습니다.
-                        <footer class="blockquote-footer">여기에 무엇을 쓰면 좋을까?<cite title="Source Title"> SourceTitle:??</cite></footer>
-                    </blockquote>
-                </div>
+    <h4><span th:text="${member.name}"></span>님의 스터디 참여신청 결과</h4>
+    <div th:each="alarm : ${alarmListOkAndNo}"><br>
+
+        <div class="card" style="margin-top: 30px; padding:20px 20px 10px 10px;">
+            <div class="card-body">
+                <blockquote class="blockquote mb-0">
+                    <div th:if="${alarm.S_SST_STUDY_STATE.toString()}"style="display: inline-block; float: right;">
+                        <span th:text="${alarm.S_SST_STUDY_STATE}"
+                              class="badge badge-pill badge-success">Success</span>
+                    </div>
+                    <div style="font-size: 20px">
+                    <span th:text="${alarm.A_APPLYREGDATE}"/><br>
+                    <span th:text="${alarm.A_S_STUDYNAME}"/>&nbsp;스터디 참가신청이
+                    <span th:text="${alarm.AST_APPLY_STATE}"/> 되었습니다.
+                    </div>
+                    <div style="color: gray; font-size: 0.9rem; display: inline-block; float: right; margin: 0 auto;">
+                        <div class="d-flex align-items-center">
+                            <img class="rounded-circle me-3" style="margin-right: 10px;" width="40" height="40" th:src="${alarm.A_M_PICTURE}">
+                            <div>
+                                <div class="align-middle apply_name_css" th:text="${alarm.A_M_NAME}"></div>
+                                <div class="align-middle" th:text="${alarm.A_APPLYREGDATE}">신청일자</div>
+                            </div>
+                        </div>
+                    </div>
+                </blockquote>
             </div>
         </div>
     </div>
     <br><br><br>
 
     <!-- 대기중인 스터디 리스트 -->
-    <h3><span th:text="${member.name}"></span>님의 대기중인 스터디</h3>
-    <div class="row h-100">
-        <div th:each="alarmWait : ${alarmListWait}" class="offset-sm-1 col-sm-10"><br>
+    <h4><span th:text="${member.name}"></span>님의 대기중인 스터디</h4><br>
+
+    <div th:if="${#lists.size(alarmListWait) == 0}">
+        <div class="card">
+            <div class="card-body">
+                <blockquote class="blockquote mb-0">
+                    대기중인 스터디 리스트 없음
+                </blockquote>
+            </div>
+        </div>
+
+    </div>
+    <div th:unless="${#lists.size(alarmListWait) == 0}">
+        <div th:each="alarmWait : ${alarmListWait}"><br>
             <div class="card">
                 <div class="card-body">
                     <blockquote class="blockquote mb-0">
