@@ -31,4 +31,9 @@ public interface NoticeMapper {
     int getNoticeNoWhenRegister();
 
     List<UploadFile> findFilesById(@Param("fileType") String fileType, @Param("noticeNo") int noticeNo);
+
+    void updateNoticeByNoticeNo(@Param("noticeTitle")String noticeTitle, @Param("noticeContent")String noticeContent, @Param("noticeNo")int noticeNo);
+
+    void deleteNoticeFileByNoticeNo(int noticeNo);
+
 }

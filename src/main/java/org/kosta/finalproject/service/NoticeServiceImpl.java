@@ -1,5 +1,6 @@
 package org.kosta.finalproject.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.kosta.finalproject.model.domain.NoticeDTO;
 import org.kosta.finalproject.model.domain.NoticeFormDTO;
 import org.kosta.finalproject.model.domain.UploadFile;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@Slf4j
 public class NoticeServiceImpl implements NoticeService{
 
     private final NoticeMapper noticeMapper;
@@ -40,6 +42,7 @@ public class NoticeServiceImpl implements NoticeService{
 
     @Override
     public void deleteNotice(int noticeNo) {
+        noticeMapper.deleteNoticeFileByNoticeNo(noticeNo);
         noticeMapper.deleteNotice(noticeNo);
     }
 
@@ -87,5 +90,35 @@ public class NoticeServiceImpl implements NoticeService{
     public List<UploadFile> findImagesById(int noticeNo) {
         List<UploadFile> imgFiles = noticeMapper.findFilesById("IMG", noticeNo);
         return imgFiles;
+    }
+
+    @Override
+    public void updateNoticeByNoticeNo(String noticeTitle, String noticeContent, int noticeNo){
+        log.info("title, content, noticeno = {}, {}, {}", noticeTitle, noticeContent, noticeNo);
+        noticeMapper.updateNoticeByNoticeNo(noticeTitle, noticeContent, noticeNo);
+    }
+
+    @Override
+    public void deleteNoticeFileByNoticeNo(int noticeNo) {
+        noticeMapper.deleteNoticeFileByNoticeNo(noticeNo);
+    }
+
+    @Override
+    public void registerNoticeFiles(int noticeNo, NoticeFormDTO noticeFormDTO, List<UploadFile> attachFiles, List<UploadFile> storeImageFiles) {
+        // 2. 파일 저장
+        if(attachFiles.size() != 0) {
+            for (UploadFile attachFile : attachFiles) {
+                noticeMapper.registerAttachFile(attachFile, "FILE", noticeNo);
+            }
+            System.out.println("파일 저장 완료");
+        }
+
+        // 3. 이미지 저장
+        if(storeImageFiles.size() != 0) {
+            for (UploadFile storeImage : storeImageFiles) {
+                noticeMapper.registerStoreImage(storeImage, "IMG", noticeNo);
+            }
+            System.out.println("이미지 저장 완료");
+        }
     }
 }

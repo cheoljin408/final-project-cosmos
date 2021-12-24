@@ -148,15 +148,63 @@ public class NoticeController {
         return null;
     }
 
-    @PostMapping("/update")
-    public String updateNotice(@RequestParam int noticeNo, Model model) {
+    /**
+     *   공지사항 업데이트 폼으로 이동
+     */
+    @PostMapping("/update/form/{studyNo}")
+    public String updateNoticeForm(@RequestParam int noticeNo, @PathVariable int studyNo ,
+                                   @LoginUser SessionMember member, Model model) {
         model.addAttribute("notice", noticeService.getNoticeDetailByNoticeNo(noticeNo));
+
+        // 내가 속한 스터디 이름 리스트 가져오기
+        Map<String, Object> emailAndStudyNo = new HashMap<String, Object>();
+        emailAndStudyNo.put("email", member.getEmail());
+        emailAndStudyNo.put("studyNo", studyNo);
+        List<Map<String, Object>> studyNameList = studyMemberService.getStudyNameList(emailAndStudyNo);
+        log.info("studyNameList: {}", studyNameList);
+        model.addAttribute("studyNameList", studyNameList);
+
+        // 해당 스터디에대한 전체 정보 가져오기
+        StudyMemberDTO allStudyInfo = studyMemberService.getAllStudyInfo(studyNo);
+        log.info("allStudyInfo: {}", allStudyInfo);
+        model.addAttribute("allStudyInfo", allStudyInfo);
+
         return "lms/notice/update";
+    }
+
+    /**
+     * 공지사항 수정
+     */
+    @PostMapping("/update/{studyNo}")
+    @Transactional
+    public String update(@PathVariable int studyNo, @ModelAttribute NoticeFormDTO noticeFormDTO,
+                         Model model, @LoginUser SessionMember member, @RequestParam int noticeNo,
+                         RedirectAttributes redirectAttributes) throws IOException {
+        // 1. Content와 Title 정보를 업데이트
+        log.info("content, title uploading");
+        noticeService.updateNoticeByNoticeNo(noticeFormDTO.getNoticeTitle(),
+                                             noticeFormDTO.getNoticeContent(),
+                                             noticeNo);
+        log.info("delete original images, files");
+        // 2. 기존의 이미지와 파일들을 삭제
+        noticeService.deleteNoticeFileByNoticeNo(noticeNo);
+
+        // 3. 이미지와 파일들을 재업로드
+        List<UploadFile> storeImageFiles = fileStoreService.storeFiles(noticeFormDTO.getImageFiles());
+        List<UploadFile> attachFiles = fileStoreService.storeFiles(noticeFormDTO.getAttachFiles());
+
+        // 3.2 ) -> 실직적으로 저장
+        noticeService.registerNoticeFiles(noticeNo, noticeFormDTO, attachFiles, storeImageFiles);
+
+        redirectAttributes.addAttribute("noticeNo", noticeNo);
+        redirectAttributes.addAttribute("studyNo", studyNo);
+
+        return "redirect:/notice/detail/{studyNo}/{noticeNo}";
     }
 
     //LMS 사이드바 적용 공지사항 등록페이지
     @GetMapping("/register/{studyNo}")
-    public String lmsRegisterNotice(@PathVariable int studyNo, @ModelAttribute NoticeFormDTO noticeFormDTO, Model model, @LoginUser SessionMember member) {
+    public String lmsRegisterNotice(@PathVariable int studyNo, Model model, @LoginUser SessionMember member) {
         model.addAttribute("studyNo", studyNo);
 
         // 내가 속한 스터디 이름 리스트 가져오기
@@ -171,6 +219,7 @@ public class NoticeController {
         StudyMemberDTO allStudyInfo = studyMemberService.getAllStudyInfo(studyNo);
         log.info("allStudyInfo: {}", allStudyInfo);
         model.addAttribute("allStudyInfo", allStudyInfo);
+
         return "lms/notice/register";
     }
 
@@ -197,19 +246,6 @@ public class NoticeController {
 
         redirectAttributes.addAttribute("noticeNo", noticeNo);
         redirectAttributes.addAttribute("studyNo", studyNo);
-
-        // 내가 속한 스터디 이름 리스트 가져오기
-        Map<String, Object> emailAndStudyNo = new HashMap<String, Object>();
-        emailAndStudyNo.put("email", member.getEmail());
-        emailAndStudyNo.put("studyNo", studyNo);
-        List<Map<String, Object>> studyNameList = studyMemberService.getStudyNameList(emailAndStudyNo);
-        log.info("studyNameList: {}", studyNameList);
-        model.addAttribute("studyNameList", studyNameList);
-
-        // 해당 스터디에대한 전체 정보 가져오기
-        StudyMemberDTO allStudyInfo = studyMemberService.getAllStudyInfo(studyNo);
-        log.info("allStudyInfo: {}", allStudyInfo);
-        model.addAttribute("allStudyInfo", allStudyInfo);
 
         return "redirect:/notice/detail/{studyNo}/{noticeNo}";
     }
