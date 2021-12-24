@@ -36,13 +36,12 @@
         <div th:replace="fragments/lms-sidebar.html :: fragment-lms-sidebar"></div>
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4" style="padding: 20px 100px;">
 
-            <div class="container pt-5">
+            <div class="container pt-5" style="padding: 40px">
 
                 <div class="notice_header_area">
-                    <h1>공지사항</h1>
+                    <h3>공지사항</h3>
                     <hr>
                 </div>
-
                 <table class="table table-bordered pt-3">
                     <thead>
                     <colgroup>
@@ -78,7 +77,8 @@
                         <th th:text="|첨부파일${fileStat.count}|">첨부파일</th>
                         <td colspan="5">
                             <!-- 업로드된 첨부파일 출력 -->
-                            <a th:href="|/notice/attach/${notice.get('NOTICE_NO')}/${fileStat.index}|" th:text="${file.getUploadFileName()}" />
+                            <a th:href="|/notice/attach/${notice.get('NOTICE_NO')}/${fileStat.index}|"
+                               th:text="${file.getUploadFileName()}"/>
                         </td>
                     </tr>
                     </tbody>
@@ -86,14 +86,16 @@
                 <br><br>
                 <table class="table table-bordered pt-3">
                     <thead>
-                        <tr>
-                            <th>이미지</th>
-                        </tr>
+                    <tr>
+                        <th>이미지</th>
+                    </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td><img th:each="imageFile : ${images}" th:src="|/notice/images/${imageFile.getStoreFileName()}|" width="300" style="margin: 0px 30px 30px 30px"/></td>
-                        </tr>
+                    <tr>
+                        <td><img th:each="imageFile : ${images}"
+                                 th:src="|/notice/images/${imageFile.getStoreFileName()}|" width="300"
+                                 style="margin: 0px 30px 30px 30px"/></td>
+                    </tr>
                     </tbody>
                 </table>
 
@@ -104,16 +106,21 @@
                     </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td><div th:utext="${notice.get('NOTICE_CONTENT')}"></div></td>
-                        </tr>
+                    <tr>
+                        <td>
+                            <div th:utext="${notice.get('NOTICE_CONTENT')}"></div>
+                        </td>
+                    </tr>
                     </tbody>
                 </table>
 
                 <br><br>
                 <!-- 본문 내용 -->
+                <button class="btn btn-primary"
+                        th:onclick="|window.location.href='/notice/list/${allStudyInfo.studyDTO.studyNo}'|">글 목록
+                </button>
                 <div style="float: right; margin-right: 2px;" class="row">
-                    <form method="post" action="/notice/update" style="white-space: nowrap;"}>
+                    <form method="post" action="/notice/update" style="white-space: nowrap;" }>
                         <input type="hidden" th:name="notice_no" th:value="${notice.get('NOTICE_NO')}">
                         <button class="btn btn-primary" id="notice-modify">수정</button> &nbsp;
                     </form>

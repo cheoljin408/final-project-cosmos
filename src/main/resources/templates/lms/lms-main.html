@@ -2,6 +2,15 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <div th:replace="fragments/html-head.html :: fragment-html-head"></div>
+    <style>
+        /* 눈누 폰트(한나체Pro) 적용*/
+        @font-face {
+            font-family: 'BMHANNAPro';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_seven@1.0/BMHANNAPro.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+    </style>
 </head>
 <body style="margin: 0; min-height: 100vh;">
 
@@ -16,15 +25,39 @@
                 <p th:text="${allStudyInfo.studyDTO.studyDesc}" style="margin-top: 20px;">studyDesc</p>
             </div>
             <div class="justify-content-between flex-wrap flex-md-nowrap align-items-center pb-4 pt-3 pb-2 mb-3">
-                <h4 style="margin-bottom: 20px;">공지사항</h4>
+                <div style="margin-bottom: 20px;">
+                    <div style="display: inline-block;">
+                        <h4>공지사항</h4>
+                    </div>
+                    <div class="align-middle" style="display: inline-block; float: right;">
+                        <a class = "align-middle" th:href="@{/notice/list/{studyNo}(studyNo = ${studyNo})}" style="color: black;">글목록</a>
+                    </div>
+                </div>
+                <div th:if="${#lists.size(recentNoticeList) == 0}">
+                    <div class="card" style=" margin-bottom: 20px;">
+                        <div class="card-body" style="text-align: center">
+                            <div style="margin-top: 10px; font-size: 16px; margin-right: 2px;">
+                                <strong>
+                                    <div style="font-family: 'BMHANNAPro'; font-size: 40px;">텅~</div>
+                                </strong>
+                                <div style="font-family: 'BMHANNAPro'; font-size: 20px;"><span style="color: royalblue">등록된 공지사항</span>이
+                                    없습니다!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div th:each="recentNotice: ${recentNoticeList}">
                     <div class="card" style="margin-bottom: 20px;">
-                        <div class="card-body">
+                        <div class="card-body"
+                             th:onclick="|window.location.href='/notice/detail/${allStudyInfo.studyDTO.studyNo}/${recentNotice.noticeNo}'|"
+                             style="cursor: pointer;">
                             <div>
                                 <h6 th:text="${recentNotice.noticeTitle}">noticeTitle</h6>
                             </div>
                             <div style="font-size: 0.9rem; color: rgba(0, 0, 0, 0.5);">
-                                <span th:text="${recentNotice.noticeRegdate}" style="margin-right: 10px;">noticeRegdate</span>
+                                <span th:text="${recentNotice.noticeRegdate}"
+                                      style="margin-right: 10px;">noticeRegdate</span>
                                 <span>조회수</span>
                                 <span th:text="${recentNotice.noticeHits}">noticeHits</span>
                             </div>
@@ -33,7 +66,28 @@
                 </div>
             </div>
             <div class="justify-content-between flex-wrap flex-md-nowrap align-items-center pb-4 pt-3 pb-2 mb-3">
-                <h4 style="margin-bottom: 20px;">과제 게시판</h4>
+                <div style="margin-bottom: 20px;">
+                    <div style="display: inline-block;">
+                        <h4>과제 게시판</h4>
+                    </div>
+                    <div class="align-middle" style="display: inline-block; float: right;">
+                        <a class = "align-middle" th:href="@{/notice/list/{studyNo}(studyNo = ${studyNo})}" style="color: black;">글목록</a>
+                    </div>
+                </div>
+                <div th:if="${#lists.size(recentTaskList) == 0}">
+                    <div class="card" style=" margin-bottom: 20px;">
+                        <div class="card-body" style="text-align: center">
+                            <div style="margin-top: 10px; font-size: 16px; margin-right: 2px;">
+                                <strong>
+                                    <div style="font-family: 'BMHANNAPro'; font-size: 40px;">텅~</div>
+                                </strong>
+                                <div style="font-family: 'BMHANNAPro'; font-size: 20px;"><span style="color: royalblue">등록된 과제공지</span>가
+                                    없습니다!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div th:each="recentTask: ${recentTaskList}">
                     <div class="card" style="margin-bottom: 20px;">
                         <div class="card-body">
