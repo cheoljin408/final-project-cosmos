@@ -79,7 +79,7 @@ public class StudyController {
      */
     @GetMapping("/registerStudy")
     public String registerStudy() {
-        return "study/register-study";
+        return "study/register";
     }
 
     /**
@@ -123,7 +123,7 @@ public class StudyController {
         System.out.println("allStudyCommentList = " + allStudyCommentList);
         model.addAttribute("studyCommentList", allStudyCommentList);
 
-        return "study/study-detail";
+        return "study/detail";
     }
 
     /**
@@ -138,8 +138,9 @@ public class StudyController {
             return "redirect:/";
         }
         model.addAttribute("study", studyService.getStudyDetailByStudyNo(studyNo));
+        log.info("modify study name: {}", studyService.getStudyDetailByStudyNo(studyNo).get("STUDY_NAME"));
         model.addAttribute(studyNo);
-        return "study/modify-study";
+        return "study/modify";
     }
 
     /**

@@ -97,7 +97,7 @@ public class NoticeController {
         model.addAttribute("files", files);
         model.addAttribute("notice", result);
 
-        log.info("notice_content = {}", result.get("NOTICE_CONTENT").toString());
+        // log.info("notice_content = {}", result.get("NOTICE_CONTENT").toString());
 
         // 내가 속한 스터디 이름 리스트 가져오기
         Map<String, Object> emailAndStudyNo = new HashMap<String, Object>();

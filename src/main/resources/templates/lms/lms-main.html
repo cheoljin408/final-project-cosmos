@@ -10,7 +10,7 @@
 <div class="container-fluid">
     <div class="row">
         <div th:replace="fragments/lms-sidebar.html :: fragment-lms-sidebar"></div>
-        <main role="main" class="container" style="padding: 50px">
+        <main role="main" class="container col-md-9 col-lg-10 col-sm-11" style="padding: 50px 150px">
             <div class="justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                 <h4 th:text="${allStudyInfo.studyDTO.studyName}">studyName</h4>
                 <p th:text="${allStudyInfo.studyDTO.studyDesc}" style="margin-top: 20px;">studyDesc</p>
