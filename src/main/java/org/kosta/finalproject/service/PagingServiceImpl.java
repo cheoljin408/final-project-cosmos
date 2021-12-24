@@ -28,4 +28,28 @@ public class PagingServiceImpl implements PagingService{
         List<StudyMemberDTO> studyList = studyMapper.getStudyListByPageNo(startRowNumber, endRowNumber);
         return studyList;
     }
+
+    @Override
+    public int getTotalCountOfStudyListByCategory(String category) {
+        int totalCountOfStudyListByCategory = studyMapper.getTotalCountOfStudyListByCategory(category);
+        return totalCountOfStudyListByCategory;
+    }
+
+    @Override
+    public List<StudyMemberDTO> getStudyListByCategoryAndPageNo(String category, int startRowNumber, int endRowNumber) {
+        List<StudyMemberDTO> studyListByCategoryAndPageNo = studyMapper.getStudyListByCategoryAndPageNo(category, startRowNumber, endRowNumber);
+        return studyListByCategoryAndPageNo;
+    }
+
+    @Override
+    public int getTotalCountOfStudyListBySearch(String search) {
+        int totalCountOfStudyListBySearch = studyMapper.getTotalCountOfStudyListBySearch(search);
+        return totalCountOfStudyListBySearch;
+    }
+
+    @Override
+    public List<StudyMemberDTO> getStudyListBySearch(String search, int startRowNumber, int endRowNumber) {
+        List<StudyMemberDTO> studyListBySearch = studyMapper.getStudyListBySearch(search, startRowNumber, endRowNumber);
+        return studyListBySearch;
+    }
 }

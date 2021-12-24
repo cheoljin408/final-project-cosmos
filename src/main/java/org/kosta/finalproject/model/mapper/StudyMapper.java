@@ -3,7 +3,6 @@ package org.kosta.finalproject.model.mapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.kosta.finalproject.model.domain.StudyMemberDTO;
-import org.springframework.security.core.parameters.P;
 
 import java.util.List;
 import java.util.Map;
@@ -36,4 +35,12 @@ public interface StudyMapper {
     int getTotalCountOfStudyList();
 
     List<StudyMemberDTO> getStudyListByPageNo(@Param("startRowNumber") int startRowNumber, @Param("endRowNumber") int endRowNumber);
+
+    int getTotalCountOfStudyListByCategory(String category);
+
+    List<StudyMemberDTO> getStudyListByCategoryAndPageNo(@Param("category") String category, @Param("startRowNumber") int startRowNumber, @Param("endRowNumber") int endRowNumber);
+
+    int getTotalCountOfStudyListBySearch(String search);
+
+    List<StudyMemberDTO> getStudyListBySearch(@Param("search") String search, @Param("startRowNumber") int startRowNumber, @Param("endRowNumber") int endRowNumber);
 }

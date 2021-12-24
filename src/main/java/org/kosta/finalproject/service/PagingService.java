@@ -10,4 +10,11 @@ public interface PagingService {
 
     List<StudyMemberDTO> getStudyListByPageNo(int startRowNumber, int endRowNumber);
 
+    int getTotalCountOfStudyListByCategory(String category);
+
+    List<StudyMemberDTO> getStudyListByCategoryAndPageNo(String category, int startRowNumber, int endRowNumber);
+
+    int getTotalCountOfStudyListBySearch(String search);
+
+    List<StudyMemberDTO> getStudyListBySearch(String search, int startRowNumber, int endRowNumber);
 }
