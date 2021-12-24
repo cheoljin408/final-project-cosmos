@@ -15,7 +15,9 @@
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4" style="padding: 20px 100px;">
             <div class="container pt-5">
                 <div>
-                    <h4>공지사항 글쓰기</h4><br>
+                    <h4>공지사항 글쓰기</h4>
+                    <hr>
+                    <br>
                     <form th:action method="post" enctype="multipart/form-data">
                         <!-- 공지사항 제목 -->
                         <div>
@@ -23,41 +25,35 @@
                                    required="required">
                         </div>
                         <br>
-                        <!-- 파일 업로드 -->
-                        <ul>
-                            <li>첨부파일<input type="file" multiple="multiple" name="attachFiles"></li>
-                            <li>이미지 파일들<input type="file" multiple="multiple" name="imageFiles"></li>
-                        </ul>
-                        <!--<div class="input-group mb-3">
-                            <div class="custom-file">
-                                <input type="file" class="custom-file-input" multiple="multiple" name="attachFiles" id="inputGroupFile01">
-                                <label class="custom-file-label" for="inputGroupFile01"
-                                       aria-describedby="inputGroupFileAddon01">파일 선택</label>
-                            </div>
-                            <div class="input-group-append">
-                                <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+                        <!--파일업로드-->
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-6">
+                                        첨부파일<br>
+                                        <input type="file" class="form-control-file border" multiple="multiple"
+                                               name="attachFiles" style="color: #1a73e8; border-radius: 5px;"
+                                               placeholder="파일을 선택해주세요">
+                                    </div>
+                                    <div class="col-6">
+                                        이미지 첨부<br>
+                                        <input type="file" class="form-control-file border" multiple="multiple"
+                                               name="imageFiles" style="color: #1a73e8; border-radius: 5px;"
+                                               placeholder="파일을 선택해주세요">
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="input-group mb-3">
-                            <div class="custom-file">
-                                <input type="file" class="custom-file-input" multiple="multiple" name="imageFiles" id="inputGroupFile02">
-                                <label class="custom-file-label" for="inputGroupFile02"
-                                       aria-describedby="inputGroupFileAddon01">이미지 선택</label>
-                            </div>
-                            <div class="input-group-append">
-                                <span class="input-group-text" id="inputGroupFileAddon02">Upload</span>
-                            </div>
-                        </div>-->
+                        <br>
                         <br>
                         <!-- 텍스트 에디터 추가 -->
                         <textarea type="text" id="summernote" name="noticeContent"></textarea>
                         <br>
-                        <button class="btn btn-info" id="noticeRegister">등록</button>
+                        <button class="btn btn-primary" id="noticeRegister" style="float:right;">등록</button>
                     </form>
                 </div>
-
                 <script>
-                    $(document).ready(function() {
+                    $(document).ready(function () {
                         //여기 아래 부분
                         $('#summernote').summernote({
                             height: 300,                  // 에디터 높이
@@ -66,22 +62,8 @@
                             focus: true,                  // 에디터 로딩후 포커스를 맞출지 여부
                             lang: "ko-KR",            // 한글 설정
                             placeholder: '최대 2048자까지 쓸 수 있습니다' //, //placeholder 설정
-                            /*<!--callbacks: {	//여기 부분이 이미지를 첨부하는 부분
-                                onImageUpload : function(files) {
-                                    uploadSummernoteImageFile(files[0],this);
-                                },
-                                onPaste: function (e) {
-                                    var clipboardData = e.originalEvent.clipboardData;
-                                    if (clipboardData && clipboardData.items && clipboardData.items.length) {
-                                        var item = clipboardData.items[0];
-                                        if (item.kind === 'file' && item.type.indexOf('image/') !== -1) {
-                                            e.preventDefault();
-							}-->*/
-
-
                         });
                     });
-
                 </script>
             </div>
         </main>
