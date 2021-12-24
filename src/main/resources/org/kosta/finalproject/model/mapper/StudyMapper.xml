@@ -288,4 +288,9 @@
              ) s
         where s.rnum between #{startRowNumber} and #{endRowNumber}
     </select>
+
+    <!--스터디 상태 업데이트-->
+    <update id="updateState">
+        update study set STUDY_STATE_CODE=#{studyState} where STUDY_NO=#{studyNo}
+    </update>
 </mapper>
