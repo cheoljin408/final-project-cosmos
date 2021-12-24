@@ -22,4 +22,6 @@ public interface ApplyMapper {
     void registerApplyStudy(@Param("studyNo") String studyNo, @Param("applyContent")String applyContent, @Param("email")String email);
 
     int checkApplyByStudyNoAndEmail(@Param("studyNo")String studyNo, @Param("email")String email);
+
+    List<Map<String, Object>> isStudyLeader(String email);
 }

@@ -42,6 +42,12 @@ public class ApplyServiceImpl implements ApplyService {
         return requestedApplyList;
     }
 
+    @Override
+    public List<Map<String, Object>> isStudyLeader(String email) {
+        List<Map<String, Object>> isStudyLeader = applyMapper.isStudyLeader(email);
+        return isStudyLeader;
+    }
+
     //스터디 신청
     @Override
     public int registerApplyStudy(HashMap<String, String> jsonData) {
