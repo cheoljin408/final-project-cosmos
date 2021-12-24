@@ -22,6 +22,14 @@
         .ok_and_no {
             background-color: #474747;
         }
+
+        /* 눈누 폰트(한나체Pro) 적용*/
+        @font-face {
+            font-family: 'BMHANNAPro';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_seven@1.0/BMHANNAPro.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
     </style>
 </head>
 <body style="margin: 0; overflow-x:hidden; background-color: #f7fafc">
@@ -42,46 +50,91 @@
             <b style="color: red">수락 혹은 거절은 누르게 되면 해당 카드는 블러처리가 됩니다.</b>
         </small>
     </div>
-    <div th:each="alarm : ${requestedApplyList}" class="pt-3">
-        <div class="card modal_content testBtn card_state" data-toggle="modal" data-target="#myModal"
-             style="cursor:pointer; margin-bottom: 20px;" th:value="${alarm.A_APPLY_STATE_CODE}">
-            <div class="card-body">
-                <div>
-                    <span>🙋‍♂️<strong>참가신청</strong></span>
-                    <!-- 대기중, 수락완료, 거절 완료 -->
-                    <div th:if="${alarm.A_APPLY_STATE_CODE.toString().equals('WAIT')}"
-                         style="display:inline-block; float:right;"><span class="badge bg-success"
-                                                                          style="color : whitesmoke;">대기중</span></div>
-                    <div th:if="${alarm.A_APPLY_STATE_CODE.toString().equals('OK')}"
-                         style="display:inline-block; float:right;"><span class="badge bg-primary"
-                                                                          style="color : whitesmoke;">수락 완료</span></div>
-                    <div th:if="${alarm.A_APPLY_STATE_CODE.toString().equals('NO')}"
-                         style="display:inline-block; float:right;"><span class="badge bg-danger"
-                                                                          style="color : whitesmoke;">수락거절</span></div>
+
+    <!-- 내가 개설한 스터디가 없는 경우 -->
+    <div th:if="${#lists.size(isStudyLeader) == 0}" class="pt-1">
+        <div class="card" style="margin-top: 30px; margin-bottom: 20px;">
+            <div class="card-body" style="text-align: center">
+                <div style="margin-top: 10px; font-size: 16px; margin-right: 2px;">
+                    <strong>
+                        <div style="font-family: 'BMHANNAPro'; font-size: 40px;">텅~</div>
+                    </strong>
+                    <div style="font-family: 'BMHANNAPro'; font-size: 20px;">
+                        <span th:text="${member.name}"></span>님이
+                        <span style="color: royalblue">개설한 스터디</span>가 없습니다!
+                    </div>
                 </div>
-                <div style="margin-top: 10px;" class="fw">
-                    <span class="study_name" th:text="|${alarm.S_STUDY_NAME}에|" style="margin-right: 2px;">어떤 스터디</span>
-                    <span>참가신청 하였습니다.</span>
-                </div>
-                <!-- 이미지, 신청자 이름, 신청 날짜-->
-                <div style="color: gray; font-size: 0.9rem; display:inline-block; float:right; margin: 0 auto;">
-                    <div class="d-flex align-items-center">
-                        <img class="rounded-circle me-3" style="margin-right: 10px;" width="40" height="40"
-                             th:src="${alarm.M_PICTURE}">
-                        <div>
-                            <div class="align-middle apply_name_css study_applicant_name" th:text="${alarm.M_NAME}">신청자
-                                이름
-                            </div>
-                            <div class="align-middle" th:text="${alarm.A_APPLYREGDATE}">신청 날짜</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 내가 개설한 스터디에 참가신청한 회원이 없는 경우 -->
+    <div th:unless="${#lists.size(isStudyLeader) == 0}" class="pt-1">
+        <div th:if="${#lists.size(requestedApplyList) == 0}" class="pt-1">
+            <div class="card" style="margin-top: 30px; margin-bottom: 20px;">
+                <div class="card-body" style="text-align: center">
+                    <div style="margin-top: 10px; font-size: 16px; margin-right: 2px;">
+                        <strong>
+                            <div style="font-family: 'BMHANNAPro'; font-size: 40px;">기다리는 중..</div>
+                        </strong>
+                        <div style="font-family: 'BMHANNAPro'; font-size: 20px;">
+                            <span th:text="${member.name}"></span>님이 개설한 스터디에
+                            <span style="color: royalblue">신청한 회원</span>이 없습니다!
                         </div>
                     </div>
-                </div>  <!-- div end -->
+                </div>
+            </div>
+        </div>
 
-                <!-- 우측 하단에 위치-->
-                <input type="hidden" class="study_applicant_content" th:value="${alarm.A_APPLYCONTENT}"/>
-                <input type="hidden" class="study_no" th:value="${alarm.A_STUDYNO}"/>
-                <input type="hidden" class="apply_no" th:value="${alarm.A_APPLYNO}"/>
-                <input type="hidden" class="applicant_email" th:value="${alarm.A_EMAIL}"/>
+        <div th:unless="${#lists.size(requestedApplyList) == 0}" class="pt-1">
+            <div th:each="alarm : ${requestedApplyList}" class="pt-3">
+                <div class="card modal_content testBtn card_state" data-toggle="modal" data-target="#myModal"
+                     style="cursor:pointer; margin-bottom: 20px;" th:value="${alarm.A_APPLY_STATE_CODE}">
+                    <div class="card-body">
+                        <div>
+                            <span>🙋‍♂️<strong>참가신청</strong></span>
+                            <!-- 대기중, 수락완료, 거절 완료 -->
+                            <div th:if="${alarm.A_APPLY_STATE_CODE.toString().equals('WAIT')}"
+                                 style="display:inline-block; float:right;"><span class="badge bg-success"
+                                                                                  style="color : whitesmoke;">대기중</span>
+                            </div>
+                            <div th:if="${alarm.A_APPLY_STATE_CODE.toString().equals('OK')}"
+                                 style="display:inline-block; float:right;"><span class="badge bg-primary"
+                                                                                  style="color : whitesmoke;">수락 완료</span>
+                            </div>
+                            <div th:if="${alarm.A_APPLY_STATE_CODE.toString().equals('NO')}"
+                                 style="display:inline-block; float:right;"><span class="badge bg-danger"
+                                                                                  style="color : whitesmoke;">수락거절</span>
+                            </div>
+                        </div>
+                        <div style="margin-top: 10px;" class="fw">
+                        <span class="study_name" th:text="|${alarm.S_STUDY_NAME}에|"
+                              style="margin-right: 2px;">어떤 스터디</span>
+                            <span>참가신청 하였습니다.</span>
+                        </div>
+                        <!-- 이미지, 신청자 이름, 신청 날짜-->
+                        <div style="color: gray; font-size: 0.9rem; display:inline-block; float:right; margin: 0 auto;">
+                            <div class="d-flex align-items-center">
+                                <img class="rounded-circle me-3" style="margin-right: 10px;" width="40" height="40"
+                                     th:src="${alarm.M_PICTURE}">
+                                <div>
+                                    <div class="align-middle apply_name_css study_applicant_name"
+                                         th:text="${alarm.M_NAME}">
+                                        신청자
+                                        이름
+                                    </div>
+                                    <div class="align-middle" th:text="${alarm.A_APPLYREGDATE}">신청 날짜</div>
+                                </div>
+                            </div>
+                        </div>  <!-- div end -->
+
+                        <!-- 우측 하단에 위치-->
+                        <input type="hidden" class="study_applicant_content" th:value="${alarm.A_APPLYCONTENT}"/>
+                        <input type="hidden" class="study_no" th:value="${alarm.A_STUDYNO}"/>
+                        <input type="hidden" class="apply_no" th:value="${alarm.A_APPLYNO}"/>
+                        <input type="hidden" class="applicant_email" th:value="${alarm.A_EMAIL}"/>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
