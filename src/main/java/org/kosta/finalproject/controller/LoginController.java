@@ -17,8 +17,7 @@ public class LoginController {
     private static final String authorizationRequestBaseUri = "oauth2/authorization";
     Map<String, String> oauth2AuthenticationUrls = new HashMap<>();
     private final ClientRegistrationRepository clientRegistrationRepository;
-    // Lombok 아닌 경우 (@RequiredArgsConstructor 없는 경우)
-    // @Autowired private ClientRegistrationRepository clientRegistrationRepository;
+
     @SuppressWarnings("unchecked")
     @GetMapping("/login")
     public String getLoginPage(Model model) throws Exception {
@@ -29,12 +28,6 @@ public class LoginController {
                 ClientRegistration.class.isAssignableFrom(type.resolveGenerics()[0])) {
             clientRegistrations = (Iterable<ClientRegistration>) clientRegistrationRepository;
         }
-        assert clientRegistrations != null;
-        clientRegistrations.forEach(registration ->
-                oauth2AuthenticationUrls.put(registration.getClientName(),
-                        authorizationRequestBaseUri + "/" + registration.getRegistrationId()));
-        model.addAttribute("urls", oauth2AuthenticationUrls);
-
         return "oauth-login";
     }
 }
