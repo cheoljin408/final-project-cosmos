@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<div th:fragment="fragment-study-list-paging" style="margin-top: 100px;">
+
+    <!-- 전체 -->
+    <div th:if="${category} == 'NULL' and ${search} == 'NULL'">
+        <ul class="pagination justify-content-center" style="margin: 20px 0">
+            <li th:if="${pagingBean.previousPageGroup}" class="page-item">
+                <a class="page-link"
+                   th:href="@{/study/list?pageNo={pageNo}(pageNo = ${pagingBean.startPageOfPageGroup-1})}">이전</a>
+            </li>
+            <div th:each="page: ${#numbers.sequence(pagingBean.getStartPageOfPageGroup(), pagingBean.getEndPageOfPageGroup())}">
+                <div th:if="${page == pagingBean.getNowPage()}">
+                    <li class="page-item active">
+                        <a th:text="${page}" class="page-link"
+                           th:href="@{/study/list?pageNo={pageNo}(pageNo = ${page})}">page</a>
+                    </li>
+                </div>
+                <div th:unless="${page == pagingBean.getNowPage()}">
+                    <li class="page-item">
+                        <a th:text="${page}" class="page-link"
+                           th:href="@{/study/list?pageNo={pageNo}(pageNo = ${page})}">page</a>
+                    </li>
+                </div>
+            </div>
+            <li th:if="${pagingBean.nextPageGroup}" class="page-item">
+                <a class="page-link"
+                   th:href="@{/study/list?pageNo={pageNo}(pageNo = ${pagingBean.endPageOfPageGroup+1})}">다음</a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- 카테고리 -->
+    <div th:if="${category} != 'NULL' and ${search} == 'NULL'">
+        <ul class="pagination justify-content-center" style="margin: 20px 0">
+            <li th:if="${pagingBean.previousPageGroup}" class="page-item">
+                <a class="page-link"
+                   th:href="@{/study/list(category=${category}, pageNo=${pagingBean.startPageOfPageGroup-1}}">이전</a>
+            </li>
+            <div th:each="page: ${#numbers.sequence(pagingBean.getStartPageOfPageGroup(), pagingBean.getEndPageOfPageGroup())}">
+                <div th:if="${page == pagingBean.getNowPage()}">
+                    <li class="page-item active">
+                        <a th:text="${page}" class="page-link"
+                           th:href="@{/study/list(category=${category}, pageNo=${page})}">page</a>
+                    </li>
+                </div>
+                <div th:unless="${page == pagingBean.getNowPage()}">
+                    <li class="page-item">
+                        <a th:text="${page}" class="page-link"
+                           th:href="@{/study/list(category=${category}, pageNo=${page})}">page</a>
+                    </li>
+                </div>
+            </div>
+            <li th:if="${pagingBean.nextPageGroup}" class="page-item">
+                <a class="page-link"
+                   th:href="@{/study/list(category=${category}, pageNo=${pagingBean.endPageOfPageGroup+1}}">다음</a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- 검색 -->
+    <div th:if="${category} == 'NULL' and ${search} != 'NULL'">
+        <ul class="pagination justify-content-center" style="margin: 20px 0">
+            <li th:if="${pagingBean.previousPageGroup}" class="page-item">
+                <a class="page-link"
+                   th:href="@{/study/list(search=${search}, pageNo=${pagingBean.startPageOfPageGroup-1}}">이전</a>
+            </li>
+            <div th:each="page: ${#numbers.sequence(pagingBean.getStartPageOfPageGroup(), pagingBean.getEndPageOfPageGroup())}">
+                <div th:if="${page == pagingBean.getNowPage()}">
+                    <li class="page-item active">
+                        <a th:text="${page}" class="page-link"
+                           th:href="@{/study/list(search=${search}, pageNo=${page})}">page</a>
+                    </li>
+                </div>
+                <div th:unless="${page == pagingBean.getNowPage()}">
+                    <li class="page-item">
+                        <a th:text="${page}" class="page-link"
+                           th:href="@{/study/list(search=${search}, pageNo=${page})}">page</a>
+                    </li>
+                </div>
+            </div>
+            <li th:if="${pagingBean.nextPageGroup}" class="page-item">
+                <a class="page-link"
+                   th:href="@{/study/list(search=${search}, pageNo=${pagingBean.endPageOfPageGroup+1}}">다음</a>
+            </li>
+        </ul>
+    </div>
+</div>
