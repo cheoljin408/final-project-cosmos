@@ -79,12 +79,12 @@
         where notice_no= #{noticeNo} and study_no = #{studyNo}
     </update>
 
-    <!-- 공지사항 수정-->
-    <!--<update id="updateNotice" parameterType="Map">
-        update notice set  notice_title = #{},
-                          notice_content=#{}
-        where notice_no = #{}
-    </update>-->
+    <!-- 공지사항 수정 -->
+    <update id="updateNoticeByNoticeNo">
+        update notice set  notice_title   = #{noticeTitle},
+                           notice_content = #{noticeContent}
+        where notice_no = #{noticeNo}
+    </update>
 
     <!-- 공지사항 삭제-->
     <delete id="deleteNotice" parameterType="int">
@@ -132,5 +132,11 @@
         select NOTICE_UPLOAD_FILE_NAME, NOTICE_STORE_FILE_NAME from NOTICE_FILE
         where notice_file_type= #{fileType} and notice_no = #{noticeNo}
     </select>
+
+    <!--공지사항 no 에 해당하는 파일들을 삭제하는 query -->
+    <delete id="deleteNoticeFileByNoticeNo">
+        delete from notice_file where notice_no = #{value}
+    </delete>
+
 
 </mapper>
