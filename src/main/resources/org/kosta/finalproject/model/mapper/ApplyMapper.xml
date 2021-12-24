@@ -98,6 +98,10 @@
           and   sm.STUDY_MEMBER_ROLE = '스터디리더'
         order by a.APPLY_NO desc
     </select>
+    <!--스터디리더인지 확인 -->
+    <select id="isStudyLeader" parameterType="String" resultType="hashmap">
+        select * from STUDY_MEMBER where email = #{value}
+    </select>
 
     <insert id="registerApplyStudy" parameterType="String">
         INSERT INTO APPLY(APPLY_NO, STUDY_NO, APPLY_REGDATE, APPLY_CONTENT, EMAIL)
