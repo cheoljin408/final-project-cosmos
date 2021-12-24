@@ -10,7 +10,7 @@
 <div class="container-fluid">
     <div class="row">
         <div th:replace="fragments/lms-sidebar.html :: fragment-lms-sidebar"></div>
-        <main role="main" class="container" style="padding: 50px">
+        <main role="main" class="container col-md-9 col-lg-10 col-sm-11" style="padding: 30px 150px">
             <div style="margin-top: 30px;">
             <h4>공지사항</h4><hr><br>
             <div th:each="notice: ${noticeList}">
