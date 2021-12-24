@@ -97,7 +97,9 @@ public class ApplyController {
         }
 
         List<Map<String, Object>> requestedApplyList = applyService.requestedApplyList(member.getEmail());
+        List<Map<String, Object>> isStudyLeader = applyService.isStudyLeader(member.getEmail());
         model.addAttribute("requestedApplyList", requestedApplyList);
+        model.addAttribute("isStudyLeader", isStudyLeader);
         return "studyapplyalarm/apply-request-list";
     }
 

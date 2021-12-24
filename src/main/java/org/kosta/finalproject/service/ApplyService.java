@@ -14,6 +14,8 @@ public interface ApplyService {
 
     List<Map<String, Object>> requestedApplyList(String email);
 
+    List<Map<String, Object>> isStudyLeader(String email);
+
     int registerApplyStudy(HashMap<String, String> jsonData);
 
 }
