@@ -25,4 +25,9 @@ public interface NoticeService {
 
     List<UploadFile> findImagesById(int noticeNo);
 
+    void updateNoticeByNoticeNo(String noticeTitle, String noticeContent, int noticeNo);
+
+    void deleteNoticeFileByNoticeNo(int noticeNo);
+
+    void registerNoticeFiles(int noticeNo, NoticeFormDTO noticeFormDTO, List<UploadFile> attachFiles, List<UploadFile> storeImageFiles);
 }
