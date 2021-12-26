@@ -202,7 +202,7 @@ public class StudyController {
         // log.info("studyNo:{}",studyNo);
         if (!studyService.findStudyMemberRoleByStudyNo(studyNo, member.getEmail()).equals("스터디리더")) {
             log.info("잘못된 접근 방식: 스터디 수정 페이지는 스터디를 등록한 리더만 요청 가능");
-            return "error";
+            return "study-error";
         }
         model.addAttribute("study", studyService.getStudyDetailByStudyNo(studyNo));
         log.info("modify study name: {}", studyService.getStudyDetailByStudyNo(studyNo).get("STUDY_NAME"));
@@ -233,18 +233,6 @@ public class StudyController {
         model.addAttribute("studyList",studyService.getMystudyListByEmail(member.getEmail()));
 
         return "studylist/mystudy-list";
-    }
-
-    /**
-     * 스터디 상태 변경
-     */
-    @GetMapping("/updateState/{studyNo}/{studyState}")
-    public String updateState(@PathVariable int studyNo, @PathVariable String studyState,@LoginUser SessionMember member,Model model){
-        log.info("findStudyMemberRoleByStudyNo : {}",studyService.findStudyMemberRoleByStudyNo(studyNo, member.getEmail()));
-        if(studyService.findStudyMemberRoleByStudyNo(studyNo, member.getEmail()).equals("스터디리더")){
-            studyService.updateState(studyNo,studyState);
-        }
-        return "forward:/lms/"+studyNo;
     }
 
 }
