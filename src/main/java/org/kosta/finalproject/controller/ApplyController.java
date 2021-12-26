@@ -45,11 +45,12 @@ public class ApplyController {
         List<Map<String, Object>> alarmListOkAndNo = new ArrayList<Map<String, Object>>();
         List<Map<String, Object>> alarmListWait = new ArrayList<Map<String, Object>>();
         for (int i = 0; i < allList.size(); i++) {
-            if(!allList.get(i).get("AST_APPLY_STATE_CODE").equals("WAIT") && allList.get(i).get("A_M_NAME").equals(member.getName())) {
+            //내가 참가신청한 스터디 중에서 결과가 수락 or 거절인 리스트 추가
+            if(!allList.get(i).get("AST_APPLY_STATE_CODE").equals("WAIT") && allList.get(i).get("EMAIL").equals(member.getEmail())) {
                 alarmListOkAndNo.add(allList.get(i));
             }
             //대기중인 스터디 추가
-            else if(allList.get(i).get("AST_APPLY_STATE_CODE").equals("WAIT") && allList.get(i).get("A_M_NAME").equals(member.getName())) {
+            else if(allList.get(i).get("AST_APPLY_STATE_CODE").equals("WAIT") && allList.get(i).get("EMAIL").equals(member.getEmail())) {
                 alarmListWait.add(allList.get(i));
             }
         }
