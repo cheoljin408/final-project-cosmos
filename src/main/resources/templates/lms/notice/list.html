@@ -19,9 +19,9 @@
 <div class="container-fluid">
     <div class="row">
         <div th:replace="fragments/lms-sidebar.html :: fragment-lms-sidebar"></div>
-        <main role="main" class="container" style="padding: 40px">
-            <div class="container" style="margin-top: 30px;">
-                <div>
+        <main role="main" class="container col-md-9 col-lg-10 col-sm-11" style="padding: 75px 175px">
+            <div>
+                <div class="border-bottom pb-2 mb-4">
                     <div style="display: inline-block;">
                         <h3>공지사항</h3>
                     </div>
@@ -29,9 +29,8 @@
                         <a class="align-middle" th:href="|/notice/register/${allStudyInfo.studyDTO.studyNo}|">글쓰기</a>
                     </div>
                 </div>
-                <hr>
                 <div th:if="${#lists.size(noticeList) == 0}">
-                    <div class="card" style="margin-top: 30px; margin-bottom: 20px;">
+                    <div class="card" style="margin-bottom: 10px;">
                         <div class="card-body" style="text-align: center">
                             <div style="margin-top: 10px; font-size: 16px; margin-right: 2px;">
                                 <strong>
@@ -47,10 +46,10 @@
                 <div th:each="notice: ${noticeList}">
                     <a th:href="@{/notice/detail/{studyNo}/{noticeNo}(studyNo=${notice.studyMemberDTO.studyDTO.studyNo}, noticeNo = ${notice.noticeNo})}"
                        style="color: black; text-decoration:none;">
-                        <div class="card" style="margin-top: 30px; padding:20px 20px 10px 10px; border:none;">
+                        <div class="card" style="margin-top: 15px; margin-bottom: 10px; border:none;">
                             <div class="card-body">
                                 <div>
-                                    <div style="font-size: 1.5rem; font-weight: 500; display:inline-block;">
+                                    <div style="font-size: 1.4rem; font-weight: 500; display:inline-block;">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" fill="#1a73e8"
                                              class="bi bi-card-text" viewBox="0 0 18 18" style="vertical-align: middle">
                                             <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"/>
