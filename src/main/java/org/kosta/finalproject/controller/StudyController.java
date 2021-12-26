@@ -194,36 +194,6 @@ public class StudyController {
     }
 
     /**
-     * 스터디 정보 수정
-     * @return: 스터디 수정 폼 페이지
-     */
-    @GetMapping("/modifyStudy/{studyNo}")
-    public String modifyStudy(@PathVariable int studyNo, Model model, @LoginUser SessionMember member) {
-        // log.info("studyNo:{}",studyNo);
-        if (studyService.findStudyMemberRoleByStudyNo(studyNo, member.getEmail()) == null) {
-            log.info("잘못된 접근 방식: 스터디 수정 페이지는 스터디를 등록한 리더만 요청 가능");
-            return "redirect:/";
-        }
-        model.addAttribute("study", studyService.getStudyDetailByStudyNo(studyNo));
-        log.info("modify study name: {}", studyService.getStudyDetailByStudyNo(studyNo).get("STUDY_NAME"));
-        model.addAttribute(studyNo);
-        return "study/modify";
-    }
-
-    /**
-     * 스터디 정보 수정 성공 후 메인 페이지로 이동
-     */
-    @ResponseBody
-    @PutMapping("/modifyStudy/{studyNo}")
-    public int modifyStudy(@PathVariable int studyNo, Model model, @RequestBody Map<String, String> jsonData) {
-        jsonData.put("studyNo", String.valueOf(studyNo));
-        log.info("jsonData:{}", jsonData);
-        studyService.modifyStudy(jsonData);
-        model.addAttribute("studyNo", studyNo);
-        return 0;
-    }
-
-    /**
      * 나의 스터디 리스트 가져오기
      */
     @GetMapping("/mystudy")
