@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>error</title>
+</head>
+<body>
+    <script th:inline="javascript">
+        alert("권한이 없습니다. 이전페이지로 돌아갑니다.");
+        location.href="/lms/"+/*[[${studyNo}]]*/;
+    </script>
+</body>
+</html>
