@@ -200,9 +200,9 @@ public class StudyController {
     @GetMapping("/modifyStudy/{studyNo}")
     public String modifyStudy(@PathVariable int studyNo, Model model, @LoginUser SessionMember member) {
         // log.info("studyNo:{}",studyNo);
-        if (studyService.findStudyMemberRoleByStudyNo(studyNo, member.getEmail()) == null) {
+        if (!studyService.findStudyMemberRoleByStudyNo(studyNo, member.getEmail()).equals("스터디리더")) {
             log.info("잘못된 접근 방식: 스터디 수정 페이지는 스터디를 등록한 리더만 요청 가능");
-            return "redirect:/";
+            return "error";
         }
         model.addAttribute("study", studyService.getStudyDetailByStudyNo(studyNo));
         log.info("modify study name: {}", studyService.getStudyDetailByStudyNo(studyNo).get("STUDY_NAME"));
