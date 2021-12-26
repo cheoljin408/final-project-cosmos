@@ -104,4 +104,15 @@ public class testLmsController {
 
         return "redirect:/";
     }
+
+    //스터디 상태 변경
+    @PostMapping("/updateState")
+    public String updateState(@RequestParam int studyNo, @RequestParam String studyState, @LoginUser SessionMember member){
+        log.info("findStudyMemberRoleByStudyNo : {}",studyService.findStudyMemberRoleByStudyNo(studyNo, member.getEmail()));
+        if(studyService.findStudyMemberRoleByStudyNo(studyNo, member.getEmail()).equals("스터디리더")){
+            studyService.updateState(studyNo,studyState);
+        }
+        return "redirect:/lms/"+studyNo;
+    }
+
 }

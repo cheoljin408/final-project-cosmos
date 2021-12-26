@@ -21,9 +21,9 @@
                               style="font-weight: bold; color: red;"></span>
                     </button>
                     <div th:if="${allStudyInfo.memberDTO.email}==${session.member.email}" class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
-                        <a class="dropdown-item updateState" style="color: seagreen;" th:href="@{/study/updateState/{studyNo}/{studyState}(studyNo=${allStudyInfo.studyDTO.studyNo},studyState=REC)}">모집중</a>
-                        <a class="dropdown-item updateState" style="color: #1a73e8;" th:href="@{/study/updateState/{studyNo}/{studyState}(studyNo=${allStudyInfo.studyDTO.studyNo},studyState=ING)}">진행중</a>
-                        <a class="dropdown-item updateState" style="color: red;" href="/study/updateStae/'FIN'">종료</a>
+                        <a class="dropdown-item updateState" style="color: seagreen; cursor: pointer;" th:onclick="|javascript:updateState('${allStudyInfo.studyDTO.studyNo}','REC')|">모집중</a>
+                        <a class="dropdown-item updateState" style="color: #1a73e8; cursor: pointer;" th:onclick="|javascript:updateState('${allStudyInfo.studyDTO.studyNo}','ING')|">진행중</a>
+                        <a class="dropdown-item updateState" style="color: red; cursor: pointer;" th:onclick="|javascript:updateState('${allStudyInfo.studyDTO.studyNo}','FIN')|">종료</a>
                     </div>
                 </div>
                 <a href="/study/list" style="margin-right: 10px; color: black;"><b>스터디 더보기</b></a>
@@ -63,11 +63,3 @@
         </div>
     </div>
 </nav>
-<script type="text/javascript">
-    $(function(){
-       $(".updateState").click(function(){
-           alert(1);
-           let updateState = $(".updateState").val();
-       });
-    });
-</script>

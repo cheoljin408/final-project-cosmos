@@ -205,16 +205,4 @@ public class StudyController {
         return "studylist/mystudy-list";
     }
 
-    /**
-     * 스터디 상태 변경
-     */
-    @GetMapping("/updateState/{studyNo}/{studyState}")
-    public String updateState(@PathVariable int studyNo, @PathVariable String studyState,@LoginUser SessionMember member,Model model){
-        log.info("findStudyMemberRoleByStudyNo : {}",studyService.findStudyMemberRoleByStudyNo(studyNo, member.getEmail()));
-        if(studyService.findStudyMemberRoleByStudyNo(studyNo, member.getEmail()).equals("스터디리더")){
-            studyService.updateState(studyNo,studyState);
-        }
-        return "forward:/lms/"+studyNo;
-    }
-
 }
