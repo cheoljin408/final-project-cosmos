@@ -79,14 +79,13 @@
                 studyInfo: $("#studyInfo").val()
             };
             $.ajax({
-                type: "put",
-                url: "/study/modifyStudy/" + studyNo,
+                type: "post",
+                url: "/lms/updateStudy/" + studyNo,
                 dataType: "json",
                 data: JSON.stringify(jsonData),
                 contentType: "application/json; charset=utf-8",
-                success: function () {
-                    var url = "/study/studyDetail/" + studyNo;
-                    location.replace(url);
+                success: function() {
+                    location.href = "/lms/" + studyNo;
                 }
             });
         });

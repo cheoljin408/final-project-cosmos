@@ -30,21 +30,4 @@ public class StudyListTest {
         assertThat(result.get(0).getMemberDTO().getName()).isEqualTo("test3");
         assertThat(result.get(0).getMemberDTO().getPicture()).isEqualTo("test3");
     }
-
-
-    @Test
-    void 검색결과리스트(){
-        List<StudyMemberDTO> list = studyMapper.getStudyListByStudyNameAndDesc("d");
-        for(int i=0;i<list.size();i++){
-            System.out.println("list.get(i) = " + list.get(i));
-        }
-    }
-
-    
-    @Test
-    @DisplayName("카테고리버튼검색")
-    void 카테고리버튼으로검색(){
-        List<StudyMemberDTO> result = studyMapper.getStudyListByCategory("언어");
-        assertThat(result.size()).isEqualTo(3);
-    }
 }

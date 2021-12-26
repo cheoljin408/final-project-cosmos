@@ -37,7 +37,7 @@
                n.notice_regdate,
                n.notice_hits,
                n.address,
-               sm.email    as sm_m_email,
+               sm.email   as sm_m_email,
                m.name     as sm_m_name,
                m.picture  as sm_m_picture,
                s.study_no as sm_s_study_no
@@ -61,7 +61,7 @@
                n.notice_hits,
                n.address,
                m.email,
-               m.name ,
+               m.name,
                m.picture,
                s.study_no,
                s.study_name
@@ -75,30 +75,33 @@
 
     <!-- 조회수 증가-->
     <update id="updateHits">
-        update notice set notice_hits = notice_hits + 1
-        where notice_no= #{noticeNo} and study_no = #{studyNo}
+        update notice
+        set notice_hits = notice_hits + 1
+        where notice_no = #{noticeNo}
+          and study_no = #{studyNo}
     </update>
 
     <!-- 공지사항 수정 -->
     <update id="updateNoticeByNoticeNo">
-        update notice set  notice_title   = #{noticeTitle},
-                           notice_content = #{noticeContent}
+        update notice
+        set notice_title   = #{noticeTitle},
+            notice_content = #{noticeContent}
         where notice_no = #{noticeNo}
     </update>
 
     <!-- 공지사항 삭제-->
     <delete id="deleteNotice" parameterType="int">
-        delete from notice where notice_no = #{value}
+        delete
+        from notice
+        where notice_no = #{value}
     </delete>
 
     <select id="getRecentNoticeList" parameterType="int" resultMap="noticeDTOMap">
         select v.NOTICE_NO, v.NOTICE_TITLE, v.NOTICE_CONTENT, v.NOTICE_REGDATE, v.NOTICE_HITS, v.ADDRESS
         from (
                  select NOTICE_NO, NOTICE_TITLE, NOTICE_CONTENT, NOTICE_REGDATE, NOTICE_HITS, ADDRESS
-                 from NOTICE n,
-                      STUDY_MEMBER sm
-                 where n.STUDY_NO = sm.STUDY_NO
-                   and n.STUDY_NO = #{value}
+                 from NOTICE
+                 where STUDY_NO = #{value}
                  order by NOTICE_REGDATE desc
              ) v
         where <![CDATA[ROWNUM <= 3]]>
@@ -107,35 +110,42 @@
     <!-- 공지사항 작성 -->
     <insert id="registerNotice">
         insert into NOTICE(NOTICE_NO, NOTICE_TITLE, NOTICE_CONTENT, NOTICE_REGDATE, EMAIL, STUDY_NO)
-        values (NOTICE_SEQ.nextval,#{noticeTitle},#{noticeContent},sysdate,#{email}, #{studyNo})
+        values (NOTICE_SEQ.nextval, #{noticeTitle}, #{noticeContent}, sysdate, #{email}, #{studyNo})
     </insert>
 
     <!-- 공지사항 번호 조회 -->
     <select id="getNoticeNoWhenRegister" resultType="int">
-        select notice_seq.currval from dual
+        select notice_seq.currval
+        from dual
     </select>
 
     <!-- 파일 업로드 -->
     <insert id="registerAttachFile">
         INSERT INTO NOTICE_FILE
-        VALUES (NOTICE_FILE_SEQ.nextval, #{attachFile.uploadFileName}, #{attachFile.storeFileName}, #{type}, NOTICE_SEQ.CURRVAL)
+        VALUES (NOTICE_FILE_SEQ.nextval, #{attachFile.uploadFileName}, #{attachFile.storeFileName}, #{type},
+                NOTICE_SEQ.CURRVAL)
     </insert>
 
     <!-- 이미지 업로드 -->
     <insert id="registerStoreImage">
         INSERT INTO NOTICE_FILE
-        VALUES (NOTICE_FILE_SEQ.nextval, #{storeImage.uploadFileName}, #{storeImage.storeFileName}, #{type}, NOTICE_SEQ.CURRVAL)
+        VALUES (NOTICE_FILE_SEQ.nextval, #{storeImage.uploadFileName}, #{storeImage.storeFileName}, #{type},
+                NOTICE_SEQ.CURRVAL)
     </insert>
 
 
     <select id="findFilesById" resultType="org.kosta.finalproject.model.domain.UploadFile">
-        select NOTICE_UPLOAD_FILE_NAME, NOTICE_STORE_FILE_NAME from NOTICE_FILE
-        where notice_file_type= #{fileType} and notice_no = #{noticeNo}
+        select NOTICE_UPLOAD_FILE_NAME, NOTICE_STORE_FILE_NAME
+        from NOTICE_FILE
+        where notice_file_type = #{fileType}
+          and notice_no = #{noticeNo}
     </select>
 
     <!--공지사항 no 에 해당하는 파일들을 삭제하는 query -->
     <delete id="deleteNoticeFileByNoticeNo">
-        delete from notice_file where notice_no = #{value}
+        delete
+        from notice_file
+        where notice_no = #{value}
     </delete>
 
 

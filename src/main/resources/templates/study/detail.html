@@ -1,12 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
     <div th:replace="fragments/html-head.html :: fragment-html-head"></div>
 </head>
-<body style="margin: 0; overflow-x:hidden; font-family: 'Noto Sans KR', sans-serif;">
+<body style="margin: 0; overflow-x:hidden;">
 <div th:replace="fragments/header.html :: fragment-header"></div>
 <!-- Page Content-->
     <div class="container mt-5" style="padding: 0 50px;">
@@ -64,16 +61,7 @@
                             <div class="card mb-4" style="min-height: 300px; font-size:19px;" th:text="${study.get('STUDY_INFO')}"/>
                         </pre>
                     </article>
-                    <!-- 신청 OR 수정 삭제 -->
                     <div class="row" style="display: flex; justify-content: center;">
-                        <!-- 스터디원은 버튼을 보여주지 않음 -->
-                        <!-- 스터디 리더인 경우 수정, 삭제 버튼 -->
-                        <div th:if="${role.equals('스터디리더')}">
-                            <div>
-                                <button type="button" class="btn btn-secondary" th:onclick="|window.location.href='/study/modifyStudy/${study.get('STUDY_NO')}'|">글 수정</button>
-                            </div>
-                        </div>
-
                         <!-- 스터디원, 스터디리더가 아닌 경우 참가 신청 버튼 -->
                         <div th:if="${role.equals('일반회원')}">
                             <button type="button" class="btn btn-primary" id="apply-study" data-toggle="modal" data-target="#applyModal">참가 신청</button>

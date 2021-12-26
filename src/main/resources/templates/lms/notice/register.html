@@ -12,12 +12,12 @@
 <div class="container-fluid">
     <div class="row">
         <div th:replace="fragments/lms-sidebar.html :: fragment-lms-sidebar"></div>
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4" style="padding: 20px 100px;">
-            <div class="container pt-5">
+        <main role="main" class="container col-md-9 col-lg-10 col-sm-11" style="padding: 75px 175px">
+            <div>
+                <div class="border-bottom pb-2 mb-4">
+                    <h3>공지사항 글쓰기</h3>
+                </div>
                 <div>
-                    <h4>공지사항 글쓰기</h4>
-                    <hr>
-                    <br>
                     <form th:action method="post" enctype="multipart/form-data">
                         <!-- 공지사항 제목 -->
                         <div>
