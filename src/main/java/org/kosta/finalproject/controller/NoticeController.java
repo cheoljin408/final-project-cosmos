@@ -9,6 +9,7 @@ import org.kosta.finalproject.model.domain.UploadFile;
 import org.kosta.finalproject.service.FileStoreService;
 import org.kosta.finalproject.service.NoticeService;
 import org.kosta.finalproject.service.StudyMemberService;
+import org.kosta.finalproject.service.StudyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -39,12 +40,14 @@ public class NoticeController {
     private final NoticeService noticeService;
     private final FileStoreService fileStoreService;
     private final StudyMemberService studyMemberService;
+    private final StudyService studyService;
 
     @Autowired
-    public NoticeController(NoticeService noticeService, FileStoreService fileStoreService, StudyMemberService studyMemberService) {
+    public NoticeController(NoticeService noticeService, FileStoreService fileStoreService, StudyMemberService studyMemberService,StudyService studyService) {
         this.noticeService = noticeService;
         this.fileStoreService = fileStoreService;
         this.studyMemberService = studyMemberService;
+        this.studyService = studyService;
     }
 
     /**
@@ -205,6 +208,12 @@ public class NoticeController {
     //LMS 사이드바 적용 공지사항 등록페이지
     @GetMapping("/register/{studyNo}")
     public String lmsRegisterNotice(@PathVariable int studyNo, Model model, @LoginUser SessionMember member) {
+
+        if(!studyService.findStudyMemberRoleByStudyNo(studyNo,member.getEmail()).equals("스터디리더")){
+            model.addAttribute("studyNo",studyNo);
+            return "lms/lms-error";
+        }
+
         model.addAttribute("studyNo", studyNo);
 
         // 내가 속한 스터디 이름 리스트 가져오기
@@ -226,6 +235,7 @@ public class NoticeController {
     @Transactional
     @PostMapping("/register/{studyNo}")
     public String registerNotice(@PathVariable int studyNo, @LoginUser SessionMember member, @ModelAttribute NoticeFormDTO noticeFormDTO, RedirectAttributes redirectAttributes, Model model)  throws IOException {
+
         log.info("noticeFormDTO: {}", noticeFormDTO);
         // 파일에 저장
         // MultipartFile attachFile = form.getAttachFile();
