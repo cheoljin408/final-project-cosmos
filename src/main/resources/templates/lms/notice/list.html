@@ -25,7 +25,7 @@
                     <div style="display: inline-block;">
                         <h3>공지사항</h3>
                     </div>
-                    <div class="align-middle" style="display: inline-block; float: right;">
+                    <div th:if="${allStudyInfo.memberDTO.email==session.member.email}" class="align-middle" style="display: inline-block; float: right;">
                         <a class="align-middle" th:href="|/notice/register/${allStudyInfo.studyDTO.studyNo}|">글쓰기</a>
                     </div>
                 </div>
