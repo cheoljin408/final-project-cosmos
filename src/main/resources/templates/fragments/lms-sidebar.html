@@ -92,7 +92,7 @@
         </li>-->
     </ul>
 
-    <div class="dropdown">
+    <div th:if="${session.member.email == allStudyInfo.memberDTO.email}" class="dropdown">
         <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton3"
                 data-toggle="dropdown" aria-expanded="false" style="padding: 0;">
             <a class="nav-link" href="" style="color: white; font-weight: bold;">
@@ -105,8 +105,11 @@
             </a>
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
-            <a class="dropdown-item" th:href="@{/study/modifyStudy/{studyNo}(studyNo = ${studyNo})}">스터디 수정</a>
-            <a class="dropdown-item" href="">스터디 삭제</a>
+            <a class="dropdown-item" th:href="@{/lms/updateStudy/{studyNo}(studyNo = ${studyNo})}">스터디 수정</a>
+            <a class="dropdown-item" href="javascript:deleteStudy();">스터디 삭제</a>
+            <form id="deleteStudyForm" action="/lms/deleteStudy" method="post">
+                <input type="hidden" name="studyNo" th:value="${studyNo}" />
+            </form>
         </div>
     </div>
 </div>

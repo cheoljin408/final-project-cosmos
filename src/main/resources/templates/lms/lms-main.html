@@ -30,7 +30,7 @@
                         <h4>공지사항</h4>
                     </div>
                     <div class="align-middle" style="display: inline-block; float: right;">
-                        <a class = "align-middle" th:href="@{/notice/list/{studyNo}(studyNo = ${studyNo})}">글목록</a>
+                        <a class="align-middle" th:href="@{/notice/list/{studyNo}(studyNo = ${studyNo})}">글목록</a>
                     </div>
                 </div>
                 <div th:if="${#lists.size(recentNoticeList) == 0}">
@@ -71,7 +71,7 @@
                         <h4>과제 게시판</h4>
                     </div>
                     <div class="align-middle" style="display: inline-block; float: right;">
-                        <a class = "align-middle" th:href="@{/notice/list/{studyNo}(studyNo = ${studyNo})}">글목록</a>
+                        <a class="align-middle" th:href="@{/notice/list/{studyNo}(studyNo = ${studyNo})}">글목록</a>
                     </div>
                 </div>
                 <div th:if="${#lists.size(recentTaskList) == 0}">
@@ -110,9 +110,19 @@
 -->
 
 <script th:inline="javascript">
-    console.log(/*[[${studyNo}]]*/)
-    console.log(/*[[${studyNameList}]]*/);
-    console.log(/*[[${allStudyInfo.memberDTO.email}]]*/);
+    function deleteStudy() {
+
+        let studyState = /*[[${allStudyInfo.studyDTO.studyStateDTO.studyState}]]*/;
+        console.log(studyState);
+
+        if(studyState !== "종료") {
+            alert("스터디 삭제는 스터디 상태가 '종료'인 상태에서 가능합니다.");
+            return;
+        }
+        if(confirm("이 스터디를 정말 삭제하시겠습니까?")) {
+            $("#deleteStudyForm").submit();
+        }
+    }
 </script>
 </body>
 </html>
