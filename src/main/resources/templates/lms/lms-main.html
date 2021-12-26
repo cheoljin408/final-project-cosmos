@@ -109,10 +109,31 @@
 <div th:replace="fragments/lms-footer.html :: fragment-lms-footer"></div>
 -->
 
-<script th:inline="javascript">
-    console.log(/*[[${studyNo}]]*/)
-    console.log(/*[[${studyNameList}]]*/);
-    console.log(/*[[${allStudyInfo.memberDTO.email}]]*/);
+<script type="text/javascript">
+    function updateState(studyNo,studyState){
+        let form = document.createElement('form');
+
+        document.characterSet="utf-8";
+
+        let obj;
+        obj = document.createElement('input');
+        obj.setAttribute('type', 'hidden');
+        obj.setAttribute('name', 'studyNo');
+        obj.setAttribute('value', studyNo);
+
+        let obj2;
+        obj2 = document.createElement('input');
+        obj2.setAttribute('type', 'hidden');
+        obj2.setAttribute('name', 'studyState');
+        obj2.setAttribute('value', studyState);
+
+        form.appendChild(obj);
+        form.appendChild(obj2);
+        form.setAttribute('method', 'post');
+        form.setAttribute('action', '/updateState');
+        document.body.appendChild(form);
+        form.submit();
+    }
 </script>
 </body>
 </html>
