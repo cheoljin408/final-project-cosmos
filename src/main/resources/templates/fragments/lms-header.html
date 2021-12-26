@@ -10,6 +10,22 @@
         </div>
         <div th:if="${session.member} != null">
             <div class="">
+                <div class="dropdown" style="display: inline;">
+                    <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton3"
+                            data-toggle="dropdown" aria-expanded="false">
+                        <span th:if="${allStudyInfo.studyDTO.studyStateDTO.studyState}=='모집중'" th:text="${allStudyInfo.studyDTO.studyStateDTO.studyState}"
+                              style="font-weight: bold; color: seagreen;"></span>
+                        <span th:if="${allStudyInfo.studyDTO.studyStateDTO.studyState}=='진행중'" th:text="${allStudyInfo.studyDTO.studyStateDTO.studyState}"
+                              style="font-weight: bold; color: #1a73e8;"></span>
+                        <span th:if="${allStudyInfo.studyDTO.studyStateDTO.studyState}=='종료'" th:text="${allStudyInfo.studyDTO.studyStateDTO.studyState}"
+                              style="font-weight: bold; color: red;"></span>
+                    </button>
+                    <div th:if="${allStudyInfo.memberDTO.email}==${session.member.email}" class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
+                        <a class="dropdown-item updateState" style="color: seagreen;" th:href="@{/study/updateState/{studyNo}/{studyState}(studyNo=${allStudyInfo.studyDTO.studyNo},studyState=REC)}">모집중</a>
+                        <a class="dropdown-item updateState" style="color: #1a73e8;" th:href="@{/study/updateState/{studyNo}/{studyState}(studyNo=${allStudyInfo.studyDTO.studyNo},studyState=ING)}">진행중</a>
+                        <a class="dropdown-item updateState" style="color: red;" href="/study/updateStae/'FIN'">종료</a>
+                    </div>
+                </div>
                 <a href="/study/list" style="margin-right: 10px; color: black;"><b>스터디 더보기</b></a>
                 <a href="/alarm" style="color: black; text-decoration: none;">
                     <svg style="margin-right: 10px" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
@@ -47,3 +63,11 @@
         </div>
     </div>
 </nav>
+<script type="text/javascript">
+    $(function(){
+       $(".updateState").click(function(){
+           alert(1);
+           let updateState = $(".updateState").val();
+       });
+    });
+</script>

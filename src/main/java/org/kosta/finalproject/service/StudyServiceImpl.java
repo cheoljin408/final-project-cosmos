@@ -73,4 +73,9 @@ public class StudyServiceImpl implements StudyService{
         return studyMapper.getMystudyListByEmail(email);
     }
 
+    @Override
+    public void updateState(int studyNo,String studyState) {
+        studyMapper.updateState(studyNo,studyState);
+    }
+
 }

@@ -36,4 +36,6 @@ public interface StudyMapper {
     int getTotalCountOfStudyList();
 
     List<StudyMemberDTO> getStudyListByPageNo(@Param("startRowNumber") int startRowNumber, @Param("endRowNumber") int endRowNumber);
+
+    void updateState(@Param("studyNo")int studyNo,@Param("studyState")String studyState);
 }

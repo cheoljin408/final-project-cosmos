@@ -133,4 +133,20 @@ public class StudyTest {
             System.out.println(studyMemberDTO);
         }
     }
+
+    @Test
+    void 스터디상태업데이트(){
+        //given
+        String state = "ING";
+        int studyNo = 21;
+        Map<String, Object> studyDetailInfo = studyService.getStudyDetailByStudyNo(studyNo);
+
+        //when
+        studyService.updateState(studyNo,state);
+        Map<String, Object> updatestudyDetailInfo = studyService.getStudyDetailByStudyNo(studyNo);
+
+        //then
+        assertThat(updatestudyDetailInfo).isNotSameAs(studyDetailInfo);
+
+    }
 }

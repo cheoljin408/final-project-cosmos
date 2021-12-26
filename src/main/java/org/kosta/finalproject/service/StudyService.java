@@ -28,4 +28,6 @@ public interface StudyService {
     void deleteStudyByStudyNo(int studyNo);
 
     List<StudyMemberDTO> getMystudyListByEmail(String email);
+
+    void updateState(int studyNo,String studyState);
 }

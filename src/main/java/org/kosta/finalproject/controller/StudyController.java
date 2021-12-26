@@ -3,11 +3,10 @@ package org.kosta.finalproject.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.kosta.finalproject.config.auth.LoginUser;
 import org.kosta.finalproject.config.auth.dto.SessionMember;
-import org.kosta.finalproject.model.domain.PagingBean;
-import org.kosta.finalproject.model.domain.StudyCommentDTO;
-import org.kosta.finalproject.model.domain.StudyMemberDTO;
+import org.kosta.finalproject.model.domain.*;
 import org.kosta.finalproject.service.PagingService;
 import org.kosta.finalproject.service.StudyCommentService;
+import org.kosta.finalproject.service.StudyMemberService;
 import org.kosta.finalproject.service.StudyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,12 +27,14 @@ public class StudyController {
     private final StudyService studyService;
     private final StudyCommentService studyCommentService;
     private final PagingService pagingService;
+    private final StudyMemberService studyMemberService;
 
     @Autowired
-    public StudyController(StudyService studyService, StudyCommentService studyCommentService, PagingService pagingService) {
+    public StudyController(StudyService studyService, StudyCommentService studyCommentService, PagingService pagingService,StudyMemberService studyMemberService) {
         this.studyService = studyService;
         this.studyCommentService = studyCommentService;
         this.pagingService = pagingService;
+        this.studyMemberService=studyMemberService;
     }
 
     /**
@@ -156,6 +157,9 @@ public class StudyController {
         return 0;
     }
 
+    /**
+     * 나의 스터디 리스트 가져오기
+     */
     @GetMapping("/mystudy")
     public String mystudy(@LoginUser SessionMember member,Model model){
         System.out.println("member.getEmail() = " + member.getEmail());
@@ -163,6 +167,18 @@ public class StudyController {
         model.addAttribute("studyList",studyService.getMystudyListByEmail(member.getEmail()));
 
         return "studylist/mystudy-list";
+    }
+
+    /**
+     * 스터디 상태 변경
+     */
+    @GetMapping("/updateState/{studyNo}/{studyState}")
+    public String updateState(@PathVariable int studyNo, @PathVariable String studyState,@LoginUser SessionMember member,Model model){
+        log.info("findStudyMemberRoleByStudyNo : {}",studyService.findStudyMemberRoleByStudyNo(studyNo, member.getEmail()));
+        if(studyService.findStudyMemberRoleByStudyNo(studyNo, member.getEmail()).equals("스터디리더")){
+            studyService.updateState(studyNo,studyState);
+        }
+        return "forward:/lms/"+studyNo;
     }
 
 }
