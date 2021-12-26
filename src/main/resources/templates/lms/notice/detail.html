@@ -131,7 +131,7 @@
         </main> <!-- Main end -->
     </div>
 </div>
-<script>
+<script type="text/javascript">
     $(document).ready(function () {
         $("#notice-delete").click(function () {
             console.log("삭제 버튼 클릭");
@@ -149,6 +149,32 @@
             });
         });
     });
+
+    <!--스터디 상태 변경 함수-->
+    function updateState(studyNo,studyState){
+        let form = document.createElement('form');
+
+        document.characterSet="utf-8";
+
+        let obj;
+        obj = document.createElement('input');
+        obj.setAttribute('type', 'hidden');
+        obj.setAttribute('name', 'studyNo');
+        obj.setAttribute('value', studyNo);
+
+        let obj2;
+        obj2 = document.createElement('input');
+        obj2.setAttribute('type', 'hidden');
+        obj2.setAttribute('name', 'studyState');
+        obj2.setAttribute('value', studyState);
+
+        form.appendChild(obj);
+        form.appendChild(obj2);
+        form.setAttribute('method', 'post');
+        form.setAttribute('action', '/updateState');
+        document.body.appendChild(form);
+        form.submit();
+    }
 </script>
 </body>
 </html>
