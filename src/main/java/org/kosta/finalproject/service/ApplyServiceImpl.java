@@ -19,8 +19,8 @@ public class ApplyServiceImpl implements ApplyService {
     }
 
     @Override
-    public List<Map<String, Object>> getAlarmList() {
-        List<Map<String, Object>> alarmList = applyMapper.getAlarmList();
+    public List<Map<String, Object>> getAlarmList(String email) {
+        List<Map<String, Object>> alarmList = applyMapper.getAlarmList(email);
         return alarmList;
     }
 

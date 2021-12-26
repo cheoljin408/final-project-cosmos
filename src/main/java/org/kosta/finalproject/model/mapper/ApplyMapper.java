@@ -9,7 +9,7 @@ import java.util.Map;
 @Mapper
 public interface ApplyMapper {
 
-    List<Map<String, Object>> getAlarmList();
+    List<Map<String, Object>> getAlarmList(@Param("email") String email);
 
     void applyRefuse(int applyNo);
 
