@@ -49,7 +49,7 @@
                     /* 동적으로 생성되는 알림 div에 대한 Modal창 정보 로드 */
                     $(".testBtn").click(function(){
                         console.log("testBtn click ok");
-                        $("#studyName").val($(this).find(".study_name").text());
+                        $("#studyName").val($(this).find(".study_name_hidden").val());
                         $("#applicant_name").val($(this).find(".study_applicant_name").text());
                         $("#applicant_info").val($(this).find(".study_applicant_content").val());
                         $("#study_no_modal").val($(this).find(".study_no").val());

@@ -26,11 +26,25 @@
                         <br>
 
                         <!-- 파일 업로드 -->
-                        <ul>
-                            <li>첨부파일<input type="file" multiple="multiple" name="attachFiles"></li>
-                            <li>이미지 파일들<input type="file" multiple="multiple" name="imageFiles"></li>
-                        </ul>
-                        <br>
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-6">
+                                        첨부파일<br>
+                                        <input type="file" class="form-control-file border" multiple="multiple"
+                                               name="attachFiles" style="color: #1a73e8; border-radius: 5px;"
+                                               placeholder="파일을 선택해주세요">
+                                    </div>
+                                    <div class="col-6">
+                                        이미지 첨부<br>
+                                        <input type="file" class="form-control-file border" multiple="multiple"
+                                               name="imageFiles" style="color: #1a73e8; border-radius: 5px;"
+                                               placeholder="파일을 선택해주세요">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br><br>
                         <!-- 텍스트 에디터 추가 -->
                         <textarea type="text" id="summernote" name="noticeContent"
                                   th:utext="${notice.get('NOTICE_CONTENT')}"></textarea>
