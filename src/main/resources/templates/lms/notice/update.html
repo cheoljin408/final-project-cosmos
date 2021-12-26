@@ -15,71 +15,46 @@
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4" style="padding: 20px 100px;">
             <div class="container pt-5">
                 <div>
-                    <h4>공지사항 글쓰기</h4><br>
-                    <!-- 공지사항 제목 -->
-                    <div>
-                        <input type="text" class="form-control" name="studyName" id="studyName" placeholder="제목"
-                               th:value="${notice.get('NOTICE_TITLE')}" readonly>
-                    </div>
-                    <br>
-                    <!-- 파일 업로드 -->
-                    <div>
-                        <textarea class="form-control" rows="3" name="studyDesc" id="studyDesc" placeholder="파일첨부"
-                                  required="required"></textarea>
+                    <h4>공지사항 수정</h4><br>
+                    <form th:action="@{/notice/update/{studyNo}(studyNo=${notice.get('STUDY_NO')})}" th:method="post"
+                          enctype="multipart/form-data">
+                        <!-- 공지사항 제목 -->
+                        <div>
+                            <input type="text" class="form-control" name="noticeTitle" id="noticeTitle"
+                                   th:value="${notice.get('NOTICE_TITLE')}" placeholder="제목">
+                        </div>
                         <br>
-                        <button class="btn btn-info" id="fileUploadNotice">파일첨부</button>
-                    </div>
-                    <br>
 
-                    <!-- 텍스트 에디터 추가 -->
-                    <form method="post" action="/notice/post">
-                        <textarea type="text" id="summernote" name="text"></textarea>
-
+                        <!-- 파일 업로드 -->
+                        <ul>
+                            <li>첨부파일<input type="file" multiple="multiple" name="attachFiles"></li>
+                            <li>이미지 파일들<input type="file" multiple="multiple" name="imageFiles"></li>
+                        </ul>
+                        <br>
+                        <!-- 텍스트 에디터 추가 -->
+                        <textarea type="text" id="summernote" name="noticeContent"
+                                  th:utext="${notice.get('NOTICE_CONTENT')}"></textarea>
+                        <br>
+                        <input type="hidden" id="noticeNo" name="noticeNo" th:value="${notice.get('NOTICE_NO')}">
+                        <button class="btn btn-info" id="noticeRegister">수정</button>
                     </form>
-                    <br>
-                    <button class="btn btn-info" id="noticeRegister">등록</button>
                 </div>
-
-                <script>
-                    $(document).ready(function() {
-                        //여기 아래 부분
-                        $('#summernote').summernote({
-                            height: 300,                  // 에디터 높이
-                            minHeight: null,              // 최소 높이
-                            maxHeight: null,              // 최대 높이
-                            focus: true,                  // 에디터 로딩후 포커스를 맞출지 여부
-                            lang: "ko-KR",            // 한글 설정
-                            placeholder: '최대 2048자까지 쓸 수 있습니다' //placeholder 설정
-                        });
-                    });
-
-                    /* 등록버튼 ajax(study register)
-                    $(document).ready(function () {
-                        $("#studyRegister").click(function () {
-                            var jsonData = {
-                                studyName: $("#studyName").val(),
-                                categoryTypeNo: $("#categoryTypeNo").val(),
-                                categoryLangNo: $("#categoryLangNo").val(),
-                                studyDesc: $("#studyDesc").val(),
-                                studyInfo: $("#studyInfo").val()
-                            };
-                            $.ajax({
-                                type: "post",
-                                url: "notice/registerStudy",
-                                dataType: "json",
-                                data: JSON.stringify(jsonData),
-                                contentType: "application/json; charset=utf-8",
-                                success: function () {
-                                    location.replace("/");
-                                }
-                            });
-                        });
-                    });
-                    */
-                </script>
             </div>
         </main>
     </div>
 </div>
+<script>
+    $(document).ready(function () {
+        //여기 아래 부분
+        $('#summernote').summernote({
+            height: 300,                  // 에디터 높이
+            minHeight: null,              // 최소 높이
+            maxHeight: null,              // 최대 높이
+            focus: true,                  // 에디터 로딩후 포커스를 맞출지 여부
+            lang: "ko-KR",            // 한글 설정
+            placeholder: '최대 2048자까지 쓸 수 있습니다' //placeholder 설정
+        });
+    });
+</script>
 </body>
 </html>

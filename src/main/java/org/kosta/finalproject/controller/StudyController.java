@@ -45,32 +45,98 @@ public class StudyController {
      */
 
     @GetMapping("/list")
-    public String studylistmain(Model model, @RequestParam(required = false) Object pageNo){
-        log.info("pageNo: {}", pageNo);
+    public String studylistmain(Model model, @RequestParam(required = false) Object pageNo, @RequestParam(required = false) String category, @RequestParam(required = false) String search){
 
-        // paging을 위한 스터디 리스트의 전체 수 조회
-        int totalCount = pagingService.getTotalCountOfStudyList();
-        log.info("totalCount: {}", totalCount);
-
-        PagingBean pagingBean = null;
-
-        // pageNo Null Check
-        if(pageNo == null) {
-            pagingBean = new PagingBean(totalCount);
-        } else {
-            pagingBean = new PagingBean(totalCount,  Integer.valueOf((String)pageNo));
+        // /study/list or study/list?pageNo=123 -> 전체
+        if(category == null && search == null) {
+            // paging을 위한 스터디 리스트의 전체 수 조회
+            int totalCount = pagingService.getTotalCountOfStudyList();
             log.info("totalCount: {}", totalCount);
-            log.info("Integer.valueOf((String)pageNo): {}", Integer.valueOf((String)pageNo));
+
+            PagingBean pagingBean = null;
+
+            // pageNo Null Check
+            if(pageNo == null) {
+                pagingBean = new PagingBean(totalCount);
+            } else {
+                pagingBean = new PagingBean(totalCount,  Integer.valueOf((String)pageNo));
+                log.info("totalCount: {}", totalCount);
+                log.info("Integer.valueOf((String)pageNo): {}", Integer.valueOf((String)pageNo));
+            }
+
+            // pagingBean을 model에 할당
+            model.addAttribute("pagingBean", pagingBean);
+
+            // studyList를 model에 할당
+            List<StudyMemberDTO> studyList = pagingService.getStudyListByPageNo(pagingBean.getStartRowNumber(), pagingBean.getEndRowNumber());
+            model.addAttribute("studyList", studyList);
+
+            // category, search 상태 할당
+            model.addAttribute("category", "NULL");
+            model.addAttribute("search", "NULL");
+
+        } else if(category != null && search == null) { // 카테고리
+
+            // paging을 위한 스터디 리스트의 전체 수 조회
+            int totalCount = pagingService.getTotalCountOfStudyListByCategory(category);
+            log.info("categoryTotalCount: {}", totalCount);
+
+            PagingBean pagingBean = null;
+
+            // pageNo Null Check
+            if(pageNo == null) {
+                pagingBean = new PagingBean(totalCount);
+            } else {
+                pagingBean = new PagingBean(totalCount,  Integer.valueOf((String)pageNo));
+                log.info("categoryTotalCount: {}", totalCount);
+                log.info("Integer.valueOf((String)pageNo): {}", Integer.valueOf((String)pageNo));
+            }
+
+            // pagingBean을 model에 할당
+            model.addAttribute("pagingBean", pagingBean);
+
+            // studyList를 model에 할당
+            List<StudyMemberDTO> studyList = pagingService.getStudyListByCategoryAndPageNo(category, pagingBean.getStartRowNumber(), pagingBean.getEndRowNumber());
+            model.addAttribute("studyList", studyList);
+
+            // study-list-main에 카테고리 정보를 할당
+            model.addAttribute("category", category);
+
+            // category, search 상태 할당
+            model.addAttribute("category", category);
+            model.addAttribute("search", "NULL");
+
+        } else if(category == null && search != null) { // 검색
+
+            // paging을 위한 스터디 리스트의 전체 수 조회
+            int totalCount = pagingService.getTotalCountOfStudyListBySearch(search);
+            log.info("searchTotalCount: {}", totalCount);
+
+            PagingBean pagingBean = null;
+
+            // pageNo Null Check
+            if(pageNo == null) {
+                pagingBean = new PagingBean(totalCount);
+            } else {
+                pagingBean = new PagingBean(totalCount,  Integer.valueOf((String)pageNo));
+                log.info("searchTotalCount: {}", totalCount);
+                log.info("Integer.valueOf((String)pageNo): {}", Integer.valueOf((String)pageNo));
+            }
+
+            // pagingBean을 model에 할당
+            model.addAttribute("pagingBean", pagingBean);
+
+            // studyList를 model에 할당
+            List<StudyMemberDTO> studyList = pagingService.getStudyListBySearch(search, pagingBean.getStartRowNumber(), pagingBean.getEndRowNumber());
+            model.addAttribute("studyList", studyList);
+
+            // study-list-main에 카테고리 정보를 할당
+            model.addAttribute("search", search);
+
+            // category, search 상태 할당
+            model.addAttribute("category", "NULL");
+            model.addAttribute("search", search);
         }
-
-        // pagingBean을 model에 할당
-        model.addAttribute("pagingBean", pagingBean);
-
-        // studyList를 model에 할당
-        // List<StudyMemberDTO> result = studyService.getAllList();
-        // model.addAttribute("studyList", result);
-        List<StudyMemberDTO> studyList = pagingService.getStudyListByPageNo(pagingBean.getStartRowNumber(), pagingBean.getEndRowNumber());
-        model.addAttribute("studyList", studyList);
 
         return "studylist/study-list-main";
     }

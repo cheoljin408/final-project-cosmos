@@ -29,16 +29,6 @@ public class StudyServiceImpl implements StudyService{
     }
 
     @Override
-    public List<StudyMemberDTO> getStudyListByCategory(String categoryVal) {
-        return studyMapper.getStudyListByCategory(categoryVal);
-    }
-
-    @Override
-    public List<StudyMemberDTO> getStudyListByStudyNameAndDesc(String searchWord) {
-        return studyMapper.getStudyListByStudyNameAndDesc(searchWord);
-    }
-
-    @Override
     public void registerStudy(Map<String, String> studyDTO) {
         studyMapper.registerStudy(studyDTO);
     }

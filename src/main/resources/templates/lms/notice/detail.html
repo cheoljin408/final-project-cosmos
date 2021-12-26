@@ -120,62 +120,35 @@
                         th:onclick="|window.location.href='/notice/list/${allStudyInfo.studyDTO.studyNo}'|">글 목록
                 </button>
                 <div style="float: right; margin-right: 2px;" class="row">
-                    <form method="post" action="/notice/update" style="white-space: nowrap;" }>
-                        <input type="hidden" th:name="notice_no" th:value="${notice.get('NOTICE_NO')}">
+                    <form method="post" th:action="@{/notice/update/form/{studyNo}(studyNo=${notice.get('STUDY_NO')})}" style="white-space: nowrap;"}>
+                        <input type="hidden" id="noticeNo" name="noticeNo" th:value="${notice.get('NOTICE_NO')}">
                         <button class="btn btn-primary" id="notice-modify">수정</button> &nbsp;
                     </form>
                     <button class="btn btn-secondary" id="notice-delete">삭제</button>
                 </div>
                 <!-- 본문 내용 end -->
-                <script>
-                    $(document).ready(function () {
-                        /*
-                        $('#summernote').summernote({
-                          height: 300,
-                          minHeight: null,
-                          maxHeight: null,
-                          focus: true,
-                          lang: "ko-KR",
-                          placeholder: '최대 2048자까지 쓸 수 있습니다'
-                        });*/
-                        /* 삭제버튼시 동작 사항 */
-                        $("#notice-delete").click(function () {
-                            console.log("삭제 버튼 클릭");
-                            var notice_no = [[${notice.get('NOTICE_NO')}]];
-                            if (!confirm(notice_no + "번 공지사항을 삭제하시겠습니까?")) {
-                                return false;
-                            }
-                            $.ajax({
-                                type: "post",
-                                url: "/notice/delete",
-                                data: "noticeNo=" + notice_no,
-                                success: function () {
-                                    alert("/notice/list/" + [[${notice.get('STUDY_NO')}]]);
-                                    location.replace("/notice/list/" + [[${notice.get('STUDY_NO')}]]);
-                                }
-                            });
-                        });
-                        $("#notice-modify").click(function () {
-                            console.log("삭제 버튼 클릭");
-                            var notice_no = [[${notice.get('NOTICE_NO')}]];
-                            if (!confirm(notice_no + "번 공지사항을 삭제하시겠습니까?")) {
-                                return false;
-                            }
-                            $.ajax({
-                                type: "post",
-                                url: "/notice/delete",
-                                data: "noticeNo=" + notice_no,
-                                success: function () {
-                                    alert("/notice/list/" + [[${notice.get('STUDY_NO')}]]);
-                                    location.replace("/notice/list/" + [[${notice.get('STUDY_NO')}]]);
-                                }
-                            });
-                        });
-                    });
-                </script>
             </div>
         </main> <!-- Main end -->
     </div>
 </div>
+<script>
+    $(document).ready(function () {
+        $("#notice-delete").click(function () {
+            console.log("삭제 버튼 클릭");
+            var notice_no = [[${notice.get('NOTICE_NO')}]];
+            if (!confirm(notice_no + "번 공지사항을 삭제하시겠습니까?")) {
+                return false;
+            }
+            $.ajax({
+                type: "post",
+                url: "/notice/delete",
+                data: "noticeNo=" + notice_no,
+                success: function () {
+                    location.replace("/notice/list/" + [[${notice.get('STUDY_NO')}]]);
+                }
+            });
+        });
+    });
+</script>
 </body>
 </html>
