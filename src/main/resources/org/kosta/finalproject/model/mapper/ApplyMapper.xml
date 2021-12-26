@@ -48,7 +48,7 @@
           and a.email = m.email
           and a.apply_state_code = ast.apply_state_code
           and s.study_state_code = sst.study_state_code
-          and a.EMAIL = #{value}
+          and a.EMAIL = #{email}
         order by a.apply_no desc
     </select>
 
