@@ -41,19 +41,17 @@ public class ApplyController {
         // allList : 참가신청한 스터디의 모든 리스트
         // alarmListOkAndNo: 참가신청한 스터디 중 참가신청 결과가 "수락완료" or "수락거부"인 참가신청 리스트
         // alarmListWait: 참가신청한 스터디 중 참가신청 결과가 "수락대기"인 참가신청 리스트
-        List<Map<String, Object>> allList = applyService.getAlarmList();
+        List<Map<String, Object>> allList = applyService.getAlarmList(member.getEmail());
         List<Map<String, Object>> alarmListOkAndNo = new ArrayList<Map<String, Object>>();
         List<Map<String, Object>> alarmListWait = new ArrayList<Map<String, Object>>();
         for (int i = 0; i < allList.size(); i++) {
             if(!allList.get(i).get("AST_APPLY_STATE_CODE").equals("WAIT") && allList.get(i).get("A_M_NAME").equals(member.getName())) {
                 alarmListOkAndNo.add(allList.get(i));
-                System.out.println(1000);
             }
             //대기중인 스터디 추가
             else if(allList.get(i).get("AST_APPLY_STATE_CODE").equals("WAIT") && allList.get(i).get("A_M_NAME").equals(member.getName())) {
                 alarmListWait.add(allList.get(i));
             }
-            System.out.println(member.getName());
         }
         model.addAttribute("alarmListOkAndNo", alarmListOkAndNo);
         model.addAttribute("alarmListWait", alarmListWait);
