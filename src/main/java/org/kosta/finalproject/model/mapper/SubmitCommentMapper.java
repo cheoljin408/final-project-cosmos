@@ -7,7 +7,7 @@ import org.kosta.finalproject.model.domain.SubmitCommentDTO;
 import java.util.List;
 
 @Mapper
-public interface TaskCommentMapper {
+public interface SubmitCommentMapper {
 
     void deleteTaskComment(int submitNo);
 

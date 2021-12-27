@@ -6,7 +6,7 @@ import org.kosta.finalproject.model.domain.SubmitCommentDTO;
 import java.util.List;
 import java.util.Map;
 
-public interface TaskCommentService {
+public interface SubmitCommentService {
     void deleteTaskComment(int submitNo);
 
     List<SubmitCommentDTO> getAllTaskCommentList(int taskNo);

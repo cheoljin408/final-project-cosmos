@@ -2,7 +2,8 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.kosta.finalproject.model.mapper.TaskCommentMapper">
+<mapper namespace="org.kosta.finalproject.model.mapper.SubmitCommentMapper">
+
     <delete id="deleteTaskComment">
         delete
         from SUBMIT_COMMENT

@@ -1,9 +1,8 @@
 package org.kosta.finalproject.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.kosta.finalproject.model.domain.StudyCommentDTO;
 import org.kosta.finalproject.model.domain.SubmitCommentDTO;
-import org.kosta.finalproject.service.TaskCommentService;
+import org.kosta.finalproject.service.SubmitCommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,17 +11,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @Controller
-public class TaskCommentApiController {
+public class SubmitCommentApiController {
 
-    private final TaskCommentService taskCommentService;
+    private final SubmitCommentService submitCommentService;
 
     @Autowired
-    public TaskCommentApiController(TaskCommentService taskCommentService) {
-        this.taskCommentService = taskCommentService;
+    public SubmitCommentApiController(SubmitCommentService submitCommentService) {
+        this.submitCommentService = submitCommentService;
     }
     
     // 과제 제출 등록
@@ -33,9 +31,9 @@ public class TaskCommentApiController {
     @DeleteMapping("/api/deleteTaskComment/{submitNo}")
     public String deleteTaskComment(@RequestBody int submitNo, @PathVariable int taskNo, Model model) {
         System.out.println("submit = " + submitNo);
-        taskCommentService.deleteTaskComment(submitNo);
+        submitCommentService.deleteTaskComment(submitNo);
 
-        List<SubmitCommentDTO> allTaskCommentList = taskCommentService.getAllTaskCommentList(taskNo);
+        List<SubmitCommentDTO> allTaskCommentList = submitCommentService.getAllTaskCommentList(taskNo);
         model.addAttribute("studyCommentList", allTaskCommentList);
 
         return "fragments/task-submit-comment :: fragment-task-submit-comment";
