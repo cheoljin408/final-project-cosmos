@@ -3,6 +3,7 @@ package org.kosta.finalproject.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.kosta.finalproject.config.auth.LoginUser;
 import org.kosta.finalproject.config.auth.dto.SessionMember;
+import org.kosta.finalproject.model.domain.NoticeFormDTO;
 import org.kosta.finalproject.model.domain.StudyMemberDTO;
 import org.kosta.finalproject.model.domain.TaskFormDTO;
 import org.kosta.finalproject.model.domain.UploadFile;
@@ -159,6 +160,59 @@ public class TaskController {
         return "lms/task/detail";
     }
 
+    /**
+     *   과제공지 업데이트 폼으로 이동
+     */
+    @PostMapping("/update/form/{studyNo}")
+    public String updateTaskForm(@RequestParam int taskNo, @PathVariable int studyNo ,
+                                   @LoginUser SessionMember member, Model model) {
+        model.addAttribute("taskInfo", taskService.getTaskDetailByTaskNo(taskNo));
+        log.info("taskInfo: {}", taskService.getTaskDetailByTaskNo(taskNo));
+        // 내가 속한 스터디 이름 리스트 가져오기
+        Map<String, Object> emailAndStudyNo = new HashMap<String, Object>();
+        emailAndStudyNo.put("email", member.getEmail());
+        emailAndStudyNo.put("studyNo", studyNo);
+        List<Map<String, Object>> studyNameList = studyMemberService.getStudyNameList(emailAndStudyNo);
+        log.info("studyNameList: {}", studyNameList);
+        model.addAttribute("studyNameList", studyNameList);
+
+        // 해당 스터디에대한 전체 정보 가져오기
+        StudyMemberDTO allStudyInfo = studyMemberService.getAllStudyInfo(studyNo);
+        log.info("allStudyInfo: {}", allStudyInfo);
+        model.addAttribute("allStudyInfo", allStudyInfo);
+
+        return "lms/task/update";
+    }
+
+    /**
+     * 과제공지 수정
+     */
+    @PostMapping("/update/{studyNo}")
+    @Transactional
+    public String update(@PathVariable int studyNo, @ModelAttribute TaskFormDTO taskFormDTO,
+                         Model model, @LoginUser SessionMember member, @RequestParam int taskNo,
+                         RedirectAttributes redirectAttributes) throws IOException {
+        // 1. Content와 Title 정보를 업데이트
+        log.info("content, title uploading");
+        taskService.updateTaskByTaskNo(taskFormDTO.getTaskTitle(),
+                taskFormDTO.getTaskContent(),
+                taskNo);
+        log.info("delete original images, files");
+        // 2. 기존의 이미지와 파일들을 삭제
+        taskService.deleteTaskFileByTaskNo(taskNo);
+
+        // 3. 이미지와 파일들을 재업로드
+        List<UploadFile> storeImageFiles = fileStoreService.storeFiles(taskFormDTO.getImageFiles());
+        List<UploadFile> attachFiles = fileStoreService.storeFiles(taskFormDTO.getAttachFiles());
+
+        // 3.2 ) -> 실질적으로 저장
+        taskService.registerTaskFiles(taskNo, taskFormDTO, attachFiles, storeImageFiles);
+
+        redirectAttributes.addAttribute("taskNo", taskNo);
+        redirectAttributes.addAttribute("studyNo", studyNo);
+
+        return "redirect:/task/detail/{studyNo}/{taskNo}";
+    }
     /**
      * 과제 공지사항 삭제
      */
