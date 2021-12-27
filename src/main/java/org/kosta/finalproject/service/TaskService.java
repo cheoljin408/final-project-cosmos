@@ -14,4 +14,6 @@ public interface TaskService {
     List<UploadFile> findImagesById(int taskNo);
 
     List<UploadFile> findFilesById(int taskNo);
+
+    void deleteNotice(int taskNo);
 }

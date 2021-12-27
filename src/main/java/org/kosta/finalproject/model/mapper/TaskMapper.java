@@ -1,6 +1,7 @@
 package org.kosta.finalproject.model.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.kosta.finalproject.model.domain.TaskDTO;
 import org.kosta.finalproject.model.domain.UploadFile;
 
@@ -13,5 +14,9 @@ public interface TaskMapper {
 
     Map<String, Object> getTaskDetailByTaskNo(int taskNo);
 
-    List<UploadFile> findFilesById(String file, int taskNo);
+    List<UploadFile> findFilesById(@Param("fileType") String fileType, @Param("taskNo") int taskNo);
+
+    void deleteTaskFileByTaskNo(int taskNo);
+
+    void deleteTask(int taskNo);
 }

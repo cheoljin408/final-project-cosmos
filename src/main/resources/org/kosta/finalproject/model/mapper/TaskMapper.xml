@@ -49,10 +49,24 @@
 
     <!-- 관련 파일 가져오기-->
     <select id="findFilesById" resultType="org.kosta.finalproject.model.domain.UploadFile">
-        select NOTICE_UPLOAD_FILE_NAME, NOTICE_STORE_FILE_NAME
-        from NOTICE_FILE
-        where notice_file_type = #{fileType}
-          and notice_no = #{taskNo}
+        select TASK_UPLOAD_FILE_NAME, TASK_STORE_FILE_NAME
+        from TASK_FILE
+        where task_file_type = #{fileType}
+          and task_no = #{taskNo}
     </select>
+
+    <!-- 과제 공지사항 no 에 해당하는 파일들을 삭제하는 query -->
+    <delete id="deleteTaskFileByTaskNo">
+        delete
+        from task_file
+        where task_no = #{value}
+    </delete>
+
+    <!-- 공지사항 삭제-->
+    <delete id="deleteTask" parameterType="int">
+        delete
+        from task
+        where task_no = #{value}
+    </delete>
 
 </mapper>

@@ -41,4 +41,10 @@ public class TaskServiceImpl implements TaskService {
         List<UploadFile> imgFiles = taskMapper.findFilesById("IMG", taskNo);
         return imgFiles;
     }
+
+    @Override
+    public void deleteNotice(int taskNo) {
+        taskMapper.deleteTaskFileByTaskNo(taskNo);
+        taskMapper.deleteTask(taskNo);
+    }
 }
