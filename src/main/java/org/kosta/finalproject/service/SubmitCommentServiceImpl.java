@@ -1,15 +1,12 @@
 package org.kosta.finalproject.service;
 
 import lombok.extern.slf4j.Slf4j;
-
 import org.kosta.finalproject.model.domain.SubmitCommentDTO;
 import org.kosta.finalproject.model.mapper.SubmitCommentMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
-import java.util.List;
-
 import java.util.List;
 
 @Slf4j

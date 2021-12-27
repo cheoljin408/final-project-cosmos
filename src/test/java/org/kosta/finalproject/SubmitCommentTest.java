@@ -2,7 +2,6 @@ package org.kosta.finalproject;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.kosta.finalproject.model.domain.SubmitCommentDTO;
 import org.kosta.finalproject.service.SubmitCommentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
