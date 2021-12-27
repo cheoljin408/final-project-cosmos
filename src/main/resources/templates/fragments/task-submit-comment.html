@@ -27,27 +27,35 @@
         </div>
     </div>
     <div>
-        <div class="card" style="border: none;">
+        <div th:each="submitCommentMap:${submitCommentList}" class="card" style="border: none;">
             <div class="card-body">
                 <div style="margin-bottom: 10px;">
-                    <img class="rounded-circle"
+                    <img th:src="${submitCommentMap.PICTURE}" class="rounded-circle"
                          style="margin-right: 10px; width: 30px; height: 30px;"/>
-                    <span style="margin-right: 10px;">name</span>
-                    <span>regdate</span>
+                    <span th:text="${submitCommentMap.NAME}" style="margin-right: 10px;">name</span>
+                    <span th:text="${submitCommentMap.SUBMIT_REGDATE}">regdate</span>
                 </div>
                 <div>
                     <div style="display: inline-block; width: 85%;" class="align-middle">
-                        <p style="margin: 0; display: inline-block;">댓글내용</p>
+                        <p th:text="${submitCommentMap.SUBMIT_CONTENT}" style="margin: 0; display: inline-block;">댓글내용</p>
                         <input class="form-control" type="text" style="display: none;" />
                     </div>
-                    <div style="display: inline-block; float: right;">
-                        <button type="button" class="btn btn-secondary btn-sm studyCommentUpdateBtn" style="display: inline;">수정</button>
-                        <button type="button" class="btn btn-secondary btn-sm studyCommentUpdateSubmitBtn" style="display: none;">확인</button>
+                    <div th:if="${submitCommentMap.EMAIL == session.member.email}" style="display: inline-block; float: right;">
+                        <button type="button" class="btn btn-secondary btn-sm submitCommentUpdateBtn" style="display: inline;">수정</button>
+                        <button type="button" class="btn btn-secondary btn-sm submitCommentUpdateSubmitBtn" style="display: none;">확인</button>
 
-                        <button type="button" class="btn btn-secondary btn-sm studyCommentDeleteBtn" style="display: inline;">삭제</button>
-                        <button type="button" class="btn btn-secondary btn-sm studyCommentCancelBtn" style="display: none;">취소</button>
+                        <button type="button" class="btn btn-secondary btn-sm submitCommentDeleteBtn" style="display: inline;">삭제</button>
+                        <button type="button" class="btn btn-secondary btn-sm submitCommentCancelBtn" style="display: none;">취소</button>
                     </div>
                 </div>
+                <tr th:if="${submitCommentMap.SUBMIT_UPLOAD_FILE_NAME != null}">
+                    <th>첨부파일</th>
+                    <td colspan="5">
+                        <!-- 업로드된 첨부파일 출력 -->
+                        <a th:href="|/task/comment/${submitCommentMap.SUBMIT_NO}|"
+                           th:text="${submitCommentMap.SUBMIT_UPLOAD_FILE_NAME}"/>
+                    </td>
+                </tr>
             </div>
             <hr>
         </div>

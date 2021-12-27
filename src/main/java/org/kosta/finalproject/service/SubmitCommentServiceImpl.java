@@ -7,6 +7,9 @@ import org.kosta.finalproject.model.mapper.SubmitCommentMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.List;
+
 import java.util.List;
 
 @Slf4j
@@ -21,6 +24,11 @@ public class SubmitCommentServiceImpl implements SubmitCommentService {
     }
 
     @Override
+    public List<HashMap<String, String>> getAllSubmitComment(int studyNo, int taskNo) {
+        return submitCommentMapper.getAllSubmitComment(studyNo, taskNo);
+    }
+
+    @Override
     public void deleteTaskComment(int submitNo) {
         log.info("submitNo = {}", submitNo);
         submitCommentMapper.deleteTaskComment(submitNo);
@@ -30,4 +38,5 @@ public class SubmitCommentServiceImpl implements SubmitCommentService {
     public void registerSubmitComment(SubmitCommentDTO submitCommentDTO) {
         submitCommentMapper.registerSubmitComment(submitCommentDTO);
     }
+  
 }

@@ -60,7 +60,7 @@
     </select>
     
     <select id="getAllTaskListByStudyNo" parameterType="int" resultMap="taskDTOMap">
-        select t.task_no, t.task_title, t.task_content, to_char(t.task_regdate, 'YYYY-MM-DD HH24-MI-SS'),
+        select t.task_no, t.task_title, t.task_content, to_char(t.task_regdate, 'YYYY-MM-DD HH24-MI-SS') as TASK_REGDATE,
         sm.email   as sm_m_email,
         m.name     as sm_m_name,
         m.picture  as sm_m_picture,
@@ -146,5 +146,12 @@
         VALUES (TASK_FILE_SEQ.nextval, #{storeImage.uploadFileName}, #{storeImage.storeFileName}, #{type},
                 TASK_SEQ.CURRVAL)
     </insert>
+
+    <!-- 댓글 과제 파일 다운로드 -->
+    <select id="findFileById" parameterType="int" resultType="UploadFile">
+        select SUBMIT_UPLOAD_FILE_NAME, SUBMIT_STORE_FILE_NAME
+        from SUBMIT_COMMENT
+        where SUBMIT_NO = #{value}
+    </select>
 
 </mapper>
