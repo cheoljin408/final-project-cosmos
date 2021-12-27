@@ -1,9 +1,6 @@
 package org.kosta.finalproject.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.kosta.finalproject.model.domain.StudyCommentDTO;
-import org.kosta.finalproject.model.domain.SubmitCommentDTO;
-import org.kosta.finalproject.model.domain.UploadFile;
 import org.kosta.finalproject.config.auth.LoginUser;
 import org.kosta.finalproject.config.auth.dto.SessionMember;
 import org.kosta.finalproject.model.domain.SubmitCommentDTO;
@@ -17,27 +14,19 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.List;
-import java.util.Map;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.io.IOException;
-import org.kosta.finalproject.service.SubmitCommentService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 
 @Slf4j
 @Controller
 public class SubmitCommentApiController {
 
     private final SubmitCommentService submitCommentService;
+    private final FileStoreService fileStoreService;
 
     @Autowired
-    public SubmitCommentApiController(SubmitCommentService submitCommentService) {
+    public SubmitCommentApiController(SubmitCommentService submitCommentService, FileStoreService fileStoreService) {
         this.submitCommentService = submitCommentService;
+        this.fileStoreService = fileStoreService;
     }
     
     // 과제 제출 등록

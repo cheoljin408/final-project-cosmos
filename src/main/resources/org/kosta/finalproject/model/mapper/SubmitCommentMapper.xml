@@ -5,41 +5,40 @@
 <mapper namespace="org.kosta.finalproject.model.mapper.SubmitCommentMapper">
 
     <select id="getAllSubmitComment" resultType="HashMap">
-        SELECT sc.SUBMIT_NO ,
-            DBMS_LOB.SUBSTR(sc.SUBMIT_CONTENT, dbms_LoB.GETLENGTH(sc.SUBMIT_CONTENT)) as SUBMIT_CONTENT ,
-            sc.SUBMIT_UPLOAD_FILE_NAME ,
-            sc.SUBMIT_STORE_FILE_NAME ,
-            to_char(sc.SUBMIT_REGDATE, 'YYYY-MM-DD HH24:MI:SS') as SUBMIT_REGDATE,
-            sc.TASK_NO ,
-            sc.EMAIL ,
-            sc.STUDY_NO,
-            m.NAME ,
-            m.PICTURE
+        SELECT sc.SUBMIT_NO,
+               DBMS_LOB.SUBSTR(sc.SUBMIT_CONTENT, dbms_LoB.GETLENGTH(sc.SUBMIT_CONTENT)) as SUBMIT_CONTENT,
+               sc.SUBMIT_UPLOAD_FILE_NAME,
+               sc.SUBMIT_STORE_FILE_NAME,
+               to_char(sc.SUBMIT_REGDATE, 'YYYY-MM-DD HH24:MI:SS')                       as SUBMIT_REGDATE,
+               sc.TASK_NO,
+               sc.EMAIL,
+               sc.STUDY_NO,
+               m.NAME,
+               m.PICTURE
         FROM SUBMIT_COMMENT sc,
-            MEMBER m
+             MEMBER m
         WHERE sc.STUDY_NO = #{param1}
-        AND sc.TASK_NO = #{param2}
-        AND m.email = sc.email
+          AND sc.TASK_NO = #{param2}
+          AND m.email = sc.email
+        order by SUBMIT_NO desc
     </select>
 
-  <delete id="deleteTaskComment">
+    <delete id="deleteTaskComment">
         delete
         from SUBMIT_COMMENT
         where SUBMIT_NO = #{value}
     </delete>
-  
+
     <insert id="registerSubmitComment" parameterType="SubmitCommentDTO">
         insert into SUBMIT_COMMENT
-        values (
-                SUBMIT_COMMENT_SEQ.nextval,
+        values (SUBMIT_COMMENT_SEQ.nextval,
                 #{submitContent},
                 sysdate,
                 #{submitUploadFileName},
                 #{submitStoreFileName},
                 #{taskNo},
                 #{email},
-                #{studyNo}
-                )
+                #{studyNo})
     </insert>
 
 </mapper>

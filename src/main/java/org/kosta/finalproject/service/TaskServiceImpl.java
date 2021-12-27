@@ -85,6 +85,6 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public UploadFile findFileById(int submitNo) {
-        return findFileById(submitNo);
+        return taskMapper.findFileById(submitNo);
     }
 }
