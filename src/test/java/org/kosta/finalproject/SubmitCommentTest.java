@@ -1,20 +1,20 @@
 package org.kosta.finalproject;
 
 import org.junit.jupiter.api.Test;
-import org.kosta.finalproject.service.TaskCommentService;
+import org.kosta.finalproject.service.SubmitCommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 @SpringBootTest
-public class TaskSubmitCommentTest {
+public class SubmitCommentTest {
 
-    private final TaskCommentService taskCommentService;
+    private final SubmitCommentService submitCommentService;
 
     @Autowired
-    public TaskSubmitCommentTest(TaskCommentService taskCommentService) {
-        this.taskCommentService = taskCommentService;
+    public SubmitCommentTest(SubmitCommentService submitCommentService) {
+        this.submitCommentService = submitCommentService;
     }
 
     @Test
