@@ -26,10 +26,10 @@
                         <h3>과제공지</h3>
                     </div>
                     <div th:if="${allStudyInfo.memberDTO.email==session.member.email}" class="align-middle" style="display: inline-block; float: right;">
-                        <a class="align-middle" th:href="|/notice/register/${allStudyInfo.studyDTO.studyNo}|">글쓰기</a>
+                        <a class="align-middle" th:href="|/task/register/${allStudyInfo.studyDTO.studyNo}|">글쓰기</a>
                     </div>
                 </div>
-                <div th:if="${#lists.size(noticeList) == 0}">
+                <div th:if="${#lists.size(taskList) == 0}">
                     <div class="card" style="margin-bottom: 10px;">
                         <div class="card-body" style="text-align: center">
                             <div style="margin-top: 10px; font-size: 16px; margin-right: 2px;">
@@ -43,8 +43,8 @@
                         </div>
                     </div>
                 </div>
-                <div th:each="notice: ${noticeList}">
-                    <a th:href="@{/notice/detail/{studyNo}/{noticeNo}(studyNo=${notice.studyMemberDTO.studyDTO.studyNo}, noticeNo = ${notice.noticeNo})}"
+                <div th:each="task: ${taskList}">
+                    <a th:href="@{/task/detail/{studyNo}/{taskNo}(studyNo=${task.studyMemberDTO.studyDTO.studyNo}, taskNo = ${task.taskNo})}"
                        style="color: black; text-decoration:none;">
                         <div class="card" style="margin-top: 15px; margin-bottom: 10px; border:none;">
                             <div class="card-body">
@@ -59,16 +59,16 @@
                                             <line x1="16" y1="17" x2="8" y2="17"></line>
                                             <polyline points="10 9 9 9 8 9"></polyline>
                                         </svg>
-                                        <span th:text="${notice.noticeTitle}">과제 공지 제목</span>
+                                        <span th:text="${task.taskTitle}">과제 공지 제목</span>
                                     </div>
                                 </div>
                                 <div style="margin: 20px 20px 0px 0px;">
-                                    <img th:src="${notice.studyMemberDTO.memberDTO.picture}" class="rounded-circle"
+                                    <img th:src="${task.studyMemberDTO.memberDTO.picture}" class="rounded-circle"
                                          style="margin-right: 10px; width: 30px; height: 30px;"/>
-                                    <span th:text="${notice.studyMemberDTO.memberDTO.name}">name</span>&nbsp;
+                                    <span th:text="${task.studyMemberDTO.memberDTO.name}">name</span>&nbsp;
                                     <span style="font-size:12px; color:#1a73e8;">스터디 리더</span>&nbsp;
                                     <span style="font-size:12px; color:gray;"> | </span>&nbsp;
-                                    <span th:text="${notice.noticeRegdate}"
+                                    <span th:text="${task.taskRegdate}"
                                           style="font-size:14px; color:gray;">Regdate</span>
                                 </div>
                             </div>

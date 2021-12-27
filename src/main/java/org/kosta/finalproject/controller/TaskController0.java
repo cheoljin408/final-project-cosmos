@@ -7,6 +7,7 @@ import org.kosta.finalproject.model.domain.StudyMemberDTO;
 import org.kosta.finalproject.service.NoticeService;
 import org.kosta.finalproject.service.StudyMemberService;
 import org.kosta.finalproject.service.StudyService;
+import org.kosta.finalproject.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,19 +25,19 @@ import java.util.Map;
 @RequestMapping("/task")
 public class TaskController0 {
 
-    private final NoticeService noticeService;
+    private final TaskService taskService;
     private final StudyMemberService studyMemberService;
 
     @Autowired
-    public TaskController0(NoticeService noticeService, StudyMemberService studyMemberService) {
-        this.noticeService = noticeService;
+    public TaskController0(TaskService taskService, StudyMemberService studyMemberService) {
+        this.taskService = taskService;
         this.studyMemberService = studyMemberService;
     }
 
     @GetMapping("/list/{studyNo}")
     public String noticeList(@PathVariable int studyNo, Model model,
                              HttpServletResponse response, @LoginUser SessionMember member) {
-        model.addAttribute("noticeList", noticeService.getAllNoticeList(studyNo));
+        model.addAttribute("taskList", taskService.getAllTaskListByStudyNo(studyNo));
 
 
         // 내가 속한 스터디 이름 리스트 가져오기
