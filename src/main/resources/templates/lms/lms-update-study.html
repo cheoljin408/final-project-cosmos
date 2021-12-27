@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments/html-head.html :: fragment-html-head"></div>
+    <style>
+        .st-modify {
+            color: gray;
+            font-size: 0.8em;
+        }
+    </style>
+</head>
+<body style="margin: 0;">
+
+<div th:replace="fragments/lms-header.html :: fragment-lms-header"></div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div th:replace="fragments/lms-sidebar.html :: fragment-lms-sidebar"></div>
+        <main role="main" class="container col-md-9 col-lg-10 col-sm-11" style="padding: 75px 175px">
+            <div>
+                <div class="border-bottom pb-2 mb-4">
+                    <div style="display: inline-block;">
+                        <h3>스터디 정보 수정</h3>
+                    </div>
+                </div>
+
+                <!-- 스터디 이름 -->
+                <div>
+                    <span class="st-modify">스터디 이름</span>
+                    <input type="text" class="form-control" name="studyName" id="studyName" th:value="${study.get('STUDY_NAME')}" required="required">
+                </div>
+                <br>
+
+                <!-- 카테고리 -->
+                <div class="form-group">
+                    <span class="st-modify">스터디 유형</span>
+                    <select class="form-control" name="categoryTypeNo" id="categoryTypeNo" required="required">
+                        <option value="" disabled>스터디 유형</option>
+                        <option value="1" th:selected="${study.get('CATEGORY_TYPE')}=='언어'">언어</option>
+                        <option value="2" th:selected="${study.get('CATEGORY_TYPE')}=='면접'">면접</option>
+                        <option value="3" th:selected="${study.get('CATEGORY_TYPE')}=='알고리즘'">알고리즘</option>
+                        <option value="4" th:selected="${study.get('CATEGORY_TYPE')}=='자격증'">자격증</option>
+                    </select>
+                    <br>
+                    <span class="st-modify">스터디 언어</span>
+                    <select class="form-control" name="categoryLangNo" id="categoryLangNo" required="required">
+                        <option value="" disabled>사용 언어</option>
+                        <option value="1" th:selected="${study.get('CATEGORY_LANG')}=='자바'">자바</option>
+                        <option value="2" th:selected="${study.get('CATEGORY_LANG')}=='C'">C</option>
+                        <option value="3" th:selected="${study.get('CATEGORY_LANG')}=='파이썬'">파이썬</option>
+                        <option value="4" th:selected="${study.get('CATEGORY_LANG')}=='기타'">기타</option>
+                    </select>
+                </div>
+                <!-- 간단한 소개 -->
+                <div style="padding-top: 8px;">
+                    <span class="st-modify">간단한 소개</span>
+                    <textarea class="form-control" rows="3" name="studyDesc" id="studyDesc" th:text="${study.get('STUDY_DESC')}"
+                              required="required"></textarea>
+                </div>
+                <br>
+                <!-- 스터디 상세 소개 -->
+                <div>
+                    <span class="st-modify">자세한 소개</span>
+                    <textarea class="form-control" rows="10" name="studyInfo" id="studyInfo" th:text="${study.get('STUDY_INFO')}"
+                              required="required"></textarea>
+                </div>
+                <br>
+                <div align="center">
+                    <button class="btn btn-primary" id="study-modify">수정</button>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    $(document).ready(function () {
+        $("#study-modify").click(function () {
+            if(!confirm("스터디 정보를 수정하시겠습니까?")) {
+                return false;
+            }
+            var studyNo = [[ ${studyNo} ]];
+            var jsonData = {
+                studyName: $("#studyName").val(),
+                categoryTypeNo: $("#categoryTypeNo").val(),
+                categoryLangNo: $("#categoryLangNo").val(),
+                studyDesc: $("#studyDesc").val(),
+                studyInfo: $("#studyInfo").val()
+            };
+            $.ajax({
+                type: "post",
+                url: "/lms/updateStudy/" + studyNo,
+                dataType: "json",
+                data: JSON.stringify(jsonData),
+                contentType: "application/json; charset=utf-8",
+                success: function() {
+                    location.href = "/lms/" + studyNo;
+                }
+            });
+        });
+    });
+
+    function deleteStudy() {
+
+        let studyState = /*[[${allStudyInfo.studyDTO.studyStateDTO.studyState}]]*/;
+        console.log(studyState);
+
+        if (studyState !== "종료") {
+            alert("스터디 삭제는 스터디 상태가 '종료'인 상태에서 가능합니다.");
+            return;
+        }
+        if (confirm("이 스터디를 정말 삭제하시겠습니까?")) {
+            $("#deleteStudyForm").submit();
+        }
+    }
+</script>
+</body>
+</html>

@@ -77,10 +77,28 @@ public class testLmsController {
             model.addAttribute("studyNo", studyNo);
             return "lms/lms-error";
         }
+
+        // add studyNo
+        model.addAttribute("studyNo", studyNo);
+
+        // 내가 속한 스터디 이름 리스트 가져오기
+        Map<String, Object> emailAndStudyNo = new HashMap<String, Object>();
+        emailAndStudyNo.put("email", member.getEmail());
+        emailAndStudyNo.put("studyNo", studyNo);
+        List<Map<String, Object>> studyNameList = studyMemberService.getStudyNameList(emailAndStudyNo);
+        log.info("studyNameList: {}", studyNameList);
+        model.addAttribute("studyNameList", studyNameList);
+
+        // 해당 스터디에대한 전체 정보 가져오기
+        StudyMemberDTO allStudyInfo = studyMemberService.getAllStudyInfo(studyNo);
+        log.info("allStudyInfo: {}", allStudyInfo);
+        model.addAttribute("allStudyInfo", allStudyInfo);
+
+        // get studyDetail
         model.addAttribute("study", studyService.getStudyDetailByStudyNo(studyNo));
         log.info("modify study name: {}", studyService.getStudyDetailByStudyNo(studyNo).get("STUDY_NAME"));
         model.addAttribute(studyNo);
-        return "study/modify";
+        return "lms/lms-update-study";
     }
 
     @ResponseBody
