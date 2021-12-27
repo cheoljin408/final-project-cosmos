@@ -9,7 +9,7 @@
         where sumbit_no = #{value}
     </delete>
 
-    <select id="getAllTaskCommentList" parameterType="int" resultType="SubmitCommentDTO">
+    <select id="getAllTaskCommentList" parameterType="int" resultType="org.kosta.finalproject.model.domain.SubmitCommentDTO">
         select sc.submit_no,
                sc.submit_conent,
                sc.submit_regdate,

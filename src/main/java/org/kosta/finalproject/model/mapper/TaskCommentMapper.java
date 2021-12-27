@@ -2,6 +2,7 @@ package org.kosta.finalproject.model.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.kosta.finalproject.model.domain.StudyCommentDTO;
+import org.kosta.finalproject.model.domain.SubmitCommentDTO;
 
 import java.util.List;
 
@@ -10,6 +11,6 @@ public interface TaskCommentMapper {
 
     void deleteTaskComment(int submitNo);
 
-    List<StudyCommentDTO> getAllTaskCommentList(int taskNo);
+    List<SubmitCommentDTO> getAllTaskCommentList(int taskNo);
 
 }

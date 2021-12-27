@@ -1,6 +1,7 @@
 package org.kosta.finalproject.service;
 
 import org.kosta.finalproject.model.domain.StudyCommentDTO;
+import org.kosta.finalproject.model.domain.SubmitCommentDTO;
 import org.kosta.finalproject.model.mapper.TaskCommentMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,7 @@ public class TaskCommentServiceImpl implements TaskCommentService {
     }
 
     @Override
-    public List<StudyCommentDTO> getAllTaskCommentList(int taskNo) {
+    public List<SubmitCommentDTO> getAllTaskCommentList(int taskNo) {
         return taskCommentMapper.getAllTaskCommentList(taskNo);
     }
 }

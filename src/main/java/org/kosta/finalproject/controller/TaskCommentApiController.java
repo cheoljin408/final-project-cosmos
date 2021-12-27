@@ -2,6 +2,7 @@ package org.kosta.finalproject.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.kosta.finalproject.model.domain.StudyCommentDTO;
+import org.kosta.finalproject.model.domain.SubmitCommentDTO;
 import org.kosta.finalproject.service.TaskCommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
