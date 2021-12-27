@@ -21,4 +21,12 @@ public interface TaskMapper {
     void deleteTaskFileByTaskNo(int taskNo);
 
     void deleteTask(int taskNo);
+    void registerTask(@Param("studyNo")int studyNo, @Param("email")String email, @Param("taskTitle") String taskTitle, @Param("taskContent")String taskContent);
+
+    int getTaskNoWhenRegister();
+
+    void registerAttachFile(@Param("attachFile")UploadFile attachFile, @Param("type")String type, @Param("taskNo")int taskNo);
+
+    void registerStoreImage(@Param("storeImage")UploadFile storeImage, @Param("type") String img, @Param("taskNo") int taskNo);
+
 }
