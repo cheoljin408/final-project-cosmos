@@ -114,6 +114,14 @@
         where task_no = #{value}
     </delete>
 
+    <!-- 과제공지 수정 -->
+    <update id="updateTaskByTaskNo">
+        update notice
+        set task_title   = #{taskTitle},
+            task_content = #{taskContent}
+        where task_no = #{taskNo}
+    </update>
+
     <!-- 공지사항 삭제-->
     <delete id="deleteTask" parameterType="int">
         delete

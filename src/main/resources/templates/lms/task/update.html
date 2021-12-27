@@ -18,12 +18,12 @@
                     <h3>공지사항 수정</h3>
                     <hr>
                     <br>
-                    <form th:action="@{/notice/update/{studyNo}(studyNo=${notice.get('STUDY_NO')})}" th:method="post"
+                    <form th:action="@{/task/update/{taskNo}(taskNo=${taskInfo.get('TASK_NO')})}" th:method="post"
                           enctype="multipart/form-data">
                         <!-- 공지사항 제목 -->
                         <div>
-                            <input type="text" class="form-control" name="noticeTitle" id="noticeTitle"
-                                   th:value="${notice.get('NOTICE_TITLE')}" placeholder="제목">
+                            <input type="text" class="form-control" name="taskTitle" id="taskTitle"
+                                   th:value="${taskInfo.get('TASK_TITLE')}" placeholder="제목">
                         </div>
                         <br>
 
@@ -48,11 +48,11 @@
                         </div>
                         <br><br>
                         <!-- 텍스트 에디터 추가 -->
-                        <textarea type="text" id="summernote" name="noticeContent"
-                                  th:utext="${notice.get('NOTICE_CONTENT')}"></textarea>
+                        <textarea type="text" id="summernote" name="taskContent"
+                                  th:utext="${taskInfo.get('TASK_CONTENT')}"></textarea>
                         <br>
-                        <input type="hidden" id="noticeNo" name="noticeNo" th:value="${notice.get('NOTICE_NO')}">
-                        <button class="btn btn-info" id="noticeRegister">수정</button>
+                        <input type="hidden" id="taskNo" name="taskNo" th:value="${taskInfo.get('TASK_NO')}">
+                        <button class="btn btn-info" id="taskRegister">수정</button>
                     </form>
                 </div>
             </div>

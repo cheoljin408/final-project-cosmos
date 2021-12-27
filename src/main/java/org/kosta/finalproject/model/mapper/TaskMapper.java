@@ -16,11 +16,14 @@ public interface TaskMapper {
 
     Map<String, Object> getTaskDetailByTaskNo(int taskNo);
 
+    void updateTaskByTaskNo(@Param("taskTitle")String taskTitle, @Param("taskContent")String taskContent, @Param("taskNo")int taskNo);
+
     List<UploadFile> findFilesById(@Param("fileType") String fileType, @Param("taskNo") int taskNo);
 
     void deleteTaskFileByTaskNo(int taskNo);
 
     void deleteTask(int taskNo);
+
     void registerTask(@Param("studyNo")int studyNo, @Param("email")String email, @Param("taskTitle") String taskTitle, @Param("taskContent")String taskContent);
 
     int getTaskNoWhenRegister();
