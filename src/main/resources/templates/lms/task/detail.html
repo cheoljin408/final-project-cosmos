@@ -151,6 +151,30 @@
                 }
             });
         });
+
+        $("#studyCommentRoot").on("click", ".studyCommentDeleteBtn", function() {
+            console.log(`${$(this).val()} 댓글 삭제`);
+            if(!confirm("댓글을 삭제하시겠습니까?")) {
+                return;
+            }
+            let data = {
+                studyCommentNo: $(this).val()
+            };
+            console.log(data);
+
+            $.ajax({
+                type: 'DELETE',
+                url: '/api/deleteStudyComment/' + /*[[${studyNo}]]*/,
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(data)
+            }).done(function (fragment) {
+                $("#studyCommentListView").replaceWith(fragment);
+            }).fail(function (error) {
+                alert(error.message());
+            });
+        });
+
+
     });
 
     <!--스터디 상태 변경 함수-->
