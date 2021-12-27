@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface TaskService {
     List<TaskDTO> getRecentTaskList(int studyNo);
+
+    List<TaskDTO> getAllTaskListByStudyNo(int studyNo);
 }

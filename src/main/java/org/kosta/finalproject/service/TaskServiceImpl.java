@@ -22,4 +22,9 @@ public class TaskServiceImpl implements TaskService {
         List<TaskDTO> recentTaskList = taskMapper.getRecentTaskList(studyNo);
         return recentTaskList;
     }
+
+    @Override
+    public List<TaskDTO> getAllTaskListByStudyNo(int studyNo) {
+        return taskMapper.getAllTaskListByStudyNo(studyNo);
+    }
 }
