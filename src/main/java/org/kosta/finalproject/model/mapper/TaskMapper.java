@@ -8,4 +8,6 @@ import java.util.List;
 @Mapper
 public interface TaskMapper {
     List<TaskDTO> getRecentTaskList(int studyNo);
+
+    List<TaskDTO> getAllTaskListByStudyNo(int studyNo);
 }

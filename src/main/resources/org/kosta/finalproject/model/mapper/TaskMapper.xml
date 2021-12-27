@@ -9,19 +9,71 @@
         <result property="taskTitle" column="task_title"/>
         <result property="taskContent" column="task_content"/>
         <result property="taskRegdate" column="task_regdate"/>
+        <association property="studyMemberDTO" resultMap="studyMemberDTOMap" columnPrefix="sm_"/>
+    </resultMap>
+
+    <resultMap id="studyMemberDTOMap" type="org.kosta.finalproject.model.domain.StudyMemberDTO">
+        <result property="studyMemberRole" column="study_member_role"/>
+        <association property="memberDTO" resultMap="memberDTOMap" columnPrefix="m_"/>
+        <association property="studyDTO" resultMap="studyDTOMap" columnPrefix="s_"/>
+    </resultMap>
+
+    <resultMap id="memberDTOMap" type="org.kosta.finalproject.model.domain.MemberDTO">
+        <id property="email" column="email"/>
+        <result property="name" column="name"/>
+        <result property="picture" column="picture"/>
+    </resultMap>
+
+    <resultMap id="studyDTOMap" type="org.kosta.finalproject.model.domain.StudyDTO">
+        <id property="studyNo" column="study_no"/>
+        <result property="studyName" column="study_name"/>
+        <result property="studyDesc" column="study_desc"/>
+        <result property="studyRegdate" column="study_regdate"/>
+        <association property="studyStateDTO" resultMap="studyStateDTOMap" columnPrefix="sst_"/>
+        <association property="categoryTypeDTO" resultMap="categoryTypeDTOMap" columnPrefix="ctt_"/>
+        <association property="categoryLangDTO" resultMap="categoryLangDTOMap" columnPrefix="clt_"/>
+    </resultMap>
+
+    <resultMap id="studyStateDTOMap" type="org.kosta.finalproject.model.domain.StudyStateDTO">
+        <result property="studyState" column="study_state"/>
+    </resultMap>
+
+    <resultMap id="categoryTypeDTOMap" type="org.kosta.finalproject.model.domain.CategoryTypeDTO">
+        <result property="categoryType" column="category_type"/>
+    </resultMap>
+
+    <resultMap id="categoryLangDTOMap" type="org.kosta.finalproject.model.domain.CategoryLangDTO">
+        <result property="categoryLang" column="category_lang"/>
     </resultMap>
 
     <select id="getRecentTaskList" parameterType="int" resultMap="taskDTOMap">
         select v.TASK_NO, v.TASK_TITLE, v.TASK_CONTENT, v.TASK_REGDATE
         from (
-                 select TASK_NO, TASK_TITLE, TASK_CONTENT, TASK_REGDATE
-                 from TASK t,
-                      STUDY_MEMBER sm
-                 where t.STUDY_NO = sm.STUDY_NO
-                   and t.STUDY_NO = #{value}
-                 order by TASK_REGDATE desc
-             ) v
+        select TASK_NO, TASK_TITLE, TASK_CONTENT, TASK_REGDATE
+        from TASK t,
+        STUDY_MEMBER sm
+        where t.STUDY_NO = sm.STUDY_NO
+        and t.STUDY_NO = #{value}
+        order by TASK_REGDATE desc
+        ) v
         where <![CDATA[ROWNUM <= 3]]>
+    </select>
+    
+    <select id="getAllTaskListByStudyNo" parameterType="int" resultMap="taskDTOMap">
+        select t.task_no, t.task_title, t.task_content, to_char(t.task_regdate, 'YYYY-MM-DD HH24-MI-SS'),
+        sm.email   as sm_m_email,
+        m.name     as sm_m_name,
+        m.picture  as sm_m_picture,
+        s.study_no as sm_s_study_no
+        from task t,
+        study_member sm,
+        study s,
+        member m
+        where sm.email = m.email
+        and t.study_no = sm.study_no
+        and sm.study_no = s.study_no
+        and sm.study_no = #{value}
+        order by task_regdate desc
     </select>
 
 </mapper>
