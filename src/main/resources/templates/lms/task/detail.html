@@ -123,10 +123,17 @@
                     <button class="btn btn-secondary" id="task-delete">삭제</button>
                 </div>
                 <!-- 본문 내용 end -->
+
+
+                <!-- 과제 제출 댓글 -->
+                <div th:replace="fragments/task-submit-comment.html :: fragment-task-submit-comment"></div>
+
+
             </div>
         </main> <!-- Main end -->
     </div>
 </div>
+
 <script th:inline="javascript" type="text/javascript">
     $(document).ready(function () {
         $("#task-delete").click(function () {

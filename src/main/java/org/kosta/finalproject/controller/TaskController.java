@@ -155,6 +155,9 @@ public class TaskController {
         model.addAttribute("images", images);
         model.addAttribute("files", files);
         model.addAttribute("taskInfo", result);
+        
+        // getTaskSubmitComment 작성해야함
+
 
         return "lms/task/detail";
     }
