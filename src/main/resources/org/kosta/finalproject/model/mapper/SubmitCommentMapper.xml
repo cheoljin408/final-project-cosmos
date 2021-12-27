@@ -3,5 +3,17 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.kosta.finalproject.model.mapper.SubmitCommentMapper">
-
+    <insert id="registerSubmitComment" parameterType="SubmitCommentDTO">
+        insert into SUBMIT_COMMENT
+        values (
+                SUBMIT_COMMENT_SEQ.nextval,
+                #{submitContent},
+                sysdate,
+                #{submitUploadFileName},
+                #{submitStoreFileName},
+                #{taskNo},
+                #{email},
+                #{studyNo}
+                )
+    </insert>
 </mapper>
