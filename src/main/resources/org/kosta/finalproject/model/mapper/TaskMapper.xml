@@ -76,4 +76,49 @@
         order by task_regdate desc
     </select>
 
+    <!-- 과제 공지 상세 가져오기 -->
+    <select id="getTaskDetailByTaskNo" resultType="hashMap">
+        select  t.task_no,
+                t.task_title,
+                t.task_regdate,
+                DBMS_LOB.SUBSTR(t.task_content, dbms_LoB.GETLENGTH(t.TASK_CONTENT)) as task_content,
+                m.email,
+                m.name,
+                m.picture,
+                s.study_no,
+                s.study_name
+        from member m,
+             study_member sm,
+             study s,
+             task t
+        where sm.email = m.email
+          and sm.STUDY_NO = t.STUDY_NO
+          and sm.email = t.email
+          and sm.study_no = s.study_no
+          and t.TASK_NO = #{value}
+    </select>
+    <!-- 과제 공지 상세 가져오기 end  -->
+
+    <!-- 관련 파일 가져오기-->
+    <select id="findFilesById" resultType="org.kosta.finalproject.model.domain.UploadFile">
+        select TASK_UPLOAD_FILE_NAME, TASK_STORE_FILE_NAME
+        from TASK_FILE
+        where task_file_type = #{fileType}
+          and task_no = #{taskNo}
+    </select>
+
+    <!-- 과제 공지사항 no 에 해당하는 파일들을 삭제하는 query -->
+    <delete id="deleteTaskFileByTaskNo">
+        delete
+        from task_file
+        where task_no = #{value}
+    </delete>
+
+    <!-- 공지사항 삭제-->
+    <delete id="deleteTask" parameterType="int">
+        delete
+        from task
+        where task_no = #{value}
+    </delete>
+
 </mapper>
