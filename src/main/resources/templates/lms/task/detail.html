@@ -116,8 +116,8 @@
                 <button class="btn btn-primary" th:onclick="|window.location.href='/task/list/${allStudyInfo.studyDTO.studyNo}'|">글 목록
                 </button>
                 <div style="float: right; margin-right: 2px;" class="row">
-                    <form method="post"  style="white-space: nowrap;"}>
-                        <input type="hidden" id="noticeNo" name="noticeNo">
+                    <form method="post" th:action="@{/task/update/form/{studyNo}(studyNo=${taskInfo.get('STUDY_NO')})}" style="white-space: nowrap;"}>
+                        <input type="hidden" id="taskNo" name="taskNo" th:value="${taskInfo.get('TASK_NO')}">
                         <button class="btn btn-primary" id="task-modify">수정</button> &nbsp;
                     </form>
                     <button class="btn btn-secondary" id="task-delete">삭제</button>
