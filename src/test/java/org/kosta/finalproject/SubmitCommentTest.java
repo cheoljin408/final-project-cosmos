@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 public class SubmitCommentTest {
 
-    Logger logger = (Logger) LoggerFactory.getLogger(TaskTest.class);
+    Logger logger = (Logger) LoggerFactory.getLogger(SubmitCommentTest.class);
 
     @Autowired
     private SubmitCommentService submitCommentService;
@@ -36,5 +36,10 @@ public class SubmitCommentTest {
         //then
         assertThat(scl.size()).isEqualTo(3);
         logger.info("scl: {}", scl);
+    }
+
+    @Test
+    void registerTaskCommentTest() {
+
     }
 }
