@@ -74,7 +74,7 @@
                         <th th:text="|첨부파일${fileStat.count}|">첨부파일</th>
                         <td colspan="5">
                             <!-- 업로드된 첨부파일 출력 -->
-                            <a th:href="|/notice/attach/${notice.get('TASK_NO')}/${fileStat.index}|"
+                            <a th:href="|/task/attach/${taskInfo.get('TASK_NO')}/${fileStat.index}|"
                                th:text="${file.getUploadFileName()}"/>
                         </td>
                     </tr>
@@ -90,7 +90,7 @@
                     <tbody>
                     <tr>
                         <td><img th:each="imageFile : ${images}"
-                                 th:src="|/notice/images/${imageFile.getStoreFileName()}|" width="300"
+                                 th:src="|/task/images/${imageFile.getStoreFileName()}|" width="300"
                                  style="margin: 0px 30px 30px 30px"/></td>
                     </tr>
                     </tbody>
@@ -105,7 +105,7 @@
                     <tbody>
                     <tr>
                         <td>
-                            <div></div>
+                            <div th:utext="${taskInfo.get('TASK_CONTENT')}"></div>
                         </td>
                     </tr>
                     </tbody>
@@ -118,14 +118,59 @@
                 <div style="float: right; margin-right: 2px;" class="row">
                     <form method="post"  style="white-space: nowrap;"}>
                         <input type="hidden" id="noticeNo" name="noticeNo">
-                        <button class="btn btn-primary" id="notice-modify">수정</button> &nbsp;
+                        <button class="btn btn-primary" id="task-modify">수정</button> &nbsp;
                     </form>
-                    <button class="btn btn-secondary" id="notice-delete">삭제</button>
+                    <button class="btn btn-secondary" id="task-delete">삭제</button>
                 </div>
                 <!-- 본문 내용 end -->
             </div>
         </main> <!-- Main end -->
     </div>
 </div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#task-delete").click(function () {
+            console.log("삭제 버튼 클릭");
+            var task_no = [[${taskInfo.get('TASK_NO')}]];
+            if (!confirm(task_no + "번 과제 공지사항을 삭제하시겠습니까?")) {
+                return false;
+            }
+            $.ajax({
+                type: "post",
+                url: "/task/delete",
+                data: "taskNo=" + task_no,
+                success: function () {
+                    location.replace("/task/list/" + [[${taskInfo.get('STUDY_NO')}]]);
+                }
+            });
+        });
+    });
+
+    <!--스터디 상태 변경 함수-->
+    function updateState(studyNo,studyState){
+        let form = document.createElement('form');
+
+        document.characterSet="utf-8";
+
+        let obj;
+        obj = document.createElement('input');
+        obj.setAttribute('type', 'hidden');
+        obj.setAttribute('name', 'studyNo');
+        obj.setAttribute('value', studyNo);
+
+        let obj2;
+        obj2 = document.createElement('input');
+        obj2.setAttribute('type', 'hidden');
+        obj2.setAttribute('name', 'studyState');
+        obj2.setAttribute('value', studyState);
+
+        form.appendChild(obj);
+        form.appendChild(obj2);
+        form.setAttribute('method', 'post');
+        form.setAttribute('action', '/updateState');
+        document.body.appendChild(form);
+        form.submit();
+    }
+</script>
 </body>
 </html>
