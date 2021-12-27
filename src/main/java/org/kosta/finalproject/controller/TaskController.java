@@ -6,10 +6,7 @@ import org.kosta.finalproject.config.auth.dto.SessionMember;
 import org.kosta.finalproject.model.domain.StudyMemberDTO;
 import org.kosta.finalproject.model.domain.TaskFormDTO;
 import org.kosta.finalproject.model.domain.UploadFile;
-import org.kosta.finalproject.service.FileStoreService;
-import org.kosta.finalproject.service.StudyMemberService;
-import org.kosta.finalproject.service.StudyService;
-import org.kosta.finalproject.service.TaskService;
+import org.kosta.finalproject.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -22,8 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.UriUtils;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
@@ -40,13 +35,16 @@ public class TaskController {
     private final FileStoreService fileStoreService;
     private final StudyMemberService studyMemberService;
     private final StudyService studyService;
+    private final SubmitCommentService submitCommentService;
 
     @Autowired
-    public TaskController(TaskService taskService, FileStoreService fileStoreService, StudyMemberService studyMemberService, StudyService studyService) {
+    public TaskController(TaskService taskService, FileStoreService fileStoreService, StudyMemberService studyMemberService, StudyService studyService,
+                          SubmitCommentService submitCommentService) {
         this.taskService = taskService;
         this.fileStoreService = fileStoreService;
         this.studyMemberService = studyMemberService;
         this.studyService = studyService;
+        this.submitCommentService = submitCommentService;
     }
 
     //LMS 사이드바 적용 과제 공지사항 등록페이지
@@ -156,8 +154,10 @@ public class TaskController {
         model.addAttribute("files", files);
         model.addAttribute("taskInfo", result);
         
-        // getTaskSubmitComment 작성해야함
-
+        // 과제 제출 댓글 리스트 가져오기
+        List<HashMap<String, String>> submitCommentList = submitCommentService.getAllSubmitComment(studyNo, taskNo);
+        model.addAttribute("submitCommentList", submitCommentList);
+        // log.info("submitCommentList: {}", submitCommentList);
 
         return "lms/task/detail";
     }
@@ -190,6 +190,31 @@ public class TaskController {
 
         String uploadFileName = files.get(index).getUploadFileName();
         String storeFileName = files.get(index).getStoreFileName();
+
+        UrlResource resource = new UrlResource("file:" + fileStoreService.getFullPath(storeFileName));
+
+        // log.info("uploadFileName={}", uploadFileName);
+        // log.info("storeFileName={}", storeFileName);
+
+        // 한글 깨짐 방지를 위한 인코딩
+        String encodedUploadFileName = UriUtils.encode(uploadFileName, StandardCharsets.UTF_8);
+
+        // 파일 다운로드를 위한 규약. 사용하지 않을 경우 브라우저에서 다운이 아닌 읽기가 동작
+        String contentDisposition = "attachment; filename=\"" + encodedUploadFileName + "\"";
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, contentDisposition)
+                .body(resource);
+    }
+
+    // 헤더에 추가해야 할 사항이 있어서 ResponseBody 는 사용하지 않았음
+    // 첨부파일 다운로드
+    @GetMapping("/comment/{submitNo}")
+    public ResponseEntity<Resource> downloadAttach(@PathVariable int submitNo) throws MalformedURLException {
+        UploadFile file = taskService.findFileById(submitNo);
+
+        String uploadFileName = file.getUploadFileName();
+        String storeFileName = file.getStoreFileName();
 
         UrlResource resource = new UrlResource("file:" + fileStoreService.getFullPath(storeFileName));
 

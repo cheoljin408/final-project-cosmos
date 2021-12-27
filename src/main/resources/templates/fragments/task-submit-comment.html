@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<div th:fragment="fragment-task-submit-comment" id="studyCommentListView" class="container" style="margin-top: 100px;">
+<div th:fragment="fragment-task-submit-comment" class="container" style="margin-top: 100px;">
     <h5>댓글</h5>
     <div class="card">
         <div class="card-body">
@@ -9,14 +9,14 @@
                      style="margin-right: 10px; width: 30px; height: 30px;"/>
                 <span th:text="${session.member.name}">name</span>
             </div>
-            <form th:action method="post" enctype="multipart/form-data">
+            <form th:action="|/api/registerTaskComment/${studyNo}/${taskNo}|" method="post" enctype="multipart/form-data">
                 <div style="margin-bottom: 20px;">
                     <input name="submitContent" type="text" class="form-control" placeholder="댓글을 입력하세요">
                 </div>
                 <div style="margin-bottom: 20px;">
                     <div style="display: inline-block; width: 50%;">
                         <input type="file" class="form-control-file border"
-                               name="attachFiles" style="color: #1a73e8; border-radius: 5px;"
+                               name="attachFile" style="color: #1a73e8; border-radius: 5px;"
                                placeholder="파일을 선택해주세요">
                     </div>
                     <div style="display: inline-block; float: right;">
@@ -27,27 +27,35 @@
         </div>
     </div>
     <div>
-        <div class="card" style="border: none;">
+        <div th:each="submitCommentMap:${submitCommentList}" class="card" style="border: none;">
             <div class="card-body">
                 <div style="margin-bottom: 10px;">
-                    <img class="rounded-circle"
+                    <img th:src="${submitCommentMap.PICTURE}" class="rounded-circle"
                          style="margin-right: 10px; width: 30px; height: 30px;"/>
-                    <span style="margin-right: 10px;">name</span>
-                    <span>regdate</span>
+                    <span th:text="${submitCommentMap.NAME}" style="margin-right: 10px;">name</span>
+                    <span th:text="${submitCommentMap.SUBMIT_REGDATE}">regdate</span>
                 </div>
                 <div>
                     <div style="display: inline-block; width: 85%;" class="align-middle">
-                        <p style="margin: 0; display: inline-block;">댓글내용</p>
+                        <p th:text="${submitCommentMap.SUBMIT_CONTENT}" style="margin: 0; display: inline-block;">댓글내용</p>
                         <input class="form-control" type="text" style="display: none;" />
                     </div>
-                    <div style="display: inline-block; float: right;">
-                        <button type="button" class="btn btn-secondary btn-sm studyCommentUpdateBtn" style="display: inline;">수정</button>
-                        <button type="button" class="btn btn-secondary btn-sm studyCommentUpdateSubmitBtn" style="display: none;">확인</button>
+                    <div th:if="${submitCommentMap.EMAIL == session.member.email}" style="display: inline-block; float: right;">
+                        <button type="button" class="btn btn-secondary btn-sm submitCommentUpdateBtn" style="display: inline;">수정</button>
+                        <button type="button" class="btn btn-secondary btn-sm submitCommentUpdateSubmitBtn" style="display: none;">확인</button>
 
-                        <button type="button" class="btn btn-secondary btn-sm studyCommentDeleteBtn" style="display: inline;">삭제</button>
-                        <button type="button" class="btn btn-secondary btn-sm studyCommentCancelBtn" style="display: none;">취소</button>
+                        <button type="button" class="btn btn-secondary btn-sm submitCommentDeleteBtn" style="display: inline;">삭제</button>
+                        <button type="button" class="btn btn-secondary btn-sm submitCommentCancelBtn" style="display: none;">취소</button>
                     </div>
                 </div>
+                <tr th:if="${submitCommentMap.SUBMIT_UPLOAD_FILE_NAME != null}">
+                    <th>첨부파일</th>
+                    <td colspan="5">
+                        <!-- 업로드된 첨부파일 출력 -->
+                        <a th:href="|/task/comment/${submitCommentMap.SUBMIT_NO}|"
+                           th:text="${submitCommentMap.SUBMIT_UPLOAD_FILE_NAME}"/>
+                    </td>
+                </tr>
             </div>
             <hr>
         </div>

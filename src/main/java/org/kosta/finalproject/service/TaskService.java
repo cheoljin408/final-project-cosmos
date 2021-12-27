@@ -21,4 +21,6 @@ public interface TaskService {
     void deleteTask(int taskNo);
     //과제 공지 등록
     int registerTask(int studyNo, String email, TaskFormDTO taskFormDTO, List<UploadFile> attachFiles, List<UploadFile> uploadFiles);
+
+    UploadFile findFileById(int submitNo);
 }
