@@ -4,4 +4,9 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.kosta.finalproject.model.mapper.TaskCommentMapper">
 
+    <select id="findSubmitCommentById" resultType="SubmitCommentDTO">
+        SELECT * FROM SUBMIT_COMMENT
+        WHERE STUDY_NO = #{param1}
+        AND TASK_NO = #{param2}
+    </select>
 </mapper>

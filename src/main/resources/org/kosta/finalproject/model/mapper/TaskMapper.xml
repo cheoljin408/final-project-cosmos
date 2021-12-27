@@ -60,7 +60,7 @@
     </select>
     
     <select id="getAllTaskListByStudyNo" parameterType="int" resultMap="taskDTOMap">
-        select t.task_no, t.task_title, t.task_content, to_char(t.task_regdate, 'YYYY-MM-DD HH24-MI-SS'),
+        select t.task_no, t.task_title, t.task_content, to_char(t.task_regdate, 'YYYY-MM-DD HH24-MI-SS') as TASK_REGDATE,
         sm.email   as sm_m_email,
         m.name     as sm_m_name,
         m.picture  as sm_m_picture,
