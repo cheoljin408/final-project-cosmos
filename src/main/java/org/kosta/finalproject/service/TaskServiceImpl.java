@@ -39,14 +39,14 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<UploadFile> findImagesById(int taskNo) {
-        List<UploadFile> attachFiles = taskMapper.findFilesById("FILE", taskNo);
-        return attachFiles;
+        List<UploadFile> imgFiles = taskMapper.findFilesById("IMG", taskNo);
+        return imgFiles;
     }
 
     @Override
     public List<UploadFile> findFilesById(int taskNo) {
-        List<UploadFile> imgFiles = taskMapper.findFilesById("IMG", taskNo);
-        return imgFiles;
+        List<UploadFile> attachFiles = taskMapper.findFilesById("FILE", taskNo);
+        return attachFiles;
     }
 
     @Override

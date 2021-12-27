@@ -113,7 +113,7 @@
 
                 <br><br>
                 <!-- 본문 내용 -->
-                <button class="btn btn-primary">글 목록
+                <button class="btn btn-primary" th:onclick="|window.location.href='/task/list/${allStudyInfo.studyDTO.studyNo}'|">글 목록
                 </button>
                 <div style="float: right; margin-right: 2px;" class="row">
                     <form method="post"  style="white-space: nowrap;"}>
