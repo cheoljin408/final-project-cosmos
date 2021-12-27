@@ -1,6 +1,7 @@
 package org.kosta.finalproject.service;
 
 import lombok.extern.slf4j.Slf4j;
+
 import org.kosta.finalproject.model.domain.SubmitCommentDTO;
 import org.kosta.finalproject.model.mapper.SubmitCommentMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +27,7 @@ public class SubmitCommentServiceImpl implements SubmitCommentService {
     }
 
     @Override
-    public List<SubmitCommentDTO> getAllTaskCommentList(int taskNo) {
-        log.info("taskNo = {}", taskNo);
-        return submitCommentMapper.getAllTaskCommentList(taskNo);
+    public void registerSubmitComment(SubmitCommentDTO submitCommentDTO) {
+        submitCommentMapper.registerSubmitComment(submitCommentDTO);
     }
 }

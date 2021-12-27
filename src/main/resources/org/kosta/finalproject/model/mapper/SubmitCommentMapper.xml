@@ -9,6 +9,19 @@
         from SUBMIT_COMMENT
         where SUBMIT_NO = #{value}
     </delete>
-    
+  
+    <insert id="registerSubmitComment" parameterType="SubmitCommentDTO">
+        insert into SUBMIT_COMMENT
+        values (
+                SUBMIT_COMMENT_SEQ.nextval,
+                #{submitContent},
+                sysdate,
+                #{submitUploadFileName},
+                #{submitStoreFileName},
+                #{taskNo},
+                #{email},
+                #{studyNo}
+                )
+    </insert>
 
 </mapper>

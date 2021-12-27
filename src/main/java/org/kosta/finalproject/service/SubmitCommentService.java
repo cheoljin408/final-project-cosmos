@@ -9,5 +9,6 @@ import java.util.Map;
 public interface SubmitCommentService {
     void deleteTaskComment(int submitNo);
 
-    List<SubmitCommentDTO> getAllTaskCommentList(int taskNo);
+    void registerSubmitComment(SubmitCommentDTO submitCommentDTO);
+
 }

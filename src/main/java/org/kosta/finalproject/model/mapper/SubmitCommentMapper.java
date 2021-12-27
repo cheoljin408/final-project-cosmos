@@ -10,7 +10,6 @@ import java.util.List;
 public interface SubmitCommentMapper {
 
     void deleteTaskComment(int submitNo);
-
-    List<SubmitCommentDTO> getAllTaskCommentList(int taskNo);
-
+  
+    void registerSubmitComment(SubmitCommentDTO submitCommentDTO);
 }
