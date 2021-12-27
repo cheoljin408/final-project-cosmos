@@ -24,4 +24,35 @@
         where <![CDATA[ROWNUM <= 3]]>
     </select>
 
+    <!-- 과제 공지 상세 가져오기 -->
+    <select id="getTaskDetailByTaskNo" resultType="hashMap">
+        select  t.task_no,
+                t.task_title,
+                t.task_regdate,
+                DBMS_LOB.SUBSTR(t.task_content, dbms_LoB.GETLENGTH(t.TASK_CONTENT)) as task_content,
+                m.email,
+                m.name,
+                m.picture,
+                s.study_no,
+                s.study_name
+        from member m,
+             study_member sm,
+             study s,
+             task t
+        where sm.email = m.email
+          and sm.STUDY_NO = t.STUDY_NO
+          and sm.email = t.email
+          and sm.study_no = s.study_no
+          and t.TASK_NO = #{value}
+    </select>
+    <!-- 과제 공지 상세 가져오기 end  -->
+
+    <!-- 관련 파일 가져오기-->
+    <select id="findFilesById" resultType="org.kosta.finalproject.model.domain.UploadFile">
+        select NOTICE_UPLOAD_FILE_NAME, NOTICE_STORE_FILE_NAME
+        from NOTICE_FILE
+        where notice_file_type = #{fileType}
+          and notice_no = #{taskNo}
+    </select>
+
 </mapper>
