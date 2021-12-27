@@ -126,9 +126,9 @@
 
 
                 <!-- 과제 제출 댓글 -->
-                <div th:replace="fragments/task-submit-comment.html :: fragment-task-submit-comment"></div>
-
-
+                <div id="submitCommentRoot">
+                    <div id="submitCommentListView" th:replace="fragments/task-submit-comment.html :: fragment-task-submit-comment"></div>
+                </div>
             </div>
         </main> <!-- Main end -->
     </div>
@@ -152,29 +152,28 @@
             });
         });
 
-        $("#studyCommentRoot").on("click", ".studyCommentDeleteBtn", function() {
-            console.log(`${$(this).val()} 댓글 삭제`);
-            if(!confirm("댓글을 삭제하시겠습니까?")) {
+        $(".submitCommentDeleteBtn").click(function () {
+            if (!confirm("댓글을 삭제하시겠습니까?")) {
                 return;
             }
+            let submitNo = $(this).val();
+            let studyNo = /*[[${studyNo}]]*/;
+            let taskNo = /*[[${taskInfo.get('TASK_NO')}]]*/
+            alert(submitNo);
             let data = {
-                studyCommentNo: $(this).val()
+                submitNo : submitNo,
+                taskNo :taskNo
             };
             console.log(data);
-
             $.ajax({
                 type: 'DELETE',
-                url: '/api/deleteStudyComment/' + /*[[${studyNo}]]*/,
+                url: '/api/deleteTaskComment/' + studyNo + "/" + submitNo,
                 contentType: 'application/json; charset=utf-8',
                 data: JSON.stringify(data)
-            }).done(function (fragment) {
-                $("#studyCommentListView").replaceWith(fragment);
-            }).fail(function (error) {
-                alert(error.message());
+            }).done(function (fragment){
+                $("#submitCommentListView").replaceWith(fragment);
             });
         });
-
-
     });
 
     <!--스터디 상태 변경 함수-->
