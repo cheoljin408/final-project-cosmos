@@ -36,4 +36,7 @@ public interface NoticeMapper {
 
     void deleteNoticeFileByNoticeNo(int noticeNo);
 
+    int getTotalCountOfNoticeList(int studyNo);
+
+    List<NoticeDTO> getNoticeListByPageNo(@Param("studyNo")int studyNo, @Param("startRowNumber")int startRowNumber, @Param("endRowNumber")int endRowNumber);
 }

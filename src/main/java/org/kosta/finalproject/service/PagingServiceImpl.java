@@ -1,6 +1,8 @@
 package org.kosta.finalproject.service;
 
+import org.kosta.finalproject.model.domain.NoticeDTO;
 import org.kosta.finalproject.model.domain.StudyMemberDTO;
+import org.kosta.finalproject.model.mapper.NoticeMapper;
 import org.kosta.finalproject.model.mapper.StudyMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,10 +13,12 @@ import java.util.List;
 public class PagingServiceImpl implements PagingService{
 
     private final StudyMapper studyMapper;
+    private final NoticeMapper noticeMapper;
 
     @Autowired
-    public PagingServiceImpl(StudyMapper studyMapper) {
+    public PagingServiceImpl(StudyMapper studyMapper,NoticeMapper noticeMapper) {
         this.studyMapper = studyMapper;
+        this.noticeMapper = noticeMapper;
     }
 
     @Override
@@ -51,5 +55,18 @@ public class PagingServiceImpl implements PagingService{
     public List<StudyMemberDTO> getStudyListBySearch(String search, int startRowNumber, int endRowNumber) {
         List<StudyMemberDTO> studyListBySearch = studyMapper.getStudyListBySearch(search, startRowNumber, endRowNumber);
         return studyListBySearch;
+    }
+
+    //lms notice paging
+    @Override
+    public int getTotalCountOfNoticeList(int studyNo) {
+        int totalCount = noticeMapper.getTotalCountOfNoticeList(studyNo);
+        return totalCount;
+    }
+
+    @Override
+    public List<NoticeDTO> getNoticeListByPageNo(int studyNo , int startRowNumber, int endRowNumber) {
+        List<NoticeDTO>noticeList = noticeMapper.getNoticeListByPageNo(studyNo,startRowNumber,endRowNumber);
+        return noticeList;
     }
 }
