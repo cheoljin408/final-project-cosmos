@@ -24,4 +24,30 @@
         where <![CDATA[ROWNUM <= 3]]>
     </select>
 
+    <!--과제 공지사항 등록 -->
+    <insert id="registerTask">
+        insert into TASK(TASK_NO, TASK_TITLE, TASK_CONTENT, TASK_REGDATE, EMAIL, STUDY_NO)
+        values (TASK_SEQ.nextval, #{taskTitle}, #{taskContent}, sysdate, #{email}, #{studyNo})
+    </insert>
+
+    <!-- 과제 공지사항 번호 조회 -->
+    <select id="getTaskNoWhenRegister" resultType="int">
+        select task_seq.currval
+        from dual
+    </select>
+
+    <!-- 과제 파일 업로드 -->
+    <insert id="registerAttachFile">
+        INSERT INTO TASK_FILE
+        VALUES (TASK_FILE_SEQ.nextval, #{attachFile.uploadFileName}, #{attachFile.storeFileName}, #{type},
+                TASK_SEQ.CURRVAL)
+    </insert>
+
+    <!-- 과제 이미지 업로드 -->
+    <insert id="registerStoreImage">
+        INSERT INTO TASK_FILE
+        VALUES (TASK_FILE_SEQ.nextval, #{storeImage.uploadFileName}, #{storeImage.storeFileName}, #{type},
+                TASK_SEQ.CURRVAL)
+    </insert>
+
 </mapper>
