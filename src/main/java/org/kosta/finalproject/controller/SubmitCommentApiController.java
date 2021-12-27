@@ -1,16 +1,18 @@
 package org.kosta.finalproject.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.kosta.finalproject.model.domain.StudyCommentDTO;
 import org.kosta.finalproject.model.domain.SubmitCommentDTO;
+import org.kosta.finalproject.model.domain.UploadFile;
 import org.kosta.finalproject.service.SubmitCommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Controller
@@ -26,16 +28,27 @@ public class SubmitCommentApiController {
     // 과제 제출 등록
     
     // 과제 제출 수정
+
     
     // 과제 제출 삭제
-    @DeleteMapping("/api/deleteTaskComment/{submitNo}")
-    public String deleteTaskComment(@RequestBody int submitNo, @PathVariable int taskNo, Model model) {
+    @DeleteMapping("/api/deleteTaskComment/{studyNo}/{submitNo}")
+    public String deleteTaskComment(@RequestBody int submitNo, @PathVariable int taskNo,
+                                    @PathVariable int studyNo, Model model,
+                                    RedirectAttributes redirectAttributes) {
+        log.info("submitNo = {}", submitNo);
         System.out.println("submit = " + submitNo);
+
+        // (submitNo) 해당 댓글을 삭제
         submitCommentService.deleteTaskComment(submitNo);
 
-        List<SubmitCommentDTO> allTaskCommentList = submitCommentService.getAllTaskCommentList(taskNo);
-        model.addAttribute("studyCommentList", allTaskCommentList);
+        // 2. 댓글리스트를 가져옴 -> redirect: 후에 가져오는게 더 적절함
+//        List<SubmitCommentDTO> allTaskCommentList = submitCommentService.getAllTaskCommentList(taskNo);
+//        model.addAttribute("taskCommentList", allTaskCommentList);
 
-        return "fragments/task-submit-comment :: fragment-task-submit-comment";
+        // 3. redirect
+        redirectAttributes.addAttribute("studyNo", studyNo);
+        redirectAttributes.addAttribute("taskNo", taskNo);
+
+        return "redirect:/detail/{studyNo}/{taskNo}";
     }
 }

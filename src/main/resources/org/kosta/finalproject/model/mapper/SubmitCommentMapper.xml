@@ -7,19 +7,8 @@
     <delete id="deleteTaskComment">
         delete
         from SUBMIT_COMMENT
-        where sumbit_no = #{value}
+        where SUBMIT_NO = #{value}
     </delete>
+    
 
-    <select id="getAllTaskCommentList" parameterType="int" resultType="org.kosta.finalproject.model.domain.SubmitCommentDTO">
-        select sc.submit_no,
-               sc.submit_conent,
-               sc.submit_regdate,
-               sc.SUBMIT_UPLOAD_FILE_NAME,
-               sc.SUBMIT_STORE_FILE_NAME,
-               sc.TASK_NO,
-               sc.EMAIL,
-               sc.STUDY_NO
-        from sumbit_comment sc
-        where sumbit_no = #{value}
-    </select>
 </mapper>
