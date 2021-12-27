@@ -3,5 +3,22 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.kosta.finalproject.model.mapper.TaskCommentMapper">
+    <delete id="deleteTaskComment">
+        delete
+        from SUBMIT_COMMENT
+        where sumbit_no = #{value}
+    </delete>
 
+    <select id="getAllTaskCommentList" parameterType="int" resultType="SubmitCommentDTO">
+        select sc.submit_no,
+               sc.submit_conent,
+               sc.submit_regdate,
+               sc.SUBMIT_UPLOAD_FILE_NAME,
+               sc.SUBMIT_STORE_FILE_NAME,
+               sc.TASK_NO,
+               sc.EMAIL,
+               sc.STUDY_NO
+        from sumbit_comment sc
+        where sumbit_no = #{value}
+    </select>
 </mapper>
