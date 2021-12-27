@@ -23,7 +23,7 @@
             <div>
                 <div class="border-bottom pb-2 mb-4">
                     <div style="display: inline-block;">
-                        <h3>공지사항</h3>
+                        <h3>과제공지</h3>
                     </div>
                     <div th:if="${allStudyInfo.memberDTO.email==session.member.email}" class="align-middle" style="display: inline-block; float: right;">
                         <a class="align-middle" th:href="|/notice/register/${allStudyInfo.studyDTO.studyNo}|">글쓰기</a>
@@ -36,7 +36,7 @@
                                 <strong>
                                     <div style="font-family: 'BMHANNAPro'; font-size: 40px;">텅~</div>
                                 </strong>
-                                <div style="font-family: 'BMHANNAPro'; font-size: 20px;"><span style="color: royalblue">등록된 공지사항</span>이
+                                <div style="font-family: 'BMHANNAPro'; font-size: 20px;"><span style="color: royalblue">등록된 과제 공지</span>가
                                     없습니다!
                                 </div>
                             </div>
@@ -52,15 +52,14 @@
                                     <div style="font-size: 1.4rem; font-weight: 500; display:inline-block;">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" fill="none" viewBox="3 0 24 24"
                                              stroke="#1a73e8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                             class="feather feather-file" style="vertical-align: middle">
-                                            <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
-                                            <polyline points="13 2 13 9 20 9"></polyline>
+                                             class="feather feather-file-text" style="vertical-align: middle" >
+                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                            <polyline points="14 2 14 8 20 8"></polyline>
+                                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                                            <polyline points="10 9 9 9 8 9"></polyline>
                                         </svg>
-                                        <span th:text="${notice.noticeTitle}">공지사항 제목</span>
-                                    </div>
-                                    <div style="color: gray; display:inline-block; float:right; margin: 0 auto;">
-                                        <span class="align-middle">조회수</span>
-                                        <span class="align-middle" th:text="${notice.noticeHits}"></span>
+                                        <span th:text="${notice.noticeTitle}">과제 공지 제목</span>
                                     </div>
                                 </div>
                                 <div style="margin: 20px 20px 0px 0px;">
