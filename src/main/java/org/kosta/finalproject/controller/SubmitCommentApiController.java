@@ -1,19 +1,19 @@
 package org.kosta.finalproject.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.kosta.finalproject.service.TaskCommentService;
+import org.kosta.finalproject.service.SubmitCommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 @Slf4j
 @Controller
-public class TaskCommentApiController {
+public class SubmitCommentApiController {
 
-    private final TaskCommentService taskCommentService;
+    private final SubmitCommentService submitCommentService;
 
     @Autowired
-    public TaskCommentApiController(TaskCommentService taskCommentService) {
-        this.taskCommentService = taskCommentService;
+    public SubmitCommentApiController(SubmitCommentService submitCommentService) {
+        this.submitCommentService = submitCommentService;
     }
     
     // 과제 제출 등록
