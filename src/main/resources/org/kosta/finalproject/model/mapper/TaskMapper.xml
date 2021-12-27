@@ -147,4 +147,11 @@
                 TASK_SEQ.CURRVAL)
     </insert>
 
+    <!-- 댓글 과제 파일 다운로드 -->
+    <select id="findFileById" parameterType="int" resultType="UploadFile">
+        select SUBMIT_UPLOAD_FILE_NAME, SUBMIT_STORE_FILE_NAME
+        from SUBMIT_COMMENT
+        where SUBMIT_NO = #{value}
+    </select>
+
 </mapper>

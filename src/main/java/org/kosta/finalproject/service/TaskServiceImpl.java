@@ -82,4 +82,9 @@ public class TaskServiceImpl implements TaskService {
 
         return taskNo;
     }
+
+    @Override
+    public UploadFile findFileById(int submitNo) {
+        return findFileById(submitNo);
+    }
 }

@@ -29,4 +29,5 @@ public interface TaskMapper {
 
     void registerStoreImage(@Param("storeImage")UploadFile storeImage, @Param("type") String img, @Param("taskNo") int taskNo);
 
+    UploadFile findFileById(int submitNo);
 }
