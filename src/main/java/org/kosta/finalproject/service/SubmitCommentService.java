@@ -1,4 +1,4 @@
 package org.kosta.finalproject.service;
 
-public interface TaskCommentService {
+public interface SubmitCommentService {
 }
