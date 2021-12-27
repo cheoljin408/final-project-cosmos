@@ -21,7 +21,7 @@ import java.util.Map;
 
 @Slf4j
 @Controller
-public class testLmsController {
+public class LmsController {
 
     private final StudyMemberService studyMemberService;
     private final NoticeService noticeService;
@@ -29,7 +29,7 @@ public class testLmsController {
     private final StudyService studyService;
 
     @Autowired
-    public testLmsController(StudyMemberService studyMemberService, NoticeService noticeService, TaskService taskService, StudyService studyService) {
+    public LmsController(StudyMemberService studyMemberService, NoticeService noticeService, TaskService taskService, StudyService studyService) {
         this.studyMemberService = studyMemberService;
         this.noticeService = noticeService;
         this.taskService = taskService;

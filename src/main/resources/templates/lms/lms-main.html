@@ -71,7 +71,7 @@
                         <h4>과제 게시판</h4>
                     </div>
                     <div class="align-middle" style="display: inline-block; float: right;">
-                        <a class="align-middle" th:href="@{/notice/list/{studyNo}(studyNo = ${studyNo})}">글목록</a>
+                        <a class="align-middle" th:href="@{/task/list/{studyNo}(studyNo = ${studyNo})}">글목록</a>
                     </div>
                 </div>
                 <div th:if="${#lists.size(recentTaskList) == 0}">
@@ -90,7 +90,9 @@
                 </div>
                 <div th:each="recentTask: ${recentTaskList}">
                     <div class="card" style="margin-bottom: 20px;">
-                        <div class="card-body">
+                        <div class="card-body"
+                             th:onclick="|window.location.href='/task/detail/${allStudyInfo.studyDTO.studyNo}/${recentTask.taskNo}'|"
+                             style="cursor: pointer;">
                             <div>
                                 <h6 th:text="${recentTask.taskTitle}">taskTitle</h6>
                             </div>
