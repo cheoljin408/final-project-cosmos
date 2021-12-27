@@ -9,7 +9,7 @@
                      style="margin-right: 10px; width: 30px; height: 30px;"/>
                 <span th:text="${session.member.name}">name</span>
             </div>
-            <form th:action method="post" enctype="multipart/form-data">
+            <form th:action="|/api/registerTaskComment/${studyNo}/${taskNo}|" method="post" enctype="multipart/form-data">
                 <div style="margin-bottom: 20px;">
                     <input name="submitContent" type="text" class="form-control" placeholder="댓글을 입력하세요">
                 </div>
