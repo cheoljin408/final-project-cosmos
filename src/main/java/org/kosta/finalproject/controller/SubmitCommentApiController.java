@@ -59,7 +59,31 @@ public class SubmitCommentApiController {
     }
     
     // 과제 제출 수정
+    @PostMapping("/api/updateTaskComment/{studyNo}/{taskNo}/{submitNo}")
+    public String updateTaskComment(@PathVariable int studyNo, @PathVariable int taskNo, @PathVariable int submitNo, @ModelAttribute SubmitCommentFormDTO submitCommentFormDTO, RedirectAttributes redirectAttributes) {
+        log.info("form: {}", submitCommentFormDTO);
+        try {
+            UploadFile attachFile = fileStoreService.storeFile(submitCommentFormDTO.getAttachFile());
 
+            SubmitCommentDTO submitCommentDTO = new SubmitCommentDTO();
+            submitCommentDTO.setSubmitNo(submitNo);
+            submitCommentDTO.setSubmitContent(submitCommentFormDTO.getSubmitContent());
+            submitCommentDTO.setSubmitUploadFileName(attachFile.getUploadFileName());
+            submitCommentDTO.setSubmitStoreFileName(attachFile.getStoreFileName());
+
+            log.info("DTO: {}", submitCommentDTO);
+
+            submitCommentService.updateSubmitComment(submitCommentDTO);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        redirectAttributes.addAttribute("studyNo", studyNo);
+        redirectAttributes.addAttribute("taskNo", taskNo);
+
+        return "redirect:/task/detail/{studyNo}/{taskNo}";
+    }
     
     // 과제 제출 삭제
     @DeleteMapping("/api/deleteTaskComment/{studyNo}/{submitNo}")

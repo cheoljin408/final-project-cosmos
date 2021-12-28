@@ -41,4 +41,12 @@
                 #{studyNo})
     </insert>
 
+    <update id="updateSubmitComment" parameterType="SubmitCommentDTO">
+        update SUBMIT_COMMENT
+        set SUBMIT_CONTENT          = #{submitContent},
+            SUBMIT_UPLOAD_FILE_NAME = #{submitUploadFileName},
+            SUBMIT_STORE_FILE_NAME = #{submitStoreFileName}
+        where SUBMIT_NO = #{submitNo}
+    </update>
+
 </mapper>

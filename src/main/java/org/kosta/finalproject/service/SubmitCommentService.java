@@ -13,4 +13,5 @@ public interface SubmitCommentService {
 
     void registerSubmitComment(SubmitCommentDTO submitCommentDTO);
 
+    void updateSubmitComment(SubmitCommentDTO submitCommentDTO);
 }

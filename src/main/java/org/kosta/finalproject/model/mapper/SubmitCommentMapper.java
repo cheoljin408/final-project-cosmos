@@ -17,5 +17,6 @@ public interface SubmitCommentMapper {
     void deleteTaskComment(int submitNo);
   
     void registerSubmitComment(SubmitCommentDTO submitCommentDTO);
-  
+
+    void updateSubmitComment(SubmitCommentDTO submitCommentDTO);
 }

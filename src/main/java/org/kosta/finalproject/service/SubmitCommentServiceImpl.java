@@ -35,5 +35,10 @@ public class SubmitCommentServiceImpl implements SubmitCommentService {
     public void registerSubmitComment(SubmitCommentDTO submitCommentDTO) {
         submitCommentMapper.registerSubmitComment(submitCommentDTO);
     }
-  
+
+    @Override
+    public void updateSubmitComment(SubmitCommentDTO submitCommentDTO) {
+        submitCommentMapper.updateSubmitComment(submitCommentDTO);
+    }
+
 }

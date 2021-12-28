@@ -158,6 +158,7 @@ public class TaskController {
         List<HashMap<String, String>> submitCommentList = submitCommentService.getAllSubmitComment(studyNo, taskNo);
         model.addAttribute("submitCommentList", submitCommentList);
         // log.info("submitCommentList: {}", submitCommentList);
+        model.addAttribute("studyNo", studyNo);
 
         return "lms/task/detail";
     }
