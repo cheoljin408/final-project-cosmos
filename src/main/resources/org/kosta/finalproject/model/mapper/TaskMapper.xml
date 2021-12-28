@@ -73,6 +73,7 @@
         and t.study_no = sm.study_no
         and sm.study_no = s.study_no
         and sm.study_no = #{value}
+        and sm.study_member_role = '스터디리더'
         order by task_regdate desc
     </select>
 

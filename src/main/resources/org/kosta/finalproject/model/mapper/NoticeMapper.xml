@@ -46,9 +46,10 @@
              study s,
              member m
         where sm.email = m.email
-          and sm.study_no = n.study_no
-          and sm.study_no = s.study_no
-          and n.study_no = #{value}
+            and sm.study_no = n.study_no
+            and sm.study_no = s.study_no
+            and sm.study_member_role = '스터디리더'
+            and sm.study_no = #{value}
         order by notice_no desc
     </select>
 
