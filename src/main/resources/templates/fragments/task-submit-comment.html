@@ -12,7 +12,8 @@
             <form th:action="|/api/registerTaskComment/${studyNo}/${taskNo}|" method="post"
                   enctype="multipart/form-data">
                 <div style="margin-bottom: 20px;">
-                    <input name="submitContent" type="text" class="form-control" placeholder="댓글을 입력하세요" required="required">
+                    <input name="submitContent" type="text" class="form-control" placeholder="댓글을 입력하세요"
+                           required="required">
                 </div>
                 <div style="margin-bottom: 20px;">
                     <div style="display: inline-block; width: 50%;">
@@ -29,7 +30,8 @@
     </div>
     <div>
         <div th:each="submitCommentMap:${submitCommentList}" class="card" style="border: none;">
-            <form th:action="|/api/updateTaskComment/${studyNo}/${taskNo}/${submitCommentMap.SUBMIT_NO}|" method="post" enctype="multipart/form-data">
+            <form th:action="|/api/updateTaskComment/${studyNo}/${taskNo}/${submitCommentMap.SUBMIT_NO}|" method="post"
+                  enctype="multipart/form-data">
                 <div class="card-body">
                     <div style="margin-bottom: 10px;">
                         <img th:src="${submitCommentMap.PICTURE}" class="rounded-circle"
@@ -44,7 +46,8 @@
                             <input class="form-control" type="text" name="submitContent" style="display: none;"/>
                         </div>
                         <div th:if="${submitCommentMap.EMAIL == session.member.email}">
-                            <div class="fileIcon" style="display: inline-block; border: 1px solid rgba(0, 0, 0, 0.1); border-radius: 3px; background-color: rgba(0, 0, 0, 0.1); padding: 3px 5px;">
+                            <div class="fileIcon"
+                                 style="display: inline-block; border: 1px solid rgba(0, 0, 0, 0.1); border-radius: 3px; background-color: rgba(0, 0, 0, 0.1); padding: 3px 5px;">
                                 <div style="display: inline-block; color: #007bff; margin-right: 10px;">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                          class="bi bi-cloud-arrow-down-fill" viewBox="0 0 16 16">
@@ -73,7 +76,7 @@
                                 </button>
 
                                 <button type="button" class="btn btn-secondary btn-sm submitCommentDeleteBtn"
-                                        style="display: inline;">삭제
+                                        th:value="${submitCommentMap.SUBMIT_NO}" style="display: inline;">삭제
                                 </button>
                                 <button type="button" class="btn btn-secondary btn-sm submitCommentCancelBtn"
                                         style="display: none;">취소

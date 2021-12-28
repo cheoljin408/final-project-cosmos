@@ -129,8 +129,6 @@
                 <div id="submitCommentRoot">
                     <div th:replace="fragments/task-submit-comment.html :: fragment-task-submit-comment" id="submitCommentListView"></div>
                 </div>
-
-
             </div>
         </main> <!-- Main end -->
     </div>
@@ -217,6 +215,28 @@
                 success: function () {
                     location.replace("/task/list/" + [[${taskInfo.get('STUDY_NO')}]]);
                 }
+            });
+        });
+
+        $(".submitCommentDeleteBtn").click(function () {
+            if (!confirm("댓글을 삭제하시겠습니까?")) {
+                return;
+            }
+            let submitNo = $(this).val();
+            let studyNo = /*[[${studyNo}]]*/;
+            let taskNo = /*[[${taskInfo.get('TASK_NO')}]]*/
+            let data = {
+                submitNo : submitNo,
+                taskNo :taskNo
+            };
+            console.log(data);
+            $.ajax({
+                type: 'DELETE',
+                url: '/api/deleteTaskComment/' + studyNo + "/" + submitNo,
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(data)
+            }).done(function (fragment){
+                $("#submitCommentListView").replaceWith(fragment);
             });
         });
     });
