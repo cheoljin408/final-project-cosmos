@@ -126,13 +126,81 @@
 
 
                 <!-- 과제 제출 댓글 -->
-                <div th:replace="fragments/task-submit-comment.html :: fragment-task-submit-comment"></div>
+                <div id="submitCommentRoot">
+                    <div th:replace="fragments/task-submit-comment.html :: fragment-task-submit-comment" id="submitCommentListView"></div>
+                </div>
 
 
             </div>
         </main> <!-- Main end -->
     </div>
 </div>
+
+<script th:inline="javascript">
+
+    $(function() {
+
+        // 댓글 수정
+        $("#submitCommentRoot").on('click', '.submitCommentUpdateBtn', function() {
+            console.log(`${$(this).val()} 댓글 수정`);
+
+            // 수정, 확인 버튼 토글
+            $(this).css('display', 'none');
+            $(this).siblings(".submitCommentUpdateSubmitBtn").css('display', 'inline');
+
+            // 삭제, 취소 버튼 토글
+            $(this).siblings(".submitCommentDeleteBtn").css('display', 'none');
+            $(this).siblings(".submitCommentCancelBtn").css('display', 'inline');
+
+            // p, input 태그 토글
+            $(this).parent().parent().siblings().children('p').css('display', 'none');
+            $(this).parent().parent().siblings().children('input').css('display', 'inline');
+
+            // p 태그 text를 input의 value로 넣어주기
+            $(this).parent().parent().siblings().children('input')
+                .val($(this).parent().parent().siblings().children('p').text());
+
+            // fileIcon 없애고 fileInput으로 바꾸기
+            $(this).parent().siblings('.fileIcon').css('display', 'none');
+            $(this).parent().siblings('.fileInput').css('display', 'inline-block');
+        });
+
+        // 댓글 수정 취소
+        $("#submitCommentRoot").on("click", ".submitCommentCancelBtn", function() {
+            console.log(`댓글 수정 취소`);
+
+            // p, input 태그 토글
+            $(this).parent().parent().siblings().children('p').css('display', 'inline');
+            $(this).parent().parent().siblings().children('input').css('display', 'none');
+
+            // fileIcon 없애고 fileInput으로 바꾸기
+            $(this).parent().siblings('.fileIcon').css('display', 'inline-block');
+            $(this).parent().siblings('.fileInput').css('display', 'none');
+
+            // 수정, 확인 버튼 토글
+            $(this).siblings(".submitCommentUpdateSubmitBtn").css('display', 'none');
+            $(this).siblings(".submitCommentUpdateBtn").css('display', 'inline');
+
+            // 삭제, 취소 버튼 토글
+            $(this).css('display', 'none');
+            $(this).siblings(".submitCommentDeleteBtn").css('display', 'inline');
+        });
+
+
+        // 댓글 수정 제출
+        $("#submitCommentRoot").on("click", ".submitCommentUpdateSubmitBtn", function() {
+            console.log(`${$(this).val()} 댓글 수정 제출`);
+
+            console.log($(this).parent().parent().parent().parent().parent());
+
+            $(this).parent().parent().parent().parent().parent().submit();
+        });
+
+
+
+    });
+
+</script>
 
 <script th:inline="javascript" type="text/javascript">
     $(document).ready(function () {
