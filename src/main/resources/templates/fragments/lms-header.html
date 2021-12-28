@@ -5,7 +5,11 @@
        style="font-family: 'Secular One', sans-serif; color: white; font-size: 1.8rem"><b style="padding-left: 15px;">COSMOS</b></a>
     <div class="d-grid gap-2 d-md-flex justify-content-md-end" style="padding-right: 40px;">
         <div th:if="${session.member} == null">
-            <a href="/study/list" style="margin-right: 10px; color: black;"><b>스터디 더보기</b></a>
+            <a href="/study/list" style="margin-right: 17px; color: black; text-decoration: none;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                </svg>
+            </a>
             <a data-toggle="modal" data-target="#exampleModal"><b>회원가입/로그인</b></a>
         </div>
         <div th:if="${session.member} != null">
@@ -26,7 +30,11 @@
                         <a class="dropdown-item updateState" style="color: red; cursor: pointer;" th:onclick="|javascript:updateState('${allStudyInfo.studyDTO.studyNo}','FIN')|">종료</a>
                     </div>
                 </div>
-                <a href="/study/list" style="margin-right: 10px; color: black;"><b>스터디 더보기</b></a>
+                <a href="/study/list" style="margin-right: 17px; color: black; text-decoration: none;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                    </svg>
+                </a>
                 <a href="/alarm" style="color: black; text-decoration: none;">
                     <svg style="margin-right: 10px" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                          fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">

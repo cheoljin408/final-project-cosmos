@@ -22,10 +22,12 @@ public interface TaskService {
     List<UploadFile> findFilesById(int taskNo);
 
     void deleteTask(int taskNo);
-    //과제 공지 등록
+
     int registerTask(int studyNo, String email, TaskFormDTO taskFormDTO, List<UploadFile> attachFiles, List<UploadFile> uploadFiles);
 
     void deleteTaskFileByTaskNo(int taskNo);
 
     void registerTaskFiles(int taskNo, TaskFormDTO taskFormDTO, List<UploadFile> attachFiles, List<UploadFile> storeImageFiles);
+
+    UploadFile findFileById(int submitNo);
 }

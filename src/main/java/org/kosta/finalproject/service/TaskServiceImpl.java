@@ -98,7 +98,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public void registerTaskFiles(int taskNo, TaskFormDTO taskFormDTO, List<UploadFile> attachFiles, List<UploadFile> storeImageFiles) {
         // 2. 파일 저장
-        if(attachFiles.size() != 0) {
+        if (attachFiles.size() != 0) {
             for (UploadFile attachFile : attachFiles) {
                 taskMapper.registerAttachFile(attachFile, "FILE", taskNo);
             }
@@ -106,11 +106,16 @@ public class TaskServiceImpl implements TaskService {
         }
 
         // 3. 이미지 저장
-        if(storeImageFiles.size() != 0) {
+        if (storeImageFiles.size() != 0) {
             for (UploadFile storeImage : storeImageFiles) {
                 taskMapper.registerStoreImage(storeImage, "IMG", taskNo);
             }
             System.out.println("이미지 저장 완료");
         }
+    }
+
+    @Override
+    public UploadFile findFileById(int submitNo) {
+        return taskMapper.findFileById(submitNo);
     }
 }

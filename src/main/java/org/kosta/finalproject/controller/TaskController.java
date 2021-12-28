@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.UriUtils;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
@@ -36,14 +34,16 @@ public class TaskController {
     private final StudyMemberService studyMemberService;
     private final StudyService studyService;
     private final PagingService pagingService;
+    private final SubmitCommentService submitCommentService;
 
     @Autowired
-    public TaskController(TaskService taskService, FileStoreService fileStoreService, StudyMemberService studyMemberService, StudyService studyService,PagingService pagingService) {
+    public TaskController(TaskService taskService, FileStoreService fileStoreService, StudyMemberService studyMemberService, StudyService studyService, PagingService pagingService, SubmitCommentService submitCommentService) {
         this.taskService = taskService;
         this.fileStoreService = fileStoreService;
         this.studyMemberService = studyMemberService;
         this.studyService = studyService;
         this.pagingService = pagingService;
+        this.submitCommentService = submitCommentService;
     }
 
     //LMS 사이드바 적용 과제 공지사항 등록페이지
@@ -103,7 +103,7 @@ public class TaskController {
     }
 
     @GetMapping("/list/{studyNo}")
-    public String noticeList(@PathVariable int studyNo,@RequestParam(required = false) Object pageNo,Model model, @LoginUser SessionMember member) {
+    public String noticeList(@PathVariable int studyNo, @RequestParam(required = false) Object pageNo, Model model, @LoginUser SessionMember member) {
 
         //paging 구현
         int totalCount = pagingService.getTotalCountOfTaskList(studyNo);
@@ -111,17 +111,17 @@ public class TaskController {
 
         LMSPagingBean lmsPagingBean = null;
 
-        if(pageNo == null) {
+        if (pageNo == null) {
             lmsPagingBean = new LMSPagingBean(totalCount);
         } else {
-            lmsPagingBean = new LMSPagingBean(totalCount,  Integer.valueOf((String)pageNo));
-            log.info("Integer.valueOf((String)pageNo): {}", Integer.valueOf((String)pageNo));
+            lmsPagingBean = new LMSPagingBean(totalCount, Integer.valueOf((String) pageNo));
+            log.info("Integer.valueOf((String)pageNo): {}", Integer.valueOf((String) pageNo));
         }
 
         model.addAttribute("lmsPagingBean", lmsPagingBean);
 
-        List<TaskDTO>taskList = pagingService.getTaskListByPageNo(studyNo,lmsPagingBean.getStartRowNumber(), lmsPagingBean.getEndRowNumber());
-        model.addAttribute("taskList",taskList);
+        List<TaskDTO> taskList = pagingService.getTaskListByPageNo(studyNo, lmsPagingBean.getStartRowNumber(), lmsPagingBean.getEndRowNumber());
+        model.addAttribute("taskList", taskList);
 
         // 내가 속한 스터디 이름 리스트 가져오기
         Map<String, Object> emailAndStudyNo = new HashMap<String, Object>();
@@ -169,15 +169,21 @@ public class TaskController {
         model.addAttribute("files", files);
         model.addAttribute("taskInfo", result);
 
+        // 과제 제출 댓글 리스트 가져오기
+        List<HashMap<String, String>> submitCommentList = submitCommentService.getAllSubmitComment(studyNo, taskNo);
+        model.addAttribute("submitCommentList", submitCommentList);
+        // log.info("submitCommentList: {}", submitCommentList);
+        model.addAttribute("studyNo", studyNo);
+
         return "lms/task/detail";
     }
 
     /**
-     *   과제공지 업데이트 폼으로 이동
+     * 과제공지 업데이트 폼으로 이동
      */
     @PostMapping("/update/form/{studyNo}")
-    public String updateTaskForm(@RequestParam int taskNo, @PathVariable int studyNo ,
-                                   @LoginUser SessionMember member, Model model) {
+    public String updateTaskForm(@RequestParam int taskNo, @PathVariable int studyNo,
+                                 @LoginUser SessionMember member, Model model) {
         model.addAttribute("taskInfo", taskService.getTaskDetailByTaskNo(taskNo));
         log.info("taskInfo: {}", taskService.getTaskDetailByTaskNo(taskNo));
         // 내가 속한 스터디 이름 리스트 가져오기
@@ -225,6 +231,7 @@ public class TaskController {
 
         return "redirect:/task/detail/{studyNo}/{taskNo}";
     }
+
     /**
      * 과제 공지사항 삭제
      */
@@ -253,6 +260,31 @@ public class TaskController {
 
         String uploadFileName = files.get(index).getUploadFileName();
         String storeFileName = files.get(index).getStoreFileName();
+
+        UrlResource resource = new UrlResource("file:" + fileStoreService.getFullPath(storeFileName));
+
+        // log.info("uploadFileName={}", uploadFileName);
+        // log.info("storeFileName={}", storeFileName);
+
+        // 한글 깨짐 방지를 위한 인코딩
+        String encodedUploadFileName = UriUtils.encode(uploadFileName, StandardCharsets.UTF_8);
+
+        // 파일 다운로드를 위한 규약. 사용하지 않을 경우 브라우저에서 다운이 아닌 읽기가 동작
+        String contentDisposition = "attachment; filename=\"" + encodedUploadFileName + "\"";
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, contentDisposition)
+                .body(resource);
+    }
+
+    // 헤더에 추가해야 할 사항이 있어서 ResponseBody 는 사용하지 않았음
+    // 첨부파일 다운로드
+    @GetMapping("/comment/{submitNo}")
+    public ResponseEntity<Resource> downloadAttach(@PathVariable int submitNo) throws MalformedURLException {
+        UploadFile file = taskService.findFileById(submitNo);
+
+        String uploadFileName = file.getUploadFileName();
+        String storeFileName = file.getStoreFileName();
 
         UrlResource resource = new UrlResource("file:" + fileStoreService.getFullPath(storeFileName));
 

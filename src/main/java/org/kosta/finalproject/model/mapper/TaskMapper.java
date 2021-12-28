@@ -35,4 +35,6 @@ public interface TaskMapper {
     List<TaskDTO> getTaskListByPageNo(@Param("studyNo")int studyNo, @Param("startRowNumber")int startRowNumber, @Param("endRowNumber")int endRowNumber);
 
     int getTotalCountOfNoticeList(int studyNo);
+
+    UploadFile findFileById(int submitNo);
 }

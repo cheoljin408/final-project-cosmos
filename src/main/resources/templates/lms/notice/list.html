@@ -81,7 +81,9 @@
                     <hr>
                 </div>
             </div>
-            <div th:replace="fragments/notice-list-paging.html :: fragment-notice-list-paging"></div>
+            <div th:if="${#lists.size(noticeList) != 0}">
+                <div th:replace="fragments/notice-list-paging.html :: fragment-notice-list-paging"></div>
+            </div>
         </main>
     </div>
 </div>

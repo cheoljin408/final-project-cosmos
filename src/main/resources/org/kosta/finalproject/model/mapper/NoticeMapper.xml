@@ -29,30 +29,6 @@
         <id property="studyNo" column="study_no"/>
     </resultMap>
 
-    <!-- 공지 리스트 조회 -->
-    <select id="getAllNoticeList" parameterType="int" resultMap="noticeDTOMap">
-        select n.notice_no,
-               n.notice_title,
-               n.notice_content,
-               n.notice_regdate,
-               n.notice_hits,
-               n.address,
-               sm.email   as sm_m_email,
-               m.name     as sm_m_name,
-               m.picture  as sm_m_picture,
-               s.study_no as sm_s_study_no
-        from notice n,
-             study_member sm,
-             study s,
-             member m
-        where sm.email = m.email
-          and sm.study_no = n.study_no
-          and sm.study_no = s.study_no
-          and sm.study_member_role = '스터디리더'
-          and sm.study_no = #{value}
-        order by notice_no desc
-    </select>
-
     <!-- 특정 공지사항 상세보기 페이지를 위한 정보를 불러옴 -->
     <select id="getNoticeDetailByNoticeNo" resultType="hashMap">
         select n.notice_no,
