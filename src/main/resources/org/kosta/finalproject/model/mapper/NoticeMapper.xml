@@ -101,14 +101,14 @@
     <insert id="registerAttachFile">
         INSERT INTO NOTICE_FILE
         VALUES (NOTICE_FILE_SEQ.nextval, #{attachFile.uploadFileName}, #{attachFile.storeFileName}, #{type},
-                NOTICE_SEQ.CURRVAL)
+                #{noticeNo})
     </insert>
 
     <!-- 이미지 업로드 -->
     <insert id="registerStoreImage">
         INSERT INTO NOTICE_FILE
         VALUES (NOTICE_FILE_SEQ.nextval, #{storeImage.uploadFileName}, #{storeImage.storeFileName}, #{type},
-                NOTICE_SEQ.CURRVAL)
+                #{noticeNo})
     </insert>
 
 
