@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Controller
@@ -63,24 +66,26 @@ public class SubmitCommentApiController {
     
     // 과제 제출 삭제
     @DeleteMapping("/api/deleteTaskComment/{studyNo}/{submitNo}")
-    public String deleteTaskComment(@RequestBody int submitNo, @PathVariable int taskNo,
+    public String deleteTaskComment(@RequestBody Map<String, Object> jsonData,
                                     @PathVariable int studyNo, Model model,
                                     RedirectAttributes redirectAttributes) {
+        int submitNo = Integer.valueOf(jsonData.get("submitNo").toString());
+        int taskNo = Integer.valueOf(jsonData.get("taskNo").toString());
         log.info("submitNo = {}", submitNo);
-        System.out.println("submit = " + submitNo);
-
+        System.out.println("삭제전");
         // (submitNo) 해당 댓글을 삭제
         submitCommentService.deleteTaskComment(submitNo);
-
+        System.out.println("삭제후");
         // 2. 댓글리스트를 가져옴 -> redirect: 후에 가져오는게 더 적절함
 //        List<SubmitCommentDTO> allTaskCommentList = submitCommentService.getAllTaskCommentList(taskNo);
 //        model.addAttribute("taskCommentList", allTaskCommentList);
 
         // 3. redirect
-        redirectAttributes.addAttribute("studyNo", studyNo);
-        redirectAttributes.addAttribute("taskNo", taskNo);
-
-        return "redirect:/detail/{studyNo}/{taskNo}";
+//        redirectAttributes.addAttribute("studyNo", studyNo);
+//        redirectAttributes.addAttribute("taskNo", taskNo);
+        List<HashMap<String, String>> submitCommentList = submitCommentService.getAllSubmitComment(studyNo, taskNo);
+        model.addAttribute("submitCommentList", submitCommentList);
+        return "fragments/task-submit-comment :: fragment-task-submit-comment";
     }
     
 }
