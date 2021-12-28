@@ -49,45 +49,49 @@
     <select id="getRecentTaskList" parameterType="int" resultMap="taskDTOMap">
         select v.TASK_NO, v.TASK_TITLE, v.TASK_CONTENT, v.TASK_REGDATE
         from (
-        select TASK_NO, TASK_TITLE, TASK_CONTENT, TASK_REGDATE
-        from TASK t,
-        STUDY_MEMBER sm
-        where t.STUDY_NO = sm.STUDY_NO
-        and t.STUDY_NO = #{value}
-        order by TASK_REGDATE desc
-        ) v
-        where <![CDATA[ROWNUM <= 3]]>
+                 select TASK_NO, TASK_TITLE, TASK_CONTENT, TASK_REGDATE
+                 from TASK t,
+                      STUDY_MEMBER sm
+                 where t.STUDY_NO = sm.STUDY_NO
+                   and t.STUDY_NO = #{value}
+                 order by TASK_REGDATE desc
+             ) v
+        where <![CDATA[ROWNUM <= 3
+        ]]>
     </select>
-    
+
     <select id="getAllTaskListByStudyNo" parameterType="int" resultMap="taskDTOMap">
-        select t.task_no, t.task_title, t.task_content, to_char(t.task_regdate, 'YYYY-MM-DD HH24-MI-SS'),
-        sm.email   as sm_m_email,
-        m.name     as sm_m_name,
-        m.picture  as sm_m_picture,
-        s.study_no as sm_s_study_no
+        select t.task_no,
+               t.task_title,
+               t.task_content,
+               to_char(t.task_regdate, 'YYYY-MM-DD HH24-MI-SS'),
+               sm.email   as sm_m_email,
+               m.name     as sm_m_name,
+               m.picture  as sm_m_picture,
+               s.study_no as sm_s_study_no
         from task t,
-        study_member sm,
-        study s,
-        member m
+             study_member sm,
+             study s,
+             member m
         where sm.email = m.email
-        and t.study_no = sm.study_no
-        and sm.study_no = s.study_no
-        and sm.study_no = #{value}
-        and sm.study_member_role = '스터디리더'
+          and t.study_no = sm.study_no
+          and sm.study_no = s.study_no
+          and sm.study_no = #{value}
+          and sm.study_member_role = '스터디리더'
         order by task_regdate desc
     </select>
 
     <!-- 과제 공지 상세 가져오기 -->
     <select id="getTaskDetailByTaskNo" resultType="hashMap">
-        select  t.task_no,
-                t.task_title,
-                t.task_regdate,
-                DBMS_LOB.SUBSTR(t.task_content, dbms_LoB.GETLENGTH(t.TASK_CONTENT)) as task_content,
-                m.email,
-                m.name,
-                m.picture,
-                s.study_no,
-                s.study_name
+        select t.task_no,
+               t.task_title,
+               t.task_regdate,
+               DBMS_LOB.SUBSTR(t.task_content, dbms_LoB.GETLENGTH(t.TASK_CONTENT)) as task_content,
+               m.email,
+               m.name,
+               m.picture,
+               s.study_no,
+               s.study_name
         from member m,
              study_member sm,
              study s,
@@ -157,7 +161,9 @@
     </insert>
 
     <select id="getTotalCountOfNoticeList" resultType="int">
-        select count(*) from TASK where study_no = #{value}
+        select count(*)
+        from TASK
+        where study_no = #{value}
     </select>
 
     <select id="getTaskListByPageNo" resultMap="taskDTOMap">
@@ -166,20 +172,19 @@
                a.task_title,
                a.task_content,
                a.task_regdate,
-               a.email as sm_email,
-               a.name as sm_m_name,
-               a.picture as sm_m_picture,
+               a.email    as sm_email,
+               a.name     as sm_m_name,
+               a.picture  as sm_m_picture,
                a.study_no as sm_s_study_no
         from (
-                 select row_number() over(order by t.TASK_NO desc) as rnum,
-                        t.task_no as task_no,
-                        t.task_title as task_title,
-                        t.task_content as task_content,
+                 select row_number()                                        over(order by t.TASK_NO desc) as rnum, t.task_no as task_no,
+                        t.task_title                                     as task_title,
+                        t.task_content                                   as task_content,
                         to_char(t.task_regdate, 'YYYY-MM-DD HH24-MI-SS') as task_regdate,
-                        sm.email   as email,
-                        m.name     as name,
-                        m.picture  as picture,
-                        s.study_no as study_no
+                        sm.email                                         as email,
+                        m.name                                           as name,
+                        m.picture                                        as picture,
+                        s.study_no                                       as study_no
                  from task t,
                       study_member sm,
                       study s,
@@ -188,6 +193,7 @@
                    and t.study_no = sm.study_no
                    and sm.study_no = s.study_no
                    and sm.study_no = #{studyNo}
+                   and sm.study_member_role = '스터디리더'
              ) a
         where a.rnum between #{startRowNumber} and #{endRowNumber}
     </select>
