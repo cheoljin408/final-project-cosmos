@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<div th:fragment="fragment-notice-list-paging" style="margin-top: 100px;">
+
+    <ul class="pagination justify-content-center" style="margin: 20px 0">
+        <li th:if="${lmsPagingBean.previousPageGroup}" class="page-item">
+            <a class="page-link"
+               th:href="|/notice/list/${allStudyInfo.studyDTO.studyNo}?pageNo=${lmsPagingBean.startPageOfPageGroup-1}|">이전</a>
+        </li>
+        <div th:each="page: ${#numbers.sequence(lmsPagingBean.getStartPageOfPageGroup(), lmsPagingBean.getEndPageOfPageGroup())}">
+            <div th:if="${page == lmsPagingBean.getNowPage()}">
+                <li class="page-item active">
+                    <a th:text="${page}" class="page-link"
+                       th:href="|/notice/list/${allStudyInfo.studyDTO.studyNo}?pageNo=${page}|">page</a>
+                </li>
+            </div>
+            <div th:unless="${page == lmsPagingBean.getNowPage()}">
+                <li class="page-item">
+                    <a th:text="${page}" class="page-link"
+                       th:href="|/notice/list/${allStudyInfo.studyDTO.studyNo}?pageNo=${page}|">page</a>
+                </li>
+            </div>
+        </div>
+        <li th:if="${lmsPagingBean.nextPageGroup}" class="page-item">
+            <a class="page-link"
+               th:href="|/notice/list/${allStudyInfo.studyDTO.studyNo}?pageNo=${lmsPagingBean.endPageOfPageGroup+1}|">다음</a>
+        </li>
+    </ul>
+</div>

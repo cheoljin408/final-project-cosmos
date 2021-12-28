@@ -148,5 +148,44 @@
         where notice_no = #{value}
     </delete>
 
+    <select id="getTotalCountOfNoticeList" resultType="int">
+        select count(*) from NOTICE where STUDY_NO = #{value}
+    </select>
+
+    <select id="getNoticeListByPageNo" resultMap="noticeDTOMap">
+        select a.rnum,
+               a.notice_no,
+               a.notice_title,
+               a.notice_title,
+               a.notice_content,
+               a.notice_regdate,
+               a.NOTICE_HITS,
+               a.ADDRESS,
+               a.email as sm_email,
+               a.name as sm_m_name,
+               a.picture as sm_m_picture,
+               a.study_no as sm_s_study_no
+        from (select row_number() over(order by n.notice_no desc) as rnum,
+                     n.notice_no as notice_no,
+                     n.notice_title as notice_title,
+                     n.notice_content as notice_content,
+                     n.notice_regdate as notice_regdate,
+                     n.notice_hits as notice_hits,
+                     n.address as address,
+                     sm.email   as email,
+                     m.name     as name,
+                     m.picture  as picture,
+                     s.study_no as study_no
+              from notice n,
+                   study_member sm,
+                   study s,
+                   member m
+              where sm.email = m.email
+                and sm.study_no = n.study_no
+                and sm.study_no = s.study_no
+                and n.study_no = #{studyNo}) a
+        where a.rnum between #{startRowNumber} and #{endRowNumber}
+    </select>
+
 
 </mapper>

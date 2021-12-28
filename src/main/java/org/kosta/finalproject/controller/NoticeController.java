@@ -3,13 +3,8 @@ package org.kosta.finalproject.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.kosta.finalproject.config.auth.LoginUser;
 import org.kosta.finalproject.config.auth.dto.SessionMember;
-import org.kosta.finalproject.model.domain.NoticeFormDTO;
-import org.kosta.finalproject.model.domain.StudyMemberDTO;
-import org.kosta.finalproject.model.domain.UploadFile;
-import org.kosta.finalproject.service.FileStoreService;
-import org.kosta.finalproject.service.NoticeService;
-import org.kosta.finalproject.service.StudyMemberService;
-import org.kosta.finalproject.service.StudyService;
+import org.kosta.finalproject.model.domain.*;
+import org.kosta.finalproject.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -41,13 +36,15 @@ public class NoticeController {
     private final FileStoreService fileStoreService;
     private final StudyMemberService studyMemberService;
     private final StudyService studyService;
+    private final PagingService pagingService;
 
     @Autowired
-    public NoticeController(NoticeService noticeService, FileStoreService fileStoreService, StudyMemberService studyMemberService,StudyService studyService) {
+    public NoticeController(NoticeService noticeService, FileStoreService fileStoreService, StudyMemberService studyMemberService,StudyService studyService,PagingService pagingService) {
         this.noticeService = noticeService;
         this.fileStoreService = fileStoreService;
         this.studyMemberService = studyMemberService;
         this.studyService = studyService;
+        this.pagingService = pagingService;
     }
 
     /**
@@ -119,10 +116,25 @@ public class NoticeController {
     }
 
     @GetMapping("/list/{studyNo}")
-    public String noticeList(@PathVariable int studyNo, Model model,
-                          HttpServletResponse response, @LoginUser SessionMember member) {
-        model.addAttribute("noticeList", noticeService.getAllNoticeList(studyNo));
+    public String noticeList(@PathVariable int studyNo,@RequestParam(required = false) Object pageNo, Model model, @LoginUser SessionMember member) {
 
+        //paging 구현
+        int totalCount = pagingService.getTotalCountOfNoticeList(studyNo);
+        log.info("totalCount: {}", totalCount);
+
+        LMSPagingBean lmsPagingBean = null;
+
+        if(pageNo == null) {
+            lmsPagingBean = new LMSPagingBean(totalCount);
+        } else {
+            lmsPagingBean = new LMSPagingBean(totalCount,  Integer.valueOf((String)pageNo));
+            log.info("Integer.valueOf((String)pageNo): {}", Integer.valueOf((String)pageNo));
+        }
+
+        model.addAttribute("lmsPagingBean", lmsPagingBean);
+
+        List<NoticeDTO> noticeList = pagingService.getNoticeListByPageNo(studyNo,lmsPagingBean.getStartRowNumber(), lmsPagingBean.getEndRowNumber());
+        model.addAttribute("noticeList", noticeList);
 
         // 내가 속한 스터디 이름 리스트 가져오기
         Map<String, Object> emailAndStudyNo = new HashMap<String, Object>();

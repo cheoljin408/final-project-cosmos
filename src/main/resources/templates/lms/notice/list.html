@@ -25,7 +25,8 @@
                     <div style="display: inline-block;">
                         <h3>공지사항</h3>
                     </div>
-                    <div th:if="${allStudyInfo.memberDTO.email==session.member.email}" class="align-middle" style="display: inline-block; float: right;">
+                    <div th:if="${allStudyInfo.memberDTO.email==session.member.email}" class="align-middle"
+                         style="display: inline-block; float: right;">
                         <a class="align-middle" th:href="|/notice/register/${allStudyInfo.studyDTO.studyNo}|">글쓰기</a>
                     </div>
                 </div>
@@ -50,8 +51,10 @@
                             <div class="card-body">
                                 <div>
                                     <div style="font-size: 1.4rem; font-weight: 500; display:inline-block;">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" fill="none" viewBox="3 0 24 24"
-                                             stroke="#1a73e8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" fill="none"
+                                             viewBox="3 0 24 24"
+                                             stroke="#1a73e8" stroke-width="2" stroke-linecap="round"
+                                             stroke-linejoin="round"
                                              class="feather feather-file" style="vertical-align: middle">
                                             <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
                                             <polyline points="13 2 13 9 20 9"></polyline>
@@ -78,15 +81,16 @@
                     <hr>
                 </div>
             </div>
+            <div th:replace="fragments/notice-list-paging.html :: fragment-notice-list-paging"></div>
         </main>
     </div>
 </div>
 <!--스터디 상태 변경 함수-->
 <script th:inline="javascript" type="text/javascript">
-    function updateState(studyNo,studyState){
+    function updateState(studyNo, studyState) {
         let form = document.createElement('form');
 
-        document.characterSet="utf-8";
+        document.characterSet = "utf-8";
 
         let obj;
         obj = document.createElement('input');
