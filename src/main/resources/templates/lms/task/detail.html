@@ -151,16 +151,16 @@
             $(this).siblings(".submitCommentCancelBtn").css('display', 'inline');
 
             // p, input 태그 토글
-            $(this).parent().parent().siblings().children('p').css('display', 'none');
-            $(this).parent().parent().siblings().children('input').css('display', 'inline');
+            $(this).parent().parent().parent().siblings().children('p').css('display', 'none');
+            $(this).parent().parent().parent().siblings().children('input').css('display', 'inline');
 
             // p 태그 text를 input의 value로 넣어주기
-            $(this).parent().parent().siblings().children('input')
-                .val($(this).parent().parent().siblings().children('p').text());
+            $(this).parent().parent().parent().siblings().children('input')
+                .val($(this).parent().parent().parent().siblings().children('p').text());
 
             // fileIcon 없애고 fileInput으로 바꾸기
-            $(this).parent().siblings('.fileIcon').css('display', 'none');
-            $(this).parent().siblings('.fileInput').css('display', 'inline-block');
+            $(this).parent().parent().siblings('.fileIcon').css('display', 'none');
+            $(this).parent().parent().siblings('.fileInput').css('display', 'inline-block');
         });
 
         // 댓글 수정 취소
@@ -168,12 +168,12 @@
             console.log(`댓글 수정 취소`);
 
             // p, input 태그 토글
-            $(this).parent().parent().siblings().children('p').css('display', 'inline');
-            $(this).parent().parent().siblings().children('input').css('display', 'none');
+            $(this).parent().parent().parent().siblings().children('p').css('display', 'inline');
+            $(this).parent().parent().parent().siblings().children('input').css('display', 'none');
 
             // fileIcon 없애고 fileInput으로 바꾸기
-            $(this).parent().siblings('.fileIcon').css('display', 'inline-block');
-            $(this).parent().siblings('.fileInput').css('display', 'none');
+            $(this).parent().parent().siblings('.fileIcon').css('display', 'inline-block');
+            $(this).parent().parent().siblings('.fileInput').css('display', 'none');
 
             // 수정, 확인 버튼 토글
             $(this).siblings(".submitCommentUpdateSubmitBtn").css('display', 'none');
@@ -189,9 +189,9 @@
         $("#submitCommentRoot").on("click", ".submitCommentUpdateSubmitBtn", function() {
             console.log(`${$(this).val()} 댓글 수정 제출`);
 
-            console.log($(this).parent().parent().parent().parent().parent());
+            console.log($(this).parent().parent().parent().parent().parent().parent());
 
-            $(this).parent().parent().parent().parent().parent().submit();
+            $(this).parent().parent().parent().parent().parent().parent().submit();
         });
 
 

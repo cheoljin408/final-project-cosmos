@@ -45,7 +45,7 @@
                                 댓글내용</p>
                             <input class="form-control" type="text" name="submitContent" style="display: none;"/>
                         </div>
-                        <div th:if="${submitCommentMap.EMAIL == session.member.email}">
+                        <div>
                             <div class="fileIcon"
                                  style="display: inline-block; border: 1px solid rgba(0, 0, 0, 0.1); border-radius: 3px; background-color: rgba(0, 0, 0, 0.1); padding: 3px 5px;">
                                 <div style="display: inline-block; color: #007bff; margin-right: 10px;">
@@ -65,22 +65,24 @@
                                        name="attachFile" style="color: #1a73e8; border-radius: 5px;"
                                        placeholder="파일을 선택해주세요">
                             </div>
-                            <div style="display: inline-block; float: right;">
-                                <button type="button" class="btn btn-secondary btn-sm submitCommentUpdateBtn"
-                                        th:value="${submitCommentMap.SUBMIT_NO}"
-                                        style="display: inline;">수정
-                                </button>
-                                <button type="button" class="btn btn-secondary btn-sm submitCommentUpdateSubmitBtn"
-                                        th:value="${submitCommentMap.SUBMIT_NO}"
-                                        style="display: none;">확인
-                                </button>
+                            <div th:if="${submitCommentMap.EMAIL == session.member.email}" style="display: inline-block; float: right;">
+                                <div>
+                                    <button type="button" class="btn btn-secondary btn-sm submitCommentUpdateBtn"
+                                            th:value="${submitCommentMap.SUBMIT_NO}"
+                                            style="display: inline;">수정
+                                    </button>
+                                    <button type="button" class="btn btn-secondary btn-sm submitCommentUpdateSubmitBtn"
+                                            th:value="${submitCommentMap.SUBMIT_NO}"
+                                            style="display: none;">확인
+                                    </button>
 
-                                <button type="button" class="btn btn-secondary btn-sm submitCommentDeleteBtn"
-                                        th:value="${submitCommentMap.SUBMIT_NO}" style="display: inline;">삭제
-                                </button>
-                                <button type="button" class="btn btn-secondary btn-sm submitCommentCancelBtn"
-                                        style="display: none;">취소
-                                </button>
+                                    <button type="button" class="btn btn-secondary btn-sm submitCommentDeleteBtn"
+                                            th:value="${submitCommentMap.SUBMIT_NO}" style="display: inline;">삭제
+                                    </button>
+                                    <button type="button" class="btn btn-secondary btn-sm submitCommentCancelBtn"
+                                            style="display: none;">취소
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
