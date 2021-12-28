@@ -2,6 +2,7 @@ package org.kosta.finalproject.service;
 
 import org.kosta.finalproject.model.domain.NoticeDTO;
 import org.kosta.finalproject.model.domain.StudyMemberDTO;
+import org.kosta.finalproject.model.domain.TaskDTO;
 
 import java.util.List;
 
@@ -22,4 +23,9 @@ public interface PagingService {
     int getTotalCountOfNoticeList(int studyNo);
 
     List<NoticeDTO> getNoticeListByPageNo(int studyNo,int startRowNumber, int endRowNumber);
+
+    int getTotalCountOfTaskList(int studyNo);
+
+    List<TaskDTO> getTaskListByPageNo(int studyNo, int startRowNumber, int endRowNumber);
+
 }
