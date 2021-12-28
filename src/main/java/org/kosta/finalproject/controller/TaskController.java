@@ -3,14 +3,8 @@ package org.kosta.finalproject.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.kosta.finalproject.config.auth.LoginUser;
 import org.kosta.finalproject.config.auth.dto.SessionMember;
-import org.kosta.finalproject.model.domain.NoticeFormDTO;
-import org.kosta.finalproject.model.domain.StudyMemberDTO;
-import org.kosta.finalproject.model.domain.TaskFormDTO;
-import org.kosta.finalproject.model.domain.UploadFile;
-import org.kosta.finalproject.service.FileStoreService;
-import org.kosta.finalproject.service.StudyMemberService;
-import org.kosta.finalproject.service.StudyService;
-import org.kosta.finalproject.service.TaskService;
+import org.kosta.finalproject.model.domain.*;
+import org.kosta.finalproject.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -41,13 +35,15 @@ public class TaskController {
     private final FileStoreService fileStoreService;
     private final StudyMemberService studyMemberService;
     private final StudyService studyService;
+    private final PagingService pagingService;
 
     @Autowired
-    public TaskController(TaskService taskService, FileStoreService fileStoreService, StudyMemberService studyMemberService, StudyService studyService) {
+    public TaskController(TaskService taskService, FileStoreService fileStoreService, StudyMemberService studyMemberService, StudyService studyService,PagingService pagingService) {
         this.taskService = taskService;
         this.fileStoreService = fileStoreService;
         this.studyMemberService = studyMemberService;
         this.studyService = studyService;
+        this.pagingService = pagingService;
     }
 
     //LMS 사이드바 적용 과제 공지사항 등록페이지
@@ -107,9 +103,25 @@ public class TaskController {
     }
 
     @GetMapping("/list/{studyNo}")
-    public String noticeList(@PathVariable int studyNo, Model model, @LoginUser SessionMember member) {
-        model.addAttribute("taskList", taskService.getAllTaskListByStudyNo(studyNo));
+    public String noticeList(@PathVariable int studyNo,@RequestParam(required = false) Object pageNo,Model model, @LoginUser SessionMember member) {
 
+        //paging 구현
+        int totalCount = pagingService.getTotalCountOfTaskList(studyNo);
+        log.info("totalCount: {}", totalCount);
+
+        LMSPagingBean lmsPagingBean = null;
+
+        if(pageNo == null) {
+            lmsPagingBean = new LMSPagingBean(totalCount);
+        } else {
+            lmsPagingBean = new LMSPagingBean(totalCount,  Integer.valueOf((String)pageNo));
+            log.info("Integer.valueOf((String)pageNo): {}", Integer.valueOf((String)pageNo));
+        }
+
+        model.addAttribute("lmsPagingBean", lmsPagingBean);
+
+        List<TaskDTO>taskList = pagingService.getTaskListByPageNo(studyNo,lmsPagingBean.getStartRowNumber(), lmsPagingBean.getEndRowNumber());
+        model.addAttribute("taskList",taskList);
 
         // 내가 속한 스터디 이름 리스트 가져오기
         Map<String, Object> emailAndStudyNo = new HashMap<String, Object>();

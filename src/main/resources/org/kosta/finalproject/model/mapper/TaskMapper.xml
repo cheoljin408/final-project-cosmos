@@ -155,4 +155,39 @@
                 TASK_SEQ.CURRVAL)
     </insert>
 
+    <select id="getTotalCountOfNoticeList" resultType="int">
+        select count(*) from TASK where study_no = #{value}
+    </select>
+
+    <select id="getTaskListByPageNo" resultMap="taskDTOMap">
+        select a.rnum,
+               a.task_no,
+               a.task_title,
+               a.task_content,
+               a.task_regdate,
+               a.email as sm_email,
+               a.name as sm_m_name,
+               a.picture as sm_m_picture,
+               a.study_no as sm_s_study_no
+        from (
+                 select row_number() over(order by t.TASK_NO desc) as rnum,
+                        t.task_no as task_no,
+                        t.task_title as task_title,
+                        t.task_content as task_content,
+                        to_char(t.task_regdate, 'YYYY-MM-DD HH24-MI-SS') as task_regdate,
+                        sm.email   as email,
+                        m.name     as name,
+                        m.picture  as picture,
+                        s.study_no as study_no
+                 from task t,
+                      study_member sm,
+                      study s,
+                      member m
+                 where sm.email = m.email
+                   and t.study_no = sm.study_no
+                   and sm.study_no = s.study_no
+                   and sm.study_no = #{studyNo}
+             ) a
+        where a.rnum between #{startRowNumber} and #{endRowNumber}
+    </select>
 </mapper>

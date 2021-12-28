@@ -32,4 +32,7 @@ public interface TaskMapper {
 
     void registerStoreImage(@Param("storeImage")UploadFile storeImage, @Param("type") String img, @Param("taskNo") int taskNo);
 
+    List<TaskDTO> getTaskListByPageNo(@Param("studyNo")int studyNo, @Param("startRowNumber")int startRowNumber, @Param("endRowNumber")int endRowNumber);
+
+    int getTotalCountOfNoticeList(int studyNo);
 }
