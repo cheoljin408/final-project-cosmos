@@ -52,7 +52,9 @@
                                   th:utext="${notice.get('NOTICE_CONTENT')}"></textarea>
                         <br>
                         <input type="hidden" id="noticeNo" name="noticeNo" th:value="${notice.get('NOTICE_NO')}">
-                        <button class="btn btn-info" id="noticeRegister">수정</button>
+                        <div style="float: right; margin-right: 2px;" class="row">
+                          <button class="btn btn-primary" id="noticeRegister">수정</button>
+                        </div>
                     </form>
                 </div>
             </div>
