@@ -100,7 +100,7 @@
 
     <!-- 과제공지 수정 -->
     <update id="updateTaskByTaskNo">
-        update notice
+        update task
         set task_title   = #{taskTitle},
             task_content = #{taskContent}
         where task_no = #{taskNo}
@@ -129,14 +129,14 @@
     <insert id="registerAttachFile">
         INSERT INTO TASK_FILE
         VALUES (TASK_FILE_SEQ.nextval, #{attachFile.uploadFileName}, #{attachFile.storeFileName}, #{type},
-                TASK_SEQ.CURRVAL)
+                #{taskNo})
     </insert>
 
     <!-- 과제 이미지 업로드 -->
     <insert id="registerStoreImage">
         INSERT INTO TASK_FILE
         VALUES (TASK_FILE_SEQ.nextval, #{storeImage.uploadFileName}, #{storeImage.storeFileName}, #{type},
-                TASK_SEQ.CURRVAL)
+                #{taskNo})
     </insert>
 
     <select id="getTotalCountOfNoticeList" resultType="int">
