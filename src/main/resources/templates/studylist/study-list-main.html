@@ -99,7 +99,25 @@
         <div th:replace="fragments/getallstudylist.html :: fragment-getallstudylist" id="getallstudylist"></div>
     </div>
 
-    <div th:replace="fragments/study-list-paging.html :: fragment-study-list-paging"></div>
+    <div th:if="${studyList.size() != 0}">
+        <div th:replace="fragments/study-list-paging.html :: fragment-study-list-paging"></div>
+    </div>
+    <div th:unless="${studyList.size() != 0}">
+        <div class="card" style="margin-bottom: 10px;">
+            <div class="card-body" style="text-align: center">
+                <div style="margin-top: 10px; font-size: 16px; margin-right: 2px;">
+                    <div style="font-family: 'BMHANNAPro'; font-size: 20px;">
+                        <span>'</span>
+                        <b><span th:if="${category} != 'NULL' and ${search} == 'NULL'" th:text="${param.category}"></span></b>
+                        <b><span th:if="${category} == 'NULL' and ${search} != 'NULL'" th:text="${param.search}"></span></b>
+                        <span>'</span>
+                        <span style="color: royalblue">에 대한 검색 결과가 없습니다.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 </div>
 <div th:replace="fragments/footer.html :: fragment-footer"></div>
