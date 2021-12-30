@@ -18,25 +18,25 @@
                         </label>
                     </div>
                     <div class="col-10">
-                        <button class="bb btn btn-outline-dark" value="언어" style="border-radius: 20px">언어</button>
+                        <button class="bb btn btn-outline-dark categoryAndLanguage" value="언어" style="border-radius: 20px">언어</button>
                         &nbsp; &nbsp;
-                        <button class="bb btn btn-outline-dark" value="프로젝트" style="border-radius: 20px">프로젝트</button>
+                        <button class="bb btn btn-outline-dark categoryAndLanguage" value="프로젝트" style="border-radius: 20px">프로젝트</button>
                         &nbsp; &nbsp;
-                        <button class="bb btn btn-outline-dark" value="면접" style="border-radius: 20px">면접</button>
+                        <button class="bb btn btn-outline-dark categoryAndLanguage" value="면접" style="border-radius: 20px">면접</button>
                         &nbsp; &nbsp;
-                        <button class="bb btn btn-outline-dark" value="알고리즘" style="border-radius: 20px">알고리즘</button>
+                        <button class="bb btn btn-outline-dark categoryAndLanguage" value="알고리즘" style="border-radius: 20px">알고리즘</button>
                         &nbsp; &nbsp;
-                        <button class="bb btn btn-outline-dark" value="자바" style="border-radius: 20px">프론트엔드</button>
+                        <button class="bb btn btn-outline-dark categoryAndLanguage" value="프론트엔드" style="border-radius: 20px">프론트엔드</button>
                         &nbsp; &nbsp;
-                        <button class="bb btn btn-outline-dark" value="C" style="border-radius: 20px">백엔드</button>
+                        <button class="bb btn btn-outline-dark categoryAndLanguage" value="백엔드" style="border-radius: 20px">백엔드</button>
                         &nbsp; &nbsp;
-                        <button class="bb btn btn-outline-dark" value="파이썬" style="border-radius: 20px">웹</button>
+                        <button class="bb btn btn-outline-dark categoryAndLanguage" value="웹" style="border-radius: 20px">웹</button>
                         &nbsp; &nbsp;
-                        <button class="bb btn btn-outline-dark" value="기타" style="border-radius: 20px">앱</button> &nbsp;
+                        <button class="bb btn btn-outline-dark categoryAndLanguage" value="앱" style="border-radius: 20px">앱</button> &nbsp;
                         &nbsp;
-                        <button class="bb btn btn-outline-dark" value="파이썬" style="border-radius: 20px">CS</button>
+                        <button class="bb btn btn-outline-dark categoryAndLanguage" value="CS" style="border-radius: 20px">CS</button>
                         &nbsp; &nbsp;
-                        <button class="bb btn btn-outline-dark" value="기타" style="border-radius: 20px">기타</button>
+                        <button class="bb btn btn-outline-dark categoryAndLanguage" value="기타" style="border-radius: 20px">기타</button>
                         &nbsp; &nbsp;
                     </div>
                     <br><br>
@@ -46,28 +46,28 @@
                         </label>
                     </div>
                     <div class="col-10">
-                        <button class="bb btn btn-outline-dark" value="Java" style="border-radius: 20px">Java</button>
+                        <button class="bb btn btn-outline-dark categoryAndLanguage" value="Java" style="border-radius: 20px">Java</button>
                         &nbsp; &nbsp;
-                        <button class="bb btn btn-outline-dark" value="Python" style="border-radius: 20px">Python
+                        <button class="bb btn btn-outline-dark categoryAndLanguage" value="Python" style="border-radius: 20px">Python
                         </button> &nbsp; &nbsp;
-                        <button class="bb btn btn-outline-dark" value="C" style="border-radius: 20px">C</button> &nbsp;
+                        <button class="bb btn btn-outline-dark categoryAndLanguage" value="C" style="border-radius: 20px">C</button> &nbsp;
                         &nbsp;
-                        <button class="bb btn btn-outline-dark" value="C++" style="border-radius: 20px">C++</button>
+                        <button class="bb btn btn-outline-dark categoryAndLanguage" value="C%2B%2B" style="border-radius: 20px">C++</button>
                         &nbsp; &nbsp;
-                        <button class="bb btn btn-outline-dark" value="Swift" style="border-radius: 20px">Swift</button>
+                        <button class="bb btn btn-outline-dark categoryAndLanguage" value="Swift" style="border-radius: 20px">Swift</button>
                         &nbsp; &nbsp;
-                        <button class="bb btn btn-outline-dark" value="JavaScript" style="border-radius: 20px">
+                        <button class="bb btn btn-outline-dark categoryAndLanguage" value="JavaScript" style="border-radius: 20px">
                             JavaScript
                         </button> &nbsp; &nbsp;
-                        <button class="bb btn btn-outline-dark" value="Ruby" style="border-radius: 20px">Ruby</button>
+                        <button class="bb btn btn-outline-dark categoryAndLanguage" value="Ruby" style="border-radius: 20px">Ruby</button>
                         &nbsp; &nbsp;
-                        <button class="bb btn btn-outline-dark" value="HTML" style="border-radius: 20px">HTML</button>
+                        <button class="bb btn btn-outline-dark categoryAndLanguage" value="HTML" style="border-radius: 20px">HTML</button>
                         &nbsp; &nbsp;
-                        <button class="bb btn btn-outline-dark" value="Go" style="border-radius: 20px">Go</button>
+                        <button class="bb btn btn-outline-dark categoryAndLanguage" value="Go" style="border-radius: 20px">Go</button>
                         &nbsp; &nbsp;
-                        <button class="bb btn btn-outline-dark" value="React" style="border-radius: 20px">React</button>
+                        <button class="bb btn btn-outline-dark categoryAndLanguage" value="React" style="border-radius: 20px">React</button>
                         &nbsp; &nbsp;
-                        <button class="bb btn btn-outline-dark" value="Go" style="border-radius: 20px">Go</button>
+                        <button class="bb btn btn-outline-dark categoryAndLanguage" value="PHP" style="border-radius: 20px">PHP</button>
                         &nbsp; &nbsp;
                     </div>
                     <br><br><br>
@@ -121,7 +121,7 @@
 
 </div>
 <div th:replace="fragments/footer.html :: fragment-footer"></div>
-<script type="text/javascript">
+<script th:inline="javascript" type="text/javascript">
     $(function () {
 
         $(".bb").click(function () {
@@ -137,6 +137,21 @@
         $("#resetBtn").click(function() {
             location.href = "/study/list";
         });
+
+
+        // 카테고리, 언어 버튼 검정색 유지
+        let cl = /*[[${param.category}]]*/;
+
+        let clBtnList = document.getElementsByClassName('categoryAndLanguage');
+
+        for(let i=0; i< clBtnList.length; i++) {
+            let text = clBtnList.item(i).innerText;
+
+            if(text == cl) {
+                clBtnList.item(i).style.background = '#343a40';
+                clBtnList.item(i).style.color = 'white';
+            }
+        }
     });
 </script>
 </body>
