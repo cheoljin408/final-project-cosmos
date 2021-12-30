@@ -71,9 +71,15 @@
             <div class="card" style="margin-bottom: 20px;">
                 <div class="card-body">
                     <span>🙋‍♂<strong>나의 참가신청 결과</strong></span>
-                    <div th:if="${alarm.S_SST_STUDY_STATE.toString()}" style="display: inline-block; float: right;">
-                        <span th:text="${alarm.S_SST_STUDY_STATE}"
-                              class="badge badge-pill badge-success">Success</span>
+                    <!-- 수락완료 Blue 뱃지 -->
+                    <div th:if="${alarm.AST_APPLY_STATE.toString().equals('수락완료')}" style="display: inline-block; float: right;">
+                        <span th:text="${alarm.AST_APPLY_STATE}"
+                              class="badge badge-pill badge-primary">Success</span>
+                    </div>
+                    <!-- 수락거부 Red 뱃지 -->
+                    <div th:if="${alarm.AST_APPLY_STATE.toString().equals('수락거부')}" style="display: inline-block; float: right;">
+                        <span th:text="${alarm.AST_APPLY_STATE}"
+                              class="badge badge-pill badge-danger">Success</span>
                     </div>
                     <br>
                     <div style="margin-top: 10px; font-size: 16px; margin-right: 2px;">

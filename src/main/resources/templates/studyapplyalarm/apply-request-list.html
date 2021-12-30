@@ -93,17 +93,17 @@
                     <div class="card-body">
                         <div>
                             <span>🙋‍♂️<strong>참가신청</strong></span>
-                            <!-- 대기중, 수락완료, 거절 완료 -->
+                            <!-- 뱃지 : 대기중, 수락완료, 거절 완료 -->
                             <div th:if="${alarm.A_APPLY_STATE_CODE.toString().equals('WAIT')}"
-                                 style="display:inline-block; float:right;"><span class="badge bg-success"
+                                 style="display:inline-block; float:right;"><span class="badge badge-pill bg-warning"
                                                                                   style="color : whitesmoke;">대기중</span>
                             </div>
                             <div th:if="${alarm.A_APPLY_STATE_CODE.toString().equals('OK')}"
-                                 style="display:inline-block; float:right;"><span class="badge bg-primary"
-                                                                                  style="color : whitesmoke;">수락 완료</span>
+                                 style="display:inline-block; float:right;"><span class="badge badge-pill bg-primary"
+                                                                                  style="color : whitesmoke;">수락완료</span>
                             </div>
                             <div th:if="${alarm.A_APPLY_STATE_CODE.toString().equals('NO')}"
-                                 style="display:inline-block; float:right;"><span class="badge bg-danger"
+                                 style="display:inline-block; float:right;"><span class="badge badge-pill bg-danger"
                                                                                   style="color : whitesmoke;">수락거절</span>
                             </div>
                         </div>
