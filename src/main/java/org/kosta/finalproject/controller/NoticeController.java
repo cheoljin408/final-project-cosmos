@@ -112,6 +112,12 @@ public class NoticeController {
         log.info("allStudyInfo: {}", allStudyInfo);
         model.addAttribute("allStudyInfo", allStudyInfo);
 
+        String role = studyService.findStudyMemberRoleByStudyNo(studyNo, member.getEmail());
+        if (role == null) {
+            role = "일반회원";
+        }
+        model.addAttribute("role", role);
+
         return "lms/notice/detail";
     }
 

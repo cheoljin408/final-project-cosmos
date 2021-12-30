@@ -52,7 +52,9 @@
                                   th:utext="${taskInfo.get('TASK_CONTENT')}"></textarea>
                         <br>
                         <input type="hidden" id="taskNo" name="taskNo" th:value="${taskInfo.get('TASK_NO')}">
-                        <button class="btn btn-info" id="taskRegister">수정</button>
+                        <div style="float: right; margin-right: 2px;" class="row">
+                            <button class="btn btn-primary" id="taskRegister">수정</button>
+                        </div>
                     </form>
                 </div>
             </div>

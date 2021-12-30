@@ -175,6 +175,13 @@ public class TaskController {
         // log.info("submitCommentList: {}", submitCommentList);
         model.addAttribute("studyNo", studyNo);
 
+        // 스터디 리더만 수정 / 삭제 버튼이 활성화 되도록 역활을 가져옴
+        String role = studyService.findStudyMemberRoleByStudyNo(studyNo, member.getEmail());
+        if (role == null) {
+            role = "일반회원";
+        }
+        model.addAttribute("role", role);
+
         return "lms/task/detail";
     }
 
