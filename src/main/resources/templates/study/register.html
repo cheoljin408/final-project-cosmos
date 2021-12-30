@@ -24,17 +24,30 @@
             <select class="form-control" name="categoryTypeNo" id="categoryTypeNo" required="required">
                 <option value="" selected disabled hidden>스터디 유형</option>
                 <option value="1">언어</option>
-                <option value="2">면접</option>
-                <option value="3">알고리즘</option>
-                <option value="4">자격증</option>
+                <option value="2">프로젝트</option>
+                <option value="3">면접</option>
+                <option value="4">알고리즘</option>
+                <option value="5">프론트엔드</option>
+                <option value="6">백엔드</option>
+                <option value="7">웹</option>
+                <option value="8">앱</option>
+                <option value="9">CS</option>
+                <option value="10">기타</option>
             </select>
             <br>
             <select class="form-control" name="categoryLangNo" id="categoryLangNo" required="required">
                 <option value="" selected disabled hidden>사용 언어</option>
-                <option value="1">자바</option>
-                <option value="2">C</option>
-                <option value="3">파이썬</option>
-                <option value="4">기타</option>
+                <option value="1">Java</option>
+                <option value="2">Python</option>
+                <option value="3">C</option>
+                <option value="4">C++</option>
+                <option value="5">Swift</option>
+                <option value="6">JavaScript</option>
+                <option value="7">Ruby</option>
+                <option value="8">HTML</option>
+                <option value="9">Go</option>
+                <option value="10">React</option>
+                <option value="11">PHP</option>
             </select>
         </div>
         <!-- 간단한 소개 -->
@@ -72,7 +85,7 @@
                     data: JSON.stringify(jsonData),
                     contentType: "application/json; charset=utf-8",
                     success: function () {
-                        location.replace("/");
+                        location.replace("/study/list");
                     }
                 });
             });
