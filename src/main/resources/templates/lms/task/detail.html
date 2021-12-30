@@ -59,17 +59,10 @@
                         <td th:text="${taskInfo.get('NAME')}">작성자</td>
                         <th>등록일</th>
                         <td th:text="${taskInfo.get('TASK_REGDATE')}">등록일</td>
-                        <th>번호</th>
-                        <td th:text="${taskInfo.get('TASK_NO')}">조회수</td>
-                    </tr>
-                    <tr>
-                        <th>스터디번호</th>
-                        <td th:text="${taskInfo.get('STUDY_NO')}">스터디 번호</td>
                         <th>스터디 이름</th>
                         <td th:text="${taskInfo.get('STUDY_NAME')}">스터디 이름</td>
-                        <th></th>
-                        <td></td>
                     </tr>
+
                     <tr th:each="file, fileStat : ${files}" th:if="${files.get(0)}">
                         <th th:text="|첨부파일${fileStat.count}|">첨부파일</th>
                         <td colspan="5">
@@ -80,8 +73,8 @@
                     </tr>
                     </tbody>
                 </table>
-                <br><br>
-                <table class="table table-bordered pt-3">
+                <br>
+                <table class="table table-bordered pt-3 mb-5">
                     <thead>
                     <tr>
                         <th>이미지</th>
@@ -95,8 +88,7 @@
                     </tr>
                     </tbody>
                 </table>
-
-                <table class="table table-bordered pt-3">
+                <table class="table table-bordered pt-3 mb-4">
                     <thead>
                     <tr>
                         <th>본문</th>
@@ -111,11 +103,10 @@
                     </tbody>
                 </table>
 
-                <br><br>
                 <!-- 본문 내용 -->
                 <button class="btn btn-primary" th:onclick="|window.location.href='/task/list/${allStudyInfo.studyDTO.studyNo}'|">글 목록
                 </button>
-                <div style="float: right; margin-right: 2px;" class="row">
+                <div style="float: right; margin-right: 2px;" class="row" th:if="${role.equals('스터디리더')}">
                     <form method="post" th:action="@{/task/update/form/{studyNo}(studyNo=${taskInfo.get('STUDY_NO')})}" style="white-space: nowrap;"}>
                         <input type="hidden" id="taskNo" name="taskNo" th:value="${taskInfo.get('TASK_NO')}">
                         <button class="btn btn-primary" id="task-modify">수정</button> &nbsp;
@@ -206,7 +197,7 @@
         $("#task-delete").click(function () {
             console.log("삭제 버튼 클릭");
             var task_no = [[${taskInfo.get('TASK_NO')}]];
-            if (!confirm(task_no + "번 과제 공지사항을 삭제하시겠습니까?")) {
+            if (!confirm("해당 과제 공지사항을 삭제하시겠습니까?")) {
                 return false;
             }
             $.ajax({

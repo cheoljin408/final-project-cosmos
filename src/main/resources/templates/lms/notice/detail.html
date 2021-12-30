@@ -39,15 +39,13 @@
                 <div class="border-bottom pb-2 mb-4">
                     <h3>공지사항</h3>
                 </div>
-                <table class="table table-bordered pt-3">
+                <table class="table table-bordered pt-3 mb-5">
                     <thead>
                     <colgroup>
-                        <col width="10%">
-                        <col width="28%">
-                        <col width="12%">
-                        <col width="20%">
-                        <col width="10%">
-                        <col width="20%">
+                        <col width="25%">
+                        <col width="25%">
+                        <col width="25%">
+                        <col width="25%">
                     </colgroup>
                     <tr>
                         <th class="th_c" colspan="6"><strong th:text="${notice.get('NOTICE_TITLE')}">공지사항</strong></th>
@@ -57,18 +55,16 @@
                     <tr>
                         <th>작성자</th>
                         <td th:text="${notice.get('NAME')}">작성자</td>
-                        <th>등록일</th>
-                        <td th:text="${notice.get('NOTICE_REGDATE')}">등록일</td>
                         <th>조회수</th>
                         <td th:text="${notice.get('NOTICE_HITS')}">조회수</td>
                     </tr>
                     <tr>
-                        <th>스터디번호</th>
-                        <td th:text="${notice.get('STUDY_NO')}">스터디 번호</td>
+                        <!--<th>스터디번호</th>
+                        <td th:text="${notice.get('STUDY_NO')}">스터디 번호</td>-->
                         <th>스터디 이름</th>
                         <td th:text="${notice.get('STUDY_NAME')}">스터디 이름</td>
-                        <th></th>
-                        <td></td>
+                        <th>등록일</th>
+                        <td th:text="${notice.get('NOTICE_REGDATE')}">등록일</td>
                     </tr>
                     <tr th:each="file, fileStat : ${files}" th:if="${files.get(0)}">
                         <th th:text="|첨부파일${fileStat.count}|">첨부파일</th>
@@ -80,8 +76,7 @@
                     </tr>
                     </tbody>
                 </table>
-                <br><br>
-                <table class="table table-bordered pt-3">
+                <table class="table table-bordered pt-3 mb-5">
                     <thead>
                     <tr>
                         <th>이미지</th>
@@ -95,8 +90,7 @@
                     </tr>
                     </tbody>
                 </table>
-
-                <table class="table table-bordered pt-3">
+                <table class="table table-bordered pt-3 mb-6">
                     <thead>
                     <tr>
                         <th>본문</th>
@@ -110,13 +104,11 @@
                     </tr>
                     </tbody>
                 </table>
-
-                <br><br>
                 <!-- 본문 내용 -->
                 <button class="btn btn-primary"
                         th:onclick="|window.location.href='/notice/list/${allStudyInfo.studyDTO.studyNo}'|">글 목록
                 </button>
-                <div style="float: right; margin-right: 2px;" class="row">
+                <div th:if="${role.equals('스터디리더')}" style="float: right; margin-right: 2px;" class="row">
                     <form method="post" th:action="@{/notice/update/form/{studyNo}(studyNo=${notice.get('STUDY_NO')})}" style="white-space: nowrap;"}>
                         <input type="hidden" id="noticeNo" name="noticeNo" th:value="${notice.get('NOTICE_NO')}">
                         <button class="btn btn-primary" id="notice-modify">수정</button> &nbsp;
@@ -133,7 +125,7 @@
         $("#notice-delete").click(function () {
             console.log("삭제 버튼 클릭");
             var notice_no = /*[[${notice.get('NOTICE_NO')}]]*/;
-            if (!confirm(notice_no + "번 공지사항을 삭제하시겠습니까?")) {
+            if (!confirm("해당 공지사항을 삭제하시겠습니까?")) {
                 return false;
             }
             $.ajax({
