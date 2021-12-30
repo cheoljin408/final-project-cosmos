@@ -37,18 +37,31 @@
                     <select class="form-control" name="categoryTypeNo" id="categoryTypeNo" required="required">
                         <option value="" disabled>스터디 유형</option>
                         <option value="1" th:selected="${study.get('CATEGORY_TYPE')}=='언어'">언어</option>
-                        <option value="2" th:selected="${study.get('CATEGORY_TYPE')}=='면접'">면접</option>
-                        <option value="3" th:selected="${study.get('CATEGORY_TYPE')}=='알고리즘'">알고리즘</option>
-                        <option value="4" th:selected="${study.get('CATEGORY_TYPE')}=='자격증'">자격증</option>
+                        <option value="2" th:selected="${study.get('CATEGORY_TYPE')}=='프로젝트'">프로젝트</option>
+                        <option value="3" th:selected="${study.get('CATEGORY_TYPE')}=='면접'">면접</option>
+                        <option value="4" th:selected="${study.get('CATEGORY_TYPE')}=='알고리즘'">알고리즘</option>
+                        <option value="5" th:selected="${study.get('CATEGORY_TYPE')}=='프론트엔드'">프론트엔드</option>
+                        <option value="6" th:selected="${study.get('CATEGORY_TYPE')}=='백엔드'">백엔드</option>
+                        <option value="7" th:selected="${study.get('CATEGORY_TYPE')}=='웹'">웹</option>
+                        <option value="8" th:selected="${study.get('CATEGORY_TYPE')}=='앱'">앱</option>
+                        <option value="9" th:selected="${study.get('CATEGORY_TYPE')}=='CS'">CS</option>
+                        <option value="10" th:selected="${study.get('CATEGORY_TYPE')}=='기타'">기타</option>
                     </select>
                     <br>
                     <span class="st-modify">스터디 언어</span>
                     <select class="form-control" name="categoryLangNo" id="categoryLangNo" required="required">
                         <option value="" disabled>사용 언어</option>
-                        <option value="1" th:selected="${study.get('CATEGORY_LANG')}=='자바'">자바</option>
-                        <option value="2" th:selected="${study.get('CATEGORY_LANG')}=='C'">C</option>
-                        <option value="3" th:selected="${study.get('CATEGORY_LANG')}=='파이썬'">파이썬</option>
-                        <option value="4" th:selected="${study.get('CATEGORY_LANG')}=='기타'">기타</option>
+                        <option value="1" th:selected="${study.get('CATEGORY_LANG')}=='Java'">Java</option>
+                        <option value="2" th:selected="${study.get('CATEGORY_LANG')}=='Python'">Python</option>
+                        <option value="3" th:selected="${study.get('CATEGORY_LANG')}=='C'">C</option>
+                        <option value="4" th:selected="${study.get('CATEGORY_LANG')}=='C++'">C++</option>
+                        <option value="5" th:selected="${study.get('CATEGORY_LANG')}=='Swift'">Swift</option>
+                        <option value="6" th:selected="${study.get('CATEGORY_LANG')}=='JavaScript'">JavaScript</option>
+                        <option value="7" th:selected="${study.get('CATEGORY_LANG')}=='Ruby'">Ruby</option>
+                        <option value="8" th:selected="${study.get('CATEGORY_LANG')}=='HTML'">HTML</option>
+                        <option value="9" th:selected="${study.get('CATEGORY_LANG')}=='Go'">Go</option>
+                        <option value="10" th:selected="${study.get('CATEGORY_LANG')}=='React'">React</option>
+                        <option value="11" th:selected="${study.get('CATEGORY_LANG')}=='PHP'">PHP</option>
                     </select>
                 </div>
                 <!-- 간단한 소개 -->
