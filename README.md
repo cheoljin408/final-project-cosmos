@@ -29,7 +29,7 @@
 - `김병준` / [Joonkb](https://github.com/Joonkb) : 메인개발자, 개발 리더
 - `김서연` / [westkitekim](https://github.com/westkitekim) : 메인개발자, 산출물 관리
 - `김중혁` / [KimJoongHyeok](https://github.com/KimJoongHyeok) : 메인개발자, 의사소통 리더
-- `김철진` / [nogy21](https://github.com/nogy21) : 메인개발자, 스터디 리더
+- `이 용` / [nogy21](https://github.com/nogy21) : 메인개발자, 스터디 리더
 
 <br>
 
