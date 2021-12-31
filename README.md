@@ -2,8 +2,10 @@
 
 <br>
 
-<p align="center"><img src="https://capsule-render.vercel.app/api?type=waving&color=_custom_gradient,color=0:0b0b0b,100:007bff&height=200&section=header&text=Make your own Coding Study Group!&fontSize=45&fontAlignY=30"></p>
-<p align="center"><img src="https://user-images.githubusercontent.com/88620416/147518639-f4b696d5-f3b1-4538-b582-4f09db3bc5ad.png"></p>
+<p align="center">
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=_custom_gradient,color=0:0b0b0b,100:007bff&height=200&section=header&text=Make your own Coding Study Group!&fontSize=45&fontAlignY=30">
+  <img src="https://user-images.githubusercontent.com/88620416/147518639-f4b696d5-f3b1-4538-b582-4f09db3bc5ad.png">
+</p>
 
 <br>
 
