@@ -6,13 +6,15 @@ import java.util.Map;
 
 public interface ApplyService {
 
-    List<Map<String, Object>> getAlarmList();
+    List<Map<String, Object>> getAlarmList(String email);
 
     void applyRefuse(int applyNo);
 
-    void applyAccept(String email, int applyNo, int studyNo);
+    void applyAccept(Map<String, Object> param);
 
     List<Map<String, Object>> requestedApplyList(String email);
+
+    List<Map<String, Object>> isStudyLeader(String email);
 
     int registerApplyStudy(HashMap<String, String> jsonData);
 

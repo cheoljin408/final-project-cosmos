@@ -11,10 +11,6 @@ public interface StudyService {
 
     List<StudyMemberDTO> getAllList();
 
-    List<Map<String, Object>> getStudyListByStudyNameAndDesc(String searchWord);
-
-    List<Map<String, Object>> getStudyListByCategory(String categoryVal);
-
     void registerStudy(Map<String,String> studyDTO);
 
     void registerStudyMemberRole(String email);
@@ -24,4 +20,10 @@ public interface StudyService {
     String findStudyMemberRoleByStudyNo(int studyNo, String email);
 
     void modifyStudy(Map<String, String> studyDTO);
+
+    void deleteStudyByStudyNo(int studyNo);
+
+    List<StudyMemberDTO> getMystudyListByEmail(String email);
+
+    void updateState(int studyNo,String studyState);
 }

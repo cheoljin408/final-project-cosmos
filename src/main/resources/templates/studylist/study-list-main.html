@@ -3,157 +3,156 @@
 <head>
     <div th:replace="fragments/html-head.html :: fragment-html-head"></div>
 </head>
-<body>
+<body style="margin: 0; overflow-x:hidden; background-color: #f7fafc">
 <div th:replace="fragments/header.html :: fragment-header"></div>
-<div class="container pt-3">
-    <br>
-    <button class="bb btn btn-outline-dark" value="자바">자바</button> &nbsp; &nbsp;
-    <button class="bb btn btn-outline-dark" value="C">C</button> &nbsp; &nbsp;
-    <button class="bb btn btn-outline-dark" value="파이썬">파이썬</button> &nbsp; &nbsp;
-    <button class="bb btn btn-outline-dark" value="기타">기타</button> &nbsp; &nbsp;
-    <button class="bb btn btn-outline-dark" value="언어">언어</button> &nbsp; &nbsp;
-    <button class="bb btn btn-outline-dark" value="자격증">기타</button> &nbsp; &nbsp;
-    <button class="bb btn btn-outline-dark" value="면접">면접</button> &nbsp; &nbsp;
-    <button class="bb btn btn-outline-dark" value="알고리즘">알고리즘</button> &nbsp; &nbsp;
-    <br><br>
-    <div class="input-group mb-3">
-        <input type="text" id="searchWord" class="form-control" placeholder="검색어를 입력하세요">
-        <div class="input-group-append">
-            <button class="getStudyListByStudyNameAndDescBtn btn btn-primary" type="button">검색</button>
+<div class="container">
+    <div class="pt-5">
+        <h4 class="mb-2">🔎 원하는 스터디 그룹을 찾아보세요!</h4>
+        <br>
+        <div class="card mb-2 shadow-sm" style="border-radius: 10px;">
+            <div class="card-body p-2 mt-1">
+                <div class="row mb-2">
+                    <div class="col-2 text-center">
+                        <label class="col-form-label">
+                            <h5 class="mb-0">카테고리</h5>
+                        </label>
+                    </div>
+                    <div class="col-10">
+                        <button class="bb btn btn-outline-dark categoryAndLanguage" value="언어" style="border-radius: 20px">언어</button>
+                        &nbsp; &nbsp;
+                        <button class="bb btn btn-outline-dark categoryAndLanguage" value="프로젝트" style="border-radius: 20px">프로젝트</button>
+                        &nbsp; &nbsp;
+                        <button class="bb btn btn-outline-dark categoryAndLanguage" value="면접" style="border-radius: 20px">면접</button>
+                        &nbsp; &nbsp;
+                        <button class="bb btn btn-outline-dark categoryAndLanguage" value="알고리즘" style="border-radius: 20px">알고리즘</button>
+                        &nbsp; &nbsp;
+                        <button class="bb btn btn-outline-dark categoryAndLanguage" value="프론트엔드" style="border-radius: 20px">프론트엔드</button>
+                        &nbsp; &nbsp;
+                        <button class="bb btn btn-outline-dark categoryAndLanguage" value="백엔드" style="border-radius: 20px">백엔드</button>
+                        &nbsp; &nbsp;
+                        <button class="bb btn btn-outline-dark categoryAndLanguage" value="웹" style="border-radius: 20px">웹</button>
+                        &nbsp; &nbsp;
+                        <button class="bb btn btn-outline-dark categoryAndLanguage" value="앱" style="border-radius: 20px">앱</button> &nbsp;
+                        &nbsp;
+                        <button class="bb btn btn-outline-dark categoryAndLanguage" value="CS" style="border-radius: 20px">CS</button>
+                        &nbsp; &nbsp;
+                        <button class="bb btn btn-outline-dark categoryAndLanguage" value="기타" style="border-radius: 20px">기타</button>
+                        &nbsp; &nbsp;
+                    </div>
+                    <br><br>
+                    <div class="col-2 text-center">
+                        <label class="col-form-label">
+                            <h5 class="mb-0">언어</h5>
+                        </label>
+                    </div>
+                    <div class="col-10">
+                        <button class="bb btn btn-outline-dark categoryAndLanguage" value="Java" style="border-radius: 20px">Java</button>
+                        &nbsp; &nbsp;
+                        <button class="bb btn btn-outline-dark categoryAndLanguage" value="Python" style="border-radius: 20px">Python
+                        </button> &nbsp; &nbsp;
+                        <button class="bb btn btn-outline-dark categoryAndLanguage" value="C" style="border-radius: 20px">C</button> &nbsp;
+                        &nbsp;
+                        <button class="bb btn btn-outline-dark categoryAndLanguage" value="C%2B%2B" style="border-radius: 20px">C++</button>
+                        &nbsp; &nbsp;
+                        <button class="bb btn btn-outline-dark categoryAndLanguage" value="Swift" style="border-radius: 20px">Swift</button>
+                        &nbsp; &nbsp;
+                        <button class="bb btn btn-outline-dark categoryAndLanguage" value="JavaScript" style="border-radius: 20px">
+                            JavaScript
+                        </button> &nbsp; &nbsp;
+                        <button class="bb btn btn-outline-dark categoryAndLanguage" value="Ruby" style="border-radius: 20px">Ruby</button>
+                        &nbsp; &nbsp;
+                        <button class="bb btn btn-outline-dark categoryAndLanguage" value="HTML" style="border-radius: 20px">HTML</button>
+                        &nbsp; &nbsp;
+                        <button class="bb btn btn-outline-dark categoryAndLanguage" value="Go" style="border-radius: 20px">Go</button>
+                        &nbsp; &nbsp;
+                        <button class="bb btn btn-outline-dark categoryAndLanguage" value="React" style="border-radius: 20px">React</button>
+                        &nbsp; &nbsp;
+                        <button class="bb btn btn-outline-dark categoryAndLanguage" value="PHP" style="border-radius: 20px">PHP</button>
+                        &nbsp; &nbsp;
+                    </div>
+                    <br><br><br>
+                    <div class="col-2 text-center">
+                        <label class="col-form-label">
+                            <h5 class="mb-0">검색어</h5>
+                        </label>
+                    </div>
+                    <div class="input-group col-10">
+                        <div class="col-8 offset-1">
+                            <input type="text" id="searchWord" class="form-control" placeholder="검색어를 입력하세요"
+                                   style="border-radius: 15px">
+                        </div>
+                        <div class="input-group-append">
+                            <button class="getStudyListByStudyNameAndDescBtn btn btn-primary"
+                                    style="border-radius: 15px; margin-right: 20px;" type="button">검색
+                            </button>
+                            <button id="resetBtn" class="btn btn-primary"
+                                    style="border-radius: 15px" type="button">초기화
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+        <br><br><br>
+    </div>
+    <div id="cardList">
+        <div th:replace="fragments/getallstudylist.html :: fragment-getallstudylist" id="getallstudylist"></div>
     </div>
 
-    <br><br><br>
-    <div class="row" id="cardList">
-        <div th:each="study: ${studyList}" class="col-4 pt-3" th:width="40px">
-            <div class="card" style="width: 18rem;">
-                <div class="card-header">
-                    <p th:text="${study.studyDTO.studyName}"></p>
-                </div>
-                <div class="card-body">
-                    <p th:text="${study.studyDTO.studyDesc}" class="card-text">With
-                        supporting text below as a natural lead-in to additional
-                        content.</p>
-                    <span th:text="${study.studyDTO.categoryTypeDTO.categoryType}"></span>
-                    <span th:text="${study.studyDTO.categoryLangDTO.categoryLang}"></span>
-                    <p th:text="${study.studyDTO.studyStateDTO.studyState}"></p>
-                    <img class="rounded-circle me-3" width="40" height="40" src="" th:src="${study.memberDTO.picture}"
-                         alt="프로필 이미지">
-                    <span th:text="${study.memberDTO.name}"></span> <br>
-                    <span th:text="${study.studyDTO.studyRegdate}"></span>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
+    <div th:if="${studyList.size() != 0}">
+        <div th:replace="fragments/study-list-paging.html :: fragment-study-list-paging"></div>
+    </div>
+    <div th:unless="${studyList.size() != 0}">
+        <div class="card" style="margin-bottom: 10px;">
+            <div class="card-body" style="text-align: center">
+                <div style="margin-top: 10px; font-size: 16px; margin-right: 2px;">
+                    <div style="font-family: 'BMHANNAPro'; font-size: 20px;">
+                        <span>'</span>
+                        <b><span th:if="${category} != 'NULL' and ${search} == 'NULL'" th:text="${param.category}"></span></b>
+                        <b><span th:if="${category} == 'NULL' and ${search} != 'NULL'" th:text="${param.search}"></span></b>
+                        <span>'</span>
+                        <span style="color: royalblue">에 대한 검색 결과가 없습니다.</span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+
 </div>
 <div th:replace="fragments/footer.html :: fragment-footer"></div>
-<script type="text/javascript">
+<script th:inline="javascript" type="text/javascript">
     $(function () {
 
         $(".bb").click(function () {
-            $("#cardList").empty();
-            let categoryVal = $(this).val();
-            $.ajax({
-                type: "get",
-                dataType: "json",
-                url: "/study/getStudyListByCategory",
-                data: "categoryVal=" + categoryVal,
-                success: function (result) {
-                    let searchList = "";
-                    for (let i = 0; i < result.length; i++) {
-                        searchList += "<div class='col-4 pt-3'>"
-                        searchList += "<div class='card' style='width: 18rem;'>"
-                        searchList += "<div class='card-header'>"
-                        searchList += "<p>"
-                        searchList += `${result[i].STUDY_NAME}`
-                        searchList += "</p>"
-                        searchList += "</div>"
-                        searchList += "<div class='card-body'>"
-                        searchList += "<p class='card-text'>"
-                        searchList += `${result[i].STUDY_DESC}`
-                        searchList += "</p>"
-                        searchList += "<span>"
-                        searchList += `${result[i].CATEGORY_TYPE}`
-                        searchList += "</span>"
-                        searchList += "<span>"
-                        searchList += `${result[i].CATEGORY_LANG}`
-                        searchList += "</span>"
-                        searchList += "<p>"
-                        searchList += `${result[i].STUDY_STATE}`
-                        searchList += "</p>"
-                        searchList += "<img class='rounded-circle me-3' width='40' height='40' src="
-                        searchList += `${result[i].PICTURE}`
-                        searchList += " alt='프로필 이미지'>"
-                        searchList += "<span>"
-                        searchList += `${result[i].NAME}`
-                        searchList += "</span> <br>"
-                        searchList += "<span>"
-                        searchList += `${result[i].STUDY_REGDATE}`
-                        searchList += "</span>"
-                        searchList += "<a href='#' class='btn btn-primary'>"
-                        searchList += "Go somewhere"
-                        searchList += "</a>"
-                        searchList += "</div>"
-                        searchList += "</div>"
-                        searchList += "</div>"
-                    }
-                    $("#cardList").append(searchList);
-                } // success callback
-            });	// ajax
-        });	// click
+            let category = $(this).val();
+            location.href = "/study/list?category=" + category;
+        });
 
         $(".getStudyListByStudyNameAndDescBtn").click(function () {
-            let searchWord = $("#searchWord").val();
-            $("#cardList").empty();
-            $.ajax({
-                type: "get",
-                dataType: "json",
-                url: "/study/getStudyListByStudyNameAndDesc",
-                data: "searchWord=" + searchWord,
-                success: function (result) {
-                    let searchList = "";
-                    for (let i = 0; i < result.length; i++) {
-                        searchList += "<div class='col-4 pt-3'>"
-                        searchList += "<div class='card' style='width: 18rem;'>"
-                        searchList += "<div class='card-header'>"
-                        searchList += "<p>"
-                        searchList += `${result[i].STUDY_NAME}`
-                        searchList += "</p>"
-                        searchList += "</div>"
-                        searchList += "<div class='card-body'>"
-                        searchList += "<p class='card-text'>"
-                        searchList += `${result[i].STUDY_DESC}`
-                        searchList += "</p>"
-                        searchList += "<span>"
-                        searchList += `${result[i].CATEGORY_TYPE}`
-                        searchList += "</span>"
-                        searchList += "<span>"
-                        searchList += `${result[i].CATEGORY_LANG}`
-                        searchList += "</span>"
-                        searchList += "<p>"
-                        searchList += `${result[i].STUDY_STATE}`
-                        searchList += "</p>"
-                        searchList += "<img class='rounded-circle me-3' width='40' height='40' src="
-                        searchList += `${result[i].PICTURE}`
-                        searchList += " alt='프로필 이미지'>"
-                        searchList += "<span>"
-                        searchList += `${result[i].NAME}`
-                        searchList += "</span> <br>"
-                        searchList += "<span>"
-                        searchList += `${result[i].STUDY_REGDATE}`
-                        searchList += "</span>"
-                        searchList += "<a href='#' class='btn btn-primary'>Go somewhere</a>"
-                        searchList += "</div>"
-                        searchList += "</div>"
-                        searchList += "</div>"
-                    }
-                    $("#cardList").append(searchList);
-                } // success callback
-            });	// ajax
-        });//click getStudyListByStudyNameAndDescBtn
-    });	 // ready
+            let search = $("#searchWord").val();
+            location.href = "/study/list?search=" + search;
+        });
 
+        $("#resetBtn").click(function() {
+            location.href = "/study/list";
+        });
+
+
+        // 카테고리, 언어 버튼 검정색 유지
+        let cl = /*[[${param.category}]]*/;
+
+        let clBtnList = document.getElementsByClassName('categoryAndLanguage');
+
+        for(let i=0; i< clBtnList.length; i++) {
+            let text = clBtnList.item(i).innerText;
+
+            if(text == cl) {
+                clBtnList.item(i).style.background = '#343a40';
+                clBtnList.item(i).style.color = 'white';
+            }
+        }
+    });
 </script>
 </body>
 </html>

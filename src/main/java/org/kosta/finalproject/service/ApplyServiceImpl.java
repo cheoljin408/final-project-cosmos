@@ -3,7 +3,6 @@ package org.kosta.finalproject.service;
 import org.kosta.finalproject.model.mapper.ApplyMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.HashMap;
 import java.util.List;
@@ -20,8 +19,8 @@ public class ApplyServiceImpl implements ApplyService {
     }
 
     @Override
-    public List<Map<String, Object>> getAlarmList() {
-        List<Map<String, Object>> alarmList = applyMapper.getAlarmList();
+    public List<Map<String, Object>> getAlarmList(String email) {
+        List<Map<String, Object>> alarmList = applyMapper.getAlarmList(email);
         return alarmList;
     }
 
@@ -31,15 +30,22 @@ public class ApplyServiceImpl implements ApplyService {
     }
 
     @Override
-    public void applyAccept(String email, int applyNo, int studyNo) {
-        applyMapper.applyAccept(applyNo);
-        applyMapper.insertStudyMember(email, studyNo);
+    public void applyAccept(Map<String, Object> param) {
+        applyMapper.applyAccept(Integer.parseInt((String)param.get("apply_no")));
+        System.out.println("completed");
+        applyMapper.insertStudyMember((String)param.get("email"), (String)param.get("study_no"));
     }
 
     @Override
     public List<Map<String, Object>> requestedApplyList(String email) {
         List<Map<String, Object>> requestedApplyList = applyMapper.requestedApplyList(email);
         return requestedApplyList;
+    }
+
+    @Override
+    public List<Map<String, Object>> isStudyLeader(String email) {
+        List<Map<String, Object>> isStudyLeader = applyMapper.isStudyLeader(email);
+        return isStudyLeader;
     }
 
     //스터디 신청

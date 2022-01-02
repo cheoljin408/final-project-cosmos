@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.kosta.finalproject.model.mapper.TaskMapper">
+
+    <resultMap id="taskDTOMap" type="org.kosta.finalproject.model.domain.TaskDTO">
+        <id property="taskNo" column="task_no"/>
+        <result property="taskTitle" column="task_title"/>
+        <result property="taskContent" column="task_content"/>
+        <result property="taskRegdate" column="task_regdate"/>
+        <association property="studyMemberDTO" resultMap="studyMemberDTOMap" columnPrefix="sm_"/>
+    </resultMap>
+
+    <resultMap id="studyMemberDTOMap" type="org.kosta.finalproject.model.domain.StudyMemberDTO">
+        <result property="studyMemberRole" column="study_member_role"/>
+        <association property="memberDTO" resultMap="memberDTOMap" columnPrefix="m_"/>
+        <association property="studyDTO" resultMap="studyDTOMap" columnPrefix="s_"/>
+    </resultMap>
+
+    <resultMap id="memberDTOMap" type="org.kosta.finalproject.model.domain.MemberDTO">
+        <id property="email" column="email"/>
+        <result property="name" column="name"/>
+        <result property="picture" column="picture"/>
+    </resultMap>
+
+    <resultMap id="studyDTOMap" type="org.kosta.finalproject.model.domain.StudyDTO">
+        <id property="studyNo" column="study_no"/>
+        <result property="studyName" column="study_name"/>
+        <result property="studyDesc" column="study_desc"/>
+        <result property="studyRegdate" column="study_regdate"/>
+        <association property="studyStateDTO" resultMap="studyStateDTOMap" columnPrefix="sst_"/>
+        <association property="categoryTypeDTO" resultMap="categoryTypeDTOMap" columnPrefix="ctt_"/>
+        <association property="categoryLangDTO" resultMap="categoryLangDTOMap" columnPrefix="clt_"/>
+    </resultMap>
+
+    <resultMap id="studyStateDTOMap" type="org.kosta.finalproject.model.domain.StudyStateDTO">
+        <result property="studyState" column="study_state"/>
+    </resultMap>
+
+    <resultMap id="categoryTypeDTOMap" type="org.kosta.finalproject.model.domain.CategoryTypeDTO">
+        <result property="categoryType" column="category_type"/>
+    </resultMap>
+
+    <resultMap id="categoryLangDTOMap" type="org.kosta.finalproject.model.domain.CategoryLangDTO">
+        <result property="categoryLang" column="category_lang"/>
+    </resultMap>
+
+    <select id="getRecentTaskList" parameterType="int" resultMap="taskDTOMap">
+        select v.TASK_NO, v.TASK_TITLE, v.TASK_CONTENT, v.TASK_REGDATE
+        from (
+                 select TASK_NO, TASK_TITLE, TASK_CONTENT, TASK_REGDATE
+                 from TASK t,
+                      STUDY_MEMBER sm
+                 where t.STUDY_NO = sm.STUDY_NO
+                   and t.STUDY_NO = #{value}
+                 order by TASK_REGDATE desc
+             ) v
+        where <![CDATA[ROWNUM <= 3
+        ]]>
+    </select>
+
+    <!-- 과제 공지 상세 가져오기 -->
+    <select id="getTaskDetailByTaskNo" resultType="hashMap">
+        select t.task_no,
+               t.task_title,
+               t.task_regdate,
+               DBMS_LOB.SUBSTR(t.task_content, dbms_LoB.GETLENGTH(t.TASK_CONTENT)) as task_content,
+               m.email,
+               m.name,
+               m.picture,
+               s.study_no,
+               s.study_name
+        from member m,
+             study_member sm,
+             study s,
+             task t
+        where sm.email = m.email
+          and sm.STUDY_NO = t.STUDY_NO
+          and sm.email = t.email
+          and sm.study_no = s.study_no
+          and t.TASK_NO = #{value}
+    </select>
+    <!-- 과제 공지 상세 가져오기 end  -->
+
+    <!-- 관련 파일 가져오기-->
+    <select id="findFilesById" resultType="org.kosta.finalproject.model.domain.UploadFile">
+        select TASK_UPLOAD_FILE_NAME, TASK_STORE_FILE_NAME
+        from TASK_FILE
+        where task_file_type = #{fileType}
+          and task_no = #{taskNo}
+    </select>
+
+    <!-- 과제 공지사항 no 에 해당하는 파일들을 삭제하는 query -->
+    <delete id="deleteTaskFileByTaskNo">
+        delete
+        from task_file
+        where task_no = #{value}
+    </delete>
+
+    <!-- 과제공지 수정 -->
+    <update id="updateTaskByTaskNo">
+        update task
+        set task_title   = #{taskTitle},
+            task_content = #{taskContent}
+        where task_no = #{taskNo}
+    </update>
+
+    <!-- 공지사항 삭제-->
+    <delete id="deleteTask" parameterType="int">
+        delete
+        from task
+        where task_no = #{value}
+    </delete>
+
+    <!--과제 공지사항 등록 -->
+    <insert id="registerTask">
+        insert into TASK(TASK_NO, TASK_TITLE, TASK_CONTENT, TASK_REGDATE, EMAIL, STUDY_NO)
+        values (TASK_SEQ.nextval, #{taskTitle}, #{taskContent}, sysdate, #{email}, #{studyNo})
+    </insert>
+
+    <!-- 과제 공지사항 번호 조회 -->
+    <select id="getTaskNoWhenRegister" resultType="int">
+        select task_seq.currval
+        from dual
+    </select>
+
+    <!-- 과제 파일 업로드 -->
+    <insert id="registerAttachFile">
+        INSERT INTO TASK_FILE
+        VALUES (TASK_FILE_SEQ.nextval, #{attachFile.uploadFileName}, #{attachFile.storeFileName}, #{type},
+                #{taskNo})
+    </insert>
+
+    <!-- 과제 이미지 업로드 -->
+    <insert id="registerStoreImage">
+        INSERT INTO TASK_FILE
+        VALUES (TASK_FILE_SEQ.nextval, #{storeImage.uploadFileName}, #{storeImage.storeFileName}, #{type},
+                #{taskNo})
+    </insert>
+
+    <select id="getTotalCountOfNoticeList" resultType="int">
+        select count(*)
+        from TASK
+        where study_no = #{value}
+    </select>
+
+    <select id="getTaskListByPageNo" resultMap="taskDTOMap">
+        select a.rnum,
+               a.task_no,
+               a.task_title,
+               a.task_content,
+               a.task_regdate,
+               a.email    as sm_email,
+               a.name     as sm_m_name,
+               a.picture  as sm_m_picture,
+               a.study_no as sm_s_study_no
+        from (
+                 select row_number()                                        over(order by t.TASK_NO desc) as rnum, t.task_no as task_no,
+                        t.task_title                                     as task_title,
+                        t.task_content                                   as task_content,
+                        to_char(t.task_regdate, 'YYYY-MM-DD HH24-MI-SS') as task_regdate,
+                        sm.email                                         as email,
+                        m.name                                           as name,
+                        m.picture                                        as picture,
+                        s.study_no                                       as study_no
+                 from task t,
+                      study_member sm,
+                      study s,
+                      member m
+                 where sm.email = m.email
+                   and t.study_no = sm.study_no
+                   and sm.study_no = s.study_no
+                   and sm.study_no = #{studyNo}
+                   and sm.study_member_role = '스터디리더'
+             ) a
+        where a.rnum between #{startRowNumber} and #{endRowNumber}
+    </select>
+
+    <!-- 댓글 과제 파일 다운로드 -->
+    <select id="findFileById" parameterType="int" resultType="UploadFile">
+        select SUBMIT_UPLOAD_FILE_NAME, SUBMIT_STORE_FILE_NAME
+        from SUBMIT_COMMENT
+        where SUBMIT_NO = #{value}
+    </select>
+
+</mapper>

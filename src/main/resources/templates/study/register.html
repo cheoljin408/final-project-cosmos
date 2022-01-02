@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments/html-head.html :: fragment-html-head"></div>
+</head>
+<body>
+<div th:replace="fragments/header.html :: fragment-header"></div>
+<div class="container pt-5" style="padding: 0 150px;">
+    <div>
+        <div style="padding: 30px 0 20px 0;">
+            <h3>스터디 모집 정보</h3>
+        </div>
+        <hr color="gray"; style="height: 1.5px;">
+        <!-- 스터디 이름 -->
+        <div>
+            <label></label>
+            <input type="text" class="form-control" name="studyName" id="studyName" placeholder="스터디 그룹 이름"
+                   required="required">
+        </div>
+        <br>
+
+        <!-- 카테고리 -->
+        <div class="form-group">
+            <select class="form-control" name="categoryTypeNo" id="categoryTypeNo" required="required">
+                <option value="" selected disabled hidden>스터디 유형</option>
+                <option value="1">언어</option>
+                <option value="2">프로젝트</option>
+                <option value="3">면접</option>
+                <option value="4">알고리즘</option>
+                <option value="5">프론트엔드</option>
+                <option value="6">백엔드</option>
+                <option value="7">웹</option>
+                <option value="8">앱</option>
+                <option value="9">CS</option>
+                <option value="10">기타</option>
+            </select>
+            <br>
+            <select class="form-control" name="categoryLangNo" id="categoryLangNo" required="required">
+                <option value="" selected disabled hidden>사용 언어</option>
+                <option value="1">Java</option>
+                <option value="2">Python</option>
+                <option value="3">C</option>
+                <option value="4">C++</option>
+                <option value="5">Swift</option>
+                <option value="6">JavaScript</option>
+                <option value="7">Ruby</option>
+                <option value="8">HTML</option>
+                <option value="9">Go</option>
+                <option value="10">React</option>
+                <option value="11">PHP</option>
+            </select>
+        </div>
+        <!-- 간단한 소개 -->
+        <div style="padding-top: 8px;">
+            <textarea class="form-control" rows="3" name="studyDesc" id="studyDesc"
+                      placeholder="스터디를 간단히 소개해주세요&#13;&#10;&#13;&#10;"
+                      required="required"></textarea>
+        </div>
+        <br>
+        <!-- 스터디 상세 소개 -->
+        <div>
+            <textarea class="form-control" rows="10" name="studyInfo" id="studyInfo"
+                      placeholder="스터디에 대해 자세히 소개해주세요.&#13;&#10;&#13;&#10;&#13;&#10;ex) 스터디 모집 목적, 공부 방향, 희망 인원, 장소(온라인, 오프라인) 등 자세한 내용을 적어주세요."
+                      required="required"></textarea>
+        </div>
+        <br>
+        <div align="center">
+            <button class="btn btn-primary" id="studyRegister">등록</button>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $("#studyRegister").click(function () {
+                var jsonData = {
+                    studyName: $("#studyName").val(),
+                    categoryTypeNo: $("#categoryTypeNo").val(),
+                    categoryLangNo: $("#categoryLangNo").val(),
+                    studyDesc: $("#studyDesc").val(),
+                    studyInfo: $("#studyInfo").val()
+                };
+                $.ajax({
+                    type: "post",
+                    url: "registerStudy",
+                    dataType: "json",
+                    data: JSON.stringify(jsonData),
+                    contentType: "application/json; charset=utf-8",
+                    success: function () {
+                        location.replace("/study/list");
+                    }
+                });
+            });
+        });
+    </script>
+</div>
+<div th:replace="fragments/footer.html :: fragment-footer"></div>
+</body>
+</html>

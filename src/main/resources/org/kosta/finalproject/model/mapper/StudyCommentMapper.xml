@@ -39,8 +39,20 @@
         order by study_comment_regdate desc
     </select>
 
+    <select id="getStudyCommentByStudyCommentNo" parameterType="int" resultType="Map">
+        select * from study_comment where study_comment_no = #{value}
+    </select>
+
     <insert id="registerStudyComment" parameterType="Map">
         insert into study_comment
         values (study_comment_seq.nextval, #{studyCommentContent}, sysdate, #{email}, #{studyNo})
     </insert>
+    
+    <update id="updateStudyComment" parameterType="Map">
+        update study_comment set study_comment_content = #{studyCommentContent} where study_comment_no = #{studyCommentNo}
+    </update>
+
+    <delete id="deleteStudyComment" parameterType="Map">
+        delete from study_comment where study_comment_no = #{studyCommentNo}
+    </delete>
 </mapper>

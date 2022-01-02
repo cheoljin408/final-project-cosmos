@@ -5,11 +5,14 @@
 <mapper namespace="org.kosta.finalproject.model.mapper.StudyMapper">
 
     <resultMap id="studyMemberDTOMap" type="org.kosta.finalproject.model.domain.StudyMemberDTO">
+        <id property="email" column="email"/>
+        <result property="studyMemberRole" column="study_member_role"/>
         <association property="memberDTO" resultMap="memberDTOMap" columnPrefix="m_"/>
         <association property="studyDTO" resultMap="studyDTOMap" columnPrefix="s_"/>
     </resultMap>
 
     <resultMap id="memberDTOMap" type="org.kosta.finalproject.model.domain.MemberDTO">
+        <id property="email" column="email"/>
         <result property="name" column="name"/>
         <result property="picture" column="picture"/>
     </resultMap>
@@ -57,97 +60,52 @@
           and s.STUDY_STATE_CODE = sst.STUDY_STATE_CODE
           and s.category_lang_no = clt.category_lang_no
           and s.category_type_no = ctt.category_type_no
+          and sm.STUDY_MEMBER_ROLE = '스터디리더'
         order by s.STUDY_NO desc
     </select>
 
     <select id="getStudyList3" resultMap="studyMemberDTOMap">
-        select s.name            as m_name,
-        s.PICTURE         as m_picture,
-        s.STUDY_NO        as s_study_no,
-        s.STUDY_NAME      as s_study_name,
-        s.STUDY_DESC      as s_study_desc,
-        s.STUDY_REGDATE   as s_study_regdate,
-        s.STUDY_STATE   as s_sst_study_state,
-        s.category_type as s_ctt_category_type,
-        s.category_lang as s_clt_category_lang
+        select s.name                                 as m_name,
+               s.PICTURE                              as m_picture,
+               s.STUDY_NO                             as s_study_no,
+               s.STUDY_NAME                           as s_study_name,
+               s.STUDY_DESC                           as s_study_desc,
+               to_char(s.STUDY_REGDATE, 'yyyy-mm-dd') as s_study_regdate,
+               s.STUDY_STATE                          as s_sst_study_state,
+               s.category_type                        as s_ctt_category_type,
+               s.category_lang                        as s_clt_category_lang
         from (
-        select m.name,
-        m.PICTURE,
-        s.STUDY_NO,
-        s.STUDY_NAME,
-        s.STUDY_DESC,
-        s.STUDY_REGDATE,
-        sst.STUDY_STATE,
-        ctt.category_type,
-        clt.category_lang
-        from member m,
-        STUDY_MEMBER sm,
-        STUDY s,
-        STUDY_STATE_TABLE sst,
-        category_type_table ctt,
-        category_lang_table clt
-        where m.EMAIL = sm.EMAIL
-        and s.STUDY_NO = sm.STUDY_NO
-        and s.STUDY_STATE_CODE = sst.STUDY_STATE_CODE
-        and s.category_lang_no = clt.category_lang_no
-        and s.category_type_no = ctt.category_type_no
-        order by study_no desc
-        ) s
-        where <![CDATA[ROWNUM <= 3]]>
-    </select>
-
-    <select id="getStudyListByStudyNameAndDesc" parameterType="String" resultType="hashmap">
-        select m.name,
-               m.PICTURE,
-               s.STUDY_NO,
-               s.STUDY_NAME,
-               s.STUDY_DESC,
-               to_char(s.STUDY_REGDATE, 'yyyy-mm-dd hh24:mi:ss') as STUDY_REGDATE,
-               sst.STUDY_STATE,
-               ctt.category_type,
-               clt.category_lang
-        from member m,
-             STUDY_MEMBER sm,
-             STUDY s,
-             STUDY_STATE_TABLE sst,
-             category_type_table ctt,
-             category_lang_table clt
-        where m.EMAIL = sm.EMAIL
-          and s.STUDY_NO = sm.STUDY_NO
-          and s.STUDY_STATE_CODE = sst.STUDY_STATE_CODE
-          and s.category_lang_no = clt.category_lang_no
-          and s.category_type_no = ctt.category_type_no
-          and (s.STUDY_NAME like '%' || #{value} || '%' or s.STUDY_DESC like '%' || #{value} || '%')
-        order by s.STUDY_NO desc
-    </select>
-
-    <select id="getStudyListByCategory" resultType="hashmap" parameterType="string">
-        select m.name,
-               m.PICTURE,
-               s.STUDY_NO,
-               s.STUDY_NAME,
-               s.STUDY_DESC,
-               to_char(s.STUDY_REGDATE, 'yyyy-mm-dd hh24:mi:ss') as STUDY_REGDATE,
-               sst.STUDY_STATE,
-               ctt.category_type,
-               clt.category_lang
-        from member m,
-             STUDY_MEMBER sm,
-             STUDY s,
-             STUDY_STATE_TABLE sst,
-             category_type_table ctt,
-             category_lang_table clt
-        where m.EMAIL = sm.EMAIL
-          and s.STUDY_NO = sm.STUDY_NO
-          and s.STUDY_STATE_CODE = sst.STUDY_STATE_CODE
-          and s.category_lang_no = clt.category_lang_no
-          and s.category_type_no = ctt.category_type_no
-          and (clt.category_lang = #{categoryVal} or ctt.category_type = #{categoryVal})
+                 select m.name,
+                        m.PICTURE,
+                        s.STUDY_NO,
+                        s.STUDY_NAME,
+                        s.STUDY_DESC,
+                        s.STUDY_REGDATE,
+                        sst.STUDY_STATE,
+                        ctt.category_type,
+                        clt.category_lang
+                 from member m,
+                      STUDY_MEMBER sm,
+                      STUDY s,
+                      STUDY_STATE_TABLE sst,
+                      category_type_table ctt,
+                      category_lang_table clt
+                 where m.EMAIL = sm.EMAIL
+                   and s.STUDY_NO = sm.STUDY_NO
+                   and s.STUDY_STATE_CODE = sst.STUDY_STATE_CODE
+                   and s.category_lang_no = clt.category_lang_no
+                   and s.category_type_no = ctt.category_type_no
+                   and sm.STUDY_MEMBER_ROLE = '스터디리더'
+                 order by study_no desc
+             ) s
+        where <![CDATA[ROWNUM <= 6
+        ]]>
     </select>
 
     <!-- 스터디 등록 -->
     <insert id="registerStudy" parameterType="HashMap">
-        insert into study(STUDY_NO, STUDY_NAME, STUDY_INFO, STUDY_DESC, STUDY_REGDATE, CATEGORY_TYPE_NO, CATEGORY_LANG_NO
+        insert into study(STUDY_NO, STUDY_NAME, STUDY_INFO, STUDY_DESC, STUDY_REGDATE, CATEGORY_TYPE_NO,
+        CATEGORY_LANG_NO
         )
         values (STUDY_SEQ.nextval, #{studyName}, #{studyInfo}, #{studyDesc}, sysdate,
         #{categoryTypeNo}, #{categoryLangNo})
@@ -172,7 +130,7 @@
                s.STUDY_NAME,
                s.STUDY_DESC,
                DBMS_LOB.SUBSTR(s.STUDY_INFO, DBMS_LOB.GETLENGTH(s.STUDY_INFO)) AS STUDY_INFO,
-               to_char(s.STUDY_REGDATE, 'YYYY-MM-DD')                          AS STUDY_REGDATE,
+               to_char(s.STUDY_REGDATE, 'YYYY-MM-DD HH24:MI:SS')               AS STUDY_REGDATE,
                sst.STUDY_STATE,
                ctt.category_type,
                ctt.category_type_no,
@@ -198,18 +156,209 @@
         SELECT STUDY_MEMBER_ROLE
         FROM STUDY_MEMBER
         WHERE STUDY_NO = #{param1}
-        AND EMAIL = #{param2}
+          AND EMAIL = #{param2}
     </select>
 
     <!-- 스터디 정보 수정 -->
     <update id="modifyStudy" parameterType="HashMap">
         UPDATE STUDY
-        SET STUDY_NAME = #{studyName},
-        STUDY_DESC = #{studyInfo},
-        STUDY_INFO = #{studyInfo},
-        CATEGORY_TYPE_NO = #{categoryTypeNo},
-        CATEGORY_LANG_NO = #{categoryLangNo}
+        SET STUDY_NAME       = #{studyName},
+            STUDY_DESC       = #{studyInfo},
+            STUDY_INFO       = #{studyInfo},
+            CATEGORY_TYPE_NO = #{categoryTypeNo},
+            CATEGORY_LANG_NO = #{categoryLangNo}
         WHERE STUDY_NO = #{studyNo}
     </update>
+
+    <!-- 스터디 삭제 -->
+    <delete id="deleteStudyByStudyNo" parameterType="int">
+        DELETE
+        FROM STUDY
+        WHERE STUDY_NO = #{value}
+    </delete>
+
+    <!--나의 스터디 리스트 조회-->
+    <select id="getMystudyListByEmail" resultMap="studyMemberDTOMap">
+        select sm.email          as sm_email,
+               sm.STUDY_MEMBER_ROLE,
+               s.STUDY_NO        as s_study_no,
+               s.STUDY_NAME      as s_study_name,
+               sSt.STUDY_STATE   as s_sst_study_state,
+               ctt.CATEGORY_TYPE as s_ctt_category_type,
+               clt.CATEGORY_LANG as s_clt_category_lang
+        from STUDY_MEMBER sm,
+             STUDY s,
+             STUDY_STATE_TABLE SST,
+             CATEGORY_TYPE_TABLE CTT,
+             CATEGORY_LANG_TABLE CLT
+        where sm.STUDY_NO = s.STUDY_NO
+          and s.STUDY_STATE_CODE = sst.STUDY_STATE_CODE
+          and s.CATEGORY_TYPE_NO = ctt.CATEGORY_TYPE_NO
+          and s.CATEGORY_LANG_NO = clt.CATEGORY_LANG_NO
+          and sm.EMAIL = #{value}
+        order by s.STUDY_NO desc
+    </select>
+
+    <select id="getTotalCountOfStudyList" resultType="int">
+        select count(*)
+        from study
+    </select>
+
+    <select id="getStudyListByPageNo" resultMap="studyMemberDTOMap">
+        select s.rnum,
+               s.name                                 as m_name,
+               s.PICTURE                              as m_picture,
+               s.STUDY_NO                             as s_study_no,
+               s.STUDY_NAME                           as s_study_name,
+               s.STUDY_DESC                           as s_study_desc,
+               to_char(s.STUDY_REGDATE, 'yyyy-mm-dd') as s_study_regdate,
+               s.STUDY_STATE                          as s_sst_study_state,
+               s.category_type                        as s_ctt_category_type,
+               s.category_lang                        as s_clt_category_lang
+        from (
+                 select row_number() over(order by s.study_regdate desc) as rnum, m.name,
+                        m.PICTURE,
+                        s.STUDY_NO,
+                        s.STUDY_NAME,
+                        s.STUDY_DESC,
+                        s.STUDY_REGDATE,
+                        sst.STUDY_STATE,
+                        ctt.category_type,
+                        clt.category_lang
+                 from member m,
+                      STUDY_MEMBER sm,
+                      STUDY s,
+                      STUDY_STATE_TABLE sst,
+                      category_type_table ctt,
+                      category_lang_table clt
+                 where m.EMAIL = sm.EMAIL
+                   and s.STUDY_NO = sm.STUDY_NO
+                   and s.STUDY_STATE_CODE = sst.STUDY_STATE_CODE
+                   and s.category_lang_no = clt.category_lang_no
+                   and s.category_type_no = ctt.category_type_no
+                   and sm.STUDY_MEMBER_ROLE = '스터디리더'
+                 order by study_no desc
+             ) s
+        where s.rnum between #{startRowNumber} and #{endRowNumber}
+    </select>
+
+    <!--스터디 상태 업데이트-->
+    <update id="updateState">
+        update study set STUDY_STATE_CODE=#{studyState} where STUDY_NO=#{studyNo}
+    </update>
+
+    <select id="getTotalCountOfStudyListByCategory" parameterType="String" resultType="int">
+        select count(*)
+        from member m,
+             STUDY_MEMBER sm,
+             STUDY s,
+             STUDY_STATE_TABLE sst,
+             category_type_table ctt,
+             category_lang_table clt
+        where m.EMAIL = sm.EMAIL
+          and s.STUDY_NO = sm.STUDY_NO
+          and s.STUDY_STATE_CODE = sst.STUDY_STATE_CODE
+          and s.category_lang_no = clt.category_lang_no
+          and s.category_type_no = ctt.category_type_no
+          and sm.STUDY_MEMBER_ROLE = '스터디리더'
+          and (clt.category_lang = #{value} or ctt.category_type = #{value})
+    </select>
+
+    <select id="getStudyListByCategoryAndPageNo" resultMap="studyMemberDTOMap">
+        select s.rnum,
+               s.name                                 as m_name,
+               s.PICTURE                              as m_picture,
+               s.STUDY_NO                             as s_study_no,
+               s.STUDY_NAME                           as s_study_name,
+               s.STUDY_DESC                           as s_study_desc,
+               to_char(s.STUDY_REGDATE, 'yyyy-mm-dd') as s_study_regdate,
+               s.STUDY_STATE                          as s_sst_study_state,
+               s.category_type                        as s_ctt_category_type,
+               s.category_lang                        as s_clt_category_lang
+        from (
+                 select row_number() over(order by s.study_regdate desc) as rnum, m.name,
+                        m.PICTURE,
+                        s.STUDY_NO,
+                        s.STUDY_NAME,
+                        s.STUDY_DESC,
+                        s.STUDY_REGDATE,
+                        sst.STUDY_STATE,
+                        ctt.category_type,
+                        clt.category_lang
+                 from member m,
+                      STUDY_MEMBER sm,
+                      STUDY s,
+                      STUDY_STATE_TABLE sst,
+                      category_type_table ctt,
+                      category_lang_table clt
+                 where m.EMAIL = sm.EMAIL
+                   and s.STUDY_NO = sm.STUDY_NO
+                   and s.STUDY_STATE_CODE = sst.STUDY_STATE_CODE
+                   and s.category_lang_no = clt.category_lang_no
+                   and s.category_type_no = ctt.category_type_no
+                   and sm.STUDY_MEMBER_ROLE = '스터디리더'
+                   and (clt.category_lang = #{category} or ctt.category_type = #{category})
+                 order by study_no desc
+             ) s
+        where s.rnum between #{startRowNumber} and #{endRowNumber}
+    </select>
+
+    <select id="getTotalCountOfStudyListBySearch" resultType="int">
+        select count(*)
+        from member m,
+             STUDY_MEMBER sm,
+             STUDY s,
+             STUDY_STATE_TABLE sst,
+             category_type_table ctt,
+             category_lang_table clt
+        where m.EMAIL = sm.EMAIL
+          and s.STUDY_NO = sm.STUDY_NO
+          and s.STUDY_STATE_CODE = sst.STUDY_STATE_CODE
+          and s.category_lang_no = clt.category_lang_no
+          and s.category_type_no = ctt.category_type_no
+          and (s.STUDY_NAME like '%' || #{value} || '%' or s.STUDY_DESC like '%' || #{value} || '%')
+          and sm.STUDY_MEMBER_ROLE = '스터디리더'
+        order by s.STUDY_NO desc
+    </select>
+
+    <select id="getStudyListBySearch" resultMap="studyMemberDTOMap">
+        select s.rnum,
+               s.name                                 as m_name,
+               s.PICTURE                              as m_picture,
+               s.STUDY_NO                             as s_study_no,
+               s.STUDY_NAME                           as s_study_name,
+               s.STUDY_DESC                           as s_study_desc,
+               study_regdate                          as s_study_regdate,
+               s.STUDY_STATE                          as s_sst_study_state,
+               s.category_type                        as s_ctt_category_type,
+               s.category_lang                        as s_clt_category_lang
+        from (
+                 select row_number() over (order by s.study_regdate desc) as rnum,
+                         m.name                                            as name,
+                        m.PICTURE                                         as picture,
+                        s.STUDY_NO                                        as study_no,
+                        s.STUDY_NAME                                      as study_name,
+                        s.STUDY_DESC                                      as study_desc,
+                        to_char(s.STUDY_REGDATE, 'yyyy-mm-dd')            as study_regdate,
+                        sst.STUDY_STATE                                   as study_state,
+                        ctt.category_type                                 as category_type,
+                        clt.category_lang                                 as category_lang
+                 from member m,
+                      STUDY_MEMBER sm,
+                      STUDY s,
+                      STUDY_STATE_TABLE sst,
+                      category_type_table ctt,
+                      category_lang_table clt
+                 where m.EMAIL = sm.EMAIL
+                   and s.STUDY_NO = sm.STUDY_NO
+                   and s.STUDY_STATE_CODE = sst.STUDY_STATE_CODE
+                   and s.category_lang_no = clt.category_lang_no
+                   and s.category_type_no = ctt.category_type_no
+                   and (s.STUDY_NAME like '%' || #{search} || '%' or s.STUDY_DESC like '%' || #{search} || '%')
+                   and sm.STUDY_MEMBER_ROLE = '스터디리더'
+                 order by s.STUDY_NO desc
+             ) s
+        where s.rnum between #{startRowNumber} and #{endRowNumber}
+    </select>
 
 </mapper>

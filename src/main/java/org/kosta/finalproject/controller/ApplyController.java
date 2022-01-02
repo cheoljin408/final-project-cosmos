@@ -1,5 +1,6 @@
 package org.kosta.finalproject.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.kosta.finalproject.config.auth.LoginUser;
 import org.kosta.finalproject.config.auth.dto.SessionMember;
 import org.kosta.finalproject.service.ApplyService;
@@ -14,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Controller
 public class ApplyController {
 
@@ -39,19 +41,18 @@ public class ApplyController {
         // allList : 참가신청한 스터디의 모든 리스트
         // alarmListOkAndNo: 참가신청한 스터디 중 참가신청 결과가 "수락완료" or "수락거부"인 참가신청 리스트
         // alarmListWait: 참가신청한 스터디 중 참가신청 결과가 "수락대기"인 참가신청 리스트
-        List<Map<String, Object>> allList = applyService.getAlarmList();
+        List<Map<String, Object>> allList = applyService.getAlarmList(member.getEmail());
         List<Map<String, Object>> alarmListOkAndNo = new ArrayList<Map<String, Object>>();
         List<Map<String, Object>> alarmListWait = new ArrayList<Map<String, Object>>();
         for (int i = 0; i < allList.size(); i++) {
-            if(!allList.get(i).get("AST_APPLY_STATE_CODE").equals("WAIT") && allList.get(i).get("A_M_NAME").equals(member.getName())) {
+            //내가 참가신청한 스터디 중에서 결과가 수락 or 거절인 리스트 추가
+            if(!allList.get(i).get("AST_APPLY_STATE_CODE").equals("WAIT") && allList.get(i).get("EMAIL").equals(member.getEmail())) {
                 alarmListOkAndNo.add(allList.get(i));
-                System.out.println(1000);
             }
             //대기중인 스터디 추가
-            else if(allList.get(i).get("AST_APPLY_STATE_CODE").equals("WAIT") && allList.get(i).get("A_M_NAME").equals(member.getName())) {
+            else if(allList.get(i).get("AST_APPLY_STATE_CODE").equals("WAIT") && allList.get(i).get("EMAIL").equals(member.getEmail())) {
                 alarmListWait.add(allList.get(i));
             }
-            System.out.println(member.getName());
         }
         model.addAttribute("alarmListOkAndNo", alarmListOkAndNo);
         model.addAttribute("alarmListWait", alarmListWait);
@@ -65,20 +66,20 @@ public class ApplyController {
      *
      * @return
      */
-    @GetMapping("/apply/refuse")
+    @PostMapping("/apply/refuse")
     @ResponseBody
-    public String applyRefuse(@RequestParam int applyNo){
-        applyService.applyRefuse(applyNo);
-        return null;
+    public int applyRefuse(@RequestParam String applyNo){
+        System.out.println("applyNo = " + applyNo);
+        System.out.println("ApplyController.applyRefuse");
+        applyService.applyRefuse(Integer.parseInt(applyNo));
+        return 0;
     }
-    @GetMapping("/apply/accept")
+    @PostMapping("/apply/accept")
     @ResponseBody
-    @Transactional
-    public String applyAccept(@RequestParam String email,
-                              @RequestParam int applyNo,
-                              @RequestParam int studyNo){
-        applyService.applyAccept(email, applyNo, studyNo);
-        return null;
+    public int applyAccept(@RequestBody Map<String, Object> param){
+        log.info("param[email] = {}, param[study_no] = {}, param[apply_no] = {}", param.get("email"), param.get("study_no"), param.get("apply_no"));
+        applyService.applyAccept(param);
+        return 1;
     }
 
     /**
@@ -95,7 +96,9 @@ public class ApplyController {
         }
 
         List<Map<String, Object>> requestedApplyList = applyService.requestedApplyList(member.getEmail());
+        List<Map<String, Object>> isStudyLeader = applyService.isStudyLeader(member.getEmail());
         model.addAttribute("requestedApplyList", requestedApplyList);
+        model.addAttribute("isStudyLeader", isStudyLeader);
         return "studyapplyalarm/apply-request-list";
     }
 

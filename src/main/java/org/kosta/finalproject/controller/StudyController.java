@@ -3,14 +3,17 @@ package org.kosta.finalproject.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.kosta.finalproject.config.auth.LoginUser;
 import org.kosta.finalproject.config.auth.dto.SessionMember;
-import org.kosta.finalproject.model.domain.StudyMemberDTO;
+import org.kosta.finalproject.model.domain.*;
+import org.kosta.finalproject.service.PagingService;
+import org.kosta.finalproject.service.StudyCommentService;
+import org.kosta.finalproject.service.StudyMemberService;
 import org.kosta.finalproject.service.StudyService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,8 +23,19 @@ import java.util.Map;
 @RequestMapping("/study")
 public class StudyController {
 
-    @Resource
-    private StudyService studyService;
+
+    private final StudyService studyService;
+    private final StudyCommentService studyCommentService;
+    private final PagingService pagingService;
+    private final StudyMemberService studyMemberService;
+
+    @Autowired
+    public StudyController(StudyService studyService, StudyCommentService studyCommentService, PagingService pagingService,StudyMemberService studyMemberService) {
+        this.studyService = studyService;
+        this.studyCommentService = studyCommentService;
+        this.pagingService = pagingService;
+        this.studyMemberService=studyMemberService;
+    }
 
     /**
      *  등록된 스터디 리스트를 조회해서 -> model 에 넣고 -> 페이지에 뿌려줌
@@ -31,73 +45,118 @@ public class StudyController {
      */
 
     @GetMapping("/list")
-    public String studylistmain(@LoginUser SessionMember member, Model model){
-        if(member != null) {
-            model.addAttribute("member", member);
-            model.addAttribute("picture", member.getPicture());
-        }
-        List<StudyMemberDTO> result = studyService.getAllList();
+    public String studylistmain(Model model, @RequestParam(required = false) Object pageNo, @RequestParam(required = false) String category, @RequestParam(required = false) String search){
 
-        model.addAttribute("studyList", result);
+        // /study/list or study/list?pageNo=123 -> 전체
+        if(category == null && search == null) {
+            // paging을 위한 스터디 리스트의 전체 수 조회
+            int totalCount = pagingService.getTotalCountOfStudyList();
+            log.info("totalCount: {}", totalCount);
+
+            PagingBean pagingBean = null;
+
+            // pageNo Null Check
+            if(pageNo == null) {
+                pagingBean = new PagingBean(totalCount);
+            } else {
+                pagingBean = new PagingBean(totalCount,  Integer.valueOf((String)pageNo));
+                log.info("totalCount: {}", totalCount);
+                log.info("Integer.valueOf((String)pageNo): {}", Integer.valueOf((String)pageNo));
+            }
+
+            // pagingBean을 model에 할당
+            model.addAttribute("pagingBean", pagingBean);
+
+            // studyList를 model에 할당
+            List<StudyMemberDTO> studyList = pagingService.getStudyListByPageNo(pagingBean.getStartRowNumber(), pagingBean.getEndRowNumber());
+            model.addAttribute("studyList", studyList);
+
+            // category, search 상태 할당
+            model.addAttribute("category", "NULL");
+            model.addAttribute("search", "NULL");
+
+        } else if(category != null && search == null) { // 카테고리
+
+            // paging을 위한 스터디 리스트의 전체 수 조회
+            int totalCount = pagingService.getTotalCountOfStudyListByCategory(category);
+            log.info("categoryTotalCount: {}", totalCount);
+
+            PagingBean pagingBean = null;
+
+            // pageNo Null Check
+            if(pageNo == null) {
+                pagingBean = new PagingBean(totalCount);
+            } else {
+                pagingBean = new PagingBean(totalCount,  Integer.valueOf((String)pageNo));
+                log.info("categoryTotalCount: {}", totalCount);
+                log.info("Integer.valueOf((String)pageNo): {}", Integer.valueOf((String)pageNo));
+            }
+
+            // pagingBean을 model에 할당
+            model.addAttribute("pagingBean", pagingBean);
+
+            // studyList를 model에 할당
+            List<StudyMemberDTO> studyList = pagingService.getStudyListByCategoryAndPageNo(category, pagingBean.getStartRowNumber(), pagingBean.getEndRowNumber());
+            model.addAttribute("studyList", studyList);
+
+            // study-list-main에 카테고리 정보를 할당
+            model.addAttribute("category", category);
+
+            // category, search 상태 할당
+            model.addAttribute("category", category);
+            model.addAttribute("search", "NULL");
+
+        } else if(category == null && search != null) { // 검색
+
+            // paging을 위한 스터디 리스트의 전체 수 조회
+            int totalCount = pagingService.getTotalCountOfStudyListBySearch(search);
+            log.info("searchTotalCount: {}", totalCount);
+
+            PagingBean pagingBean = null;
+
+            // pageNo Null Check
+            if(pageNo == null) {
+                pagingBean = new PagingBean(totalCount);
+            } else {
+                pagingBean = new PagingBean(totalCount,  Integer.valueOf((String)pageNo));
+                log.info("searchTotalCount: {}", totalCount);
+                log.info("Integer.valueOf((String)pageNo): {}", Integer.valueOf((String)pageNo));
+            }
+
+            // pagingBean을 model에 할당
+            model.addAttribute("pagingBean", pagingBean);
+
+            // studyList를 model에 할당
+            List<StudyMemberDTO> studyList = pagingService.getStudyListBySearch(search, pagingBean.getStartRowNumber(), pagingBean.getEndRowNumber());
+            model.addAttribute("studyList", studyList);
+
+            // study-list-main에 카테고리 정보를 할당
+            model.addAttribute("search", search);
+
+            // category, search 상태 할당
+            model.addAttribute("category", "NULL");
+            model.addAttribute("search", search);
+        }
+
         return "studylist/study-list-main";
-    }
-
-
-    @GetMapping("/getStudyListByStudyNameAndDesc")
-    @ResponseBody
-    public List<Map<String, Object>> getStudyListByStudyNameAndDesc(@LoginUser SessionMember member, Model model, @RequestParam String searchWord){
-        if(member != null) {
-            model.addAttribute("member", member);
-            model.addAttribute("picture", member.getPicture());
-        }
-        List<Map<String, Object>> result = studyService.getStudyListByStudyNameAndDesc(searchWord);
-        System.out.println(result);
-        return result;
-    }
-    /**
-     *   카테고리 버튼 ->  Ajax를 통해서 -> 비동기 처리로 리스트를 화면에 뿌려줌
-     *   @return :
-     */
-    @GetMapping("/getStudyListByCategory")
-    @ResponseBody
-    public List<Map<String, Object>> getStudyListByCategory(@LoginUser SessionMember member, Model model, @RequestParam String categoryVal){
-        if(member != null) {
-            model.addAttribute("member", member);
-            model.addAttribute("picture", member.getPicture());
-        }
-        System.out.println("StudyController.getStudyListByCategory");
-        System.out.println("categoryVal = " + categoryVal);
-        List<Map<String, Object>> result = studyService.getStudyListByCategory(categoryVal);
-        System.out.println("result = " + result.toString());
-        return result;
     }
 
     /**
      * 스터디 등록 폼
      */
     @GetMapping("/registerStudy")
-    public String registerStudy(@LoginUser SessionMember member, Model model) {
-        if(member != null) {
-            model.addAttribute("member", member);
-            model.addAttribute("picture", member.getPicture());
-        }
-        return "study/register-study";
+    public String registerStudy() {
+        return "study/register";
     }
 
     /**
      * 스터디 등록
      * 사용자가 입력한 데이터로 스터디를 등록한 뒤 작성자는 스터디리더로 역할 등록
-     * @param member
-     * @param jsonData
      */
     @Transactional
     @ResponseBody
     @PostMapping("/registerStudy")
-    public int registerStudy(@LoginUser SessionMember member, @RequestBody HashMap<String, String> jsonData, Model model) {
-        if(member != null) {
-            model.addAttribute("member", member);
-            model.addAttribute("picture", member.getPicture());
-        }
+    public int registerStudy(@LoginUser SessionMember member, @RequestBody HashMap<String, String> jsonData) {
         // log.info("jsonData = {}", jsonData);
         studyService.registerStudy(jsonData);
         studyService.registerStudyMemberRole(member.getEmail());
@@ -109,16 +168,13 @@ public class StudyController {
      * 1. 해당 스터디의 스터디 리더는 수정, 삭제 버튼이 보인다
      * 2. 스터디에 속하지 않은 사용자는 신청 버튼이 보인다
      * 3. 스터디원은 어떠한 버튼도 보이지 않는다
-     * @param member
-     * @param model
-     * @param studyNo
+     * @return: 스터디 상세보기 페이지
      */
     @Transactional
-    @GetMapping("/studyDetail")
-    public String studyDetail(@LoginUser SessionMember member, Model model, int studyNo) {
+    @GetMapping("/studyDetail/{studyNo}")
+    public String studyDetail(@PathVariable int studyNo, @LoginUser SessionMember member, Model model) {
         if(member != null) {
             model.addAttribute("member", member);
-            model.addAttribute("picture", member.getPicture());
         }
         model.addAttribute("study", studyService.getStudyDetailByStudyNo(studyNo));
         // log.info("studyInfo:{}", studyService.getStudyDetailByStudyNo(studyNo));
@@ -128,48 +184,25 @@ public class StudyController {
             role = "일반회원";
         }
         model.addAttribute("role", role);
-        return "study/study-detail";
+
+        // 댓글 데이터 불러오기
+        List<StudyCommentDTO> allStudyCommentList = studyCommentService.getAllStudyCommentList(studyNo);
+        System.out.println("allStudyCommentList = " + allStudyCommentList);
+        model.addAttribute("studyCommentList", allStudyCommentList);
+
+        return "study/detail";
     }
 
     /**
-     * 스터디 정보 수정
-     * @param studyNo
-     * @param member
-     * @param model
-     * @return
+     * 나의 스터디 리스트 가져오기
      */
-    @GetMapping("/modifyStudy/{studyNo}")
-    public String modifyStudy(@PathVariable int studyNo, @LoginUser SessionMember member, Model model) {
-        if(member != null) {
-            model.addAttribute("member", member);
-            model.addAttribute("picture", member.getPicture());
-        }
-        // log.info("studyNo:{}",studyNo);
-        model.addAttribute("study", studyService.getStudyDetailByStudyNo(studyNo));
-        model.addAttribute(studyNo);
-        return "study/modify-study";
-    }
+    @GetMapping("/mystudy")
+    public String mystudy(@LoginUser SessionMember member,Model model){
+        System.out.println("member.getEmail() = " + member.getEmail());
 
-    /**
-     *
-     * @param studyNo
-     * @param member
-     * @param model
-     * @param jsonData
-     * @return
-     */
-    @ResponseBody
-    @PutMapping("/modifyStudy/{studyNo}")
-    public int modifyStudy(@PathVariable int studyNo, @LoginUser SessionMember member, Model model, @RequestBody Map<String, String> jsonData) {
-        if(member != null) {
-            model.addAttribute("member", member);
-            model.addAttribute("picture", member.getPicture());
-        }
-        jsonData.put("studyNo", String.valueOf(studyNo));
-        log.info("jsonData:{}", jsonData);
-        studyService.modifyStudy(jsonData);
-        model.addAttribute("studyNo", studyNo);
-        return 0;
+        model.addAttribute("studyList",studyService.getMystudyListByEmail(member.getEmail()));
+
+        return "studylist/mystudy-list";
     }
 
 }

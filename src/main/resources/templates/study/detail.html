@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments/html-head.html :: fragment-html-head"></div>
+</head>
+<body style="margin: 0; overflow-x:hidden;">
+<div th:replace="fragments/header.html :: fragment-header"></div>
+<!-- Page Content-->
+    <div class="container mt-5" style="padding: 0 50px;">
+        <div class="row">
+            <div class="col-12 content-area pt-3" style="padding: 0 30px;">
+                <!-- 본문 영역 -->
+                <div class="mt-3">
+                    <!-- 스터디 상세 정보 -->
+                    <article>
+                        <div style="display:flex; justify-content: space-between;">
+                            <!-- 스터디 모집 상태 -->
+                            <div style="word-break: break-word;">
+                                <div class="text-end mt-3" align="left">
+                                    <h5><span class="badge bg-primary" th:text="${study.get('STUDY_STATE')}"
+                                              style="color:white;">모집 상태</span>
+                                    </h5>
+                                </div>
+                            <!-- 스터디 이름 -->
+                                <h3 class="fw-bolder mb-1" th:text="${study.get('STUDY_NAME')}">스터디 이름</h3>
+                            </div>
+                            <!-- 프로필 이미지, 이름 -->
+                            <div align="center" style="padding: 20px 20px 0 0; float:right;">
+                                <img th:src="${study.get('PICTURE')}" class="rounded-circle" width="60px" height="60px">
+                                <h5 class="text-break" th:text="${study.get('NAME')}">사용자 이름</h5>
+                            </div>
+                        </div>
+                        <hr>
+                        <!-- 스터디 요약 -->
+                        <div class="row">
+                            <div class="col mt-3">
+                                <h4 class="mb-2" th:text="${study.get('STUDY_DESC')}">스터디 요약</h4>
+                            </div>
+                        </div>
+                        <div class="row mt-3 mb-3">
+                        <!-- 스터디 카테고리 -->
+                            <div class="col-6">
+                                <h5 class="d-inline">
+                                    <span class="badge badge-light text-dark mr-1"
+                                          th:text="${study.get('CATEGORY_TYPE')}">#유형</span>
+                                </h5>
+                                <h5 class="d-inline">
+                                    <span class="badge badge-light text-dark mr-1"
+                                          th:text="${study.get('CATEGORY_LANG')}">#사용언어</span>
+                                </h5>
+                            </div>
+                        <!-- 스터디 개설일시 -->
+                            <div class="col-6 pr-4" align="right">
+                                <span>작성일: </span>
+                                <span class="mb-2" th:text="${study.get('STUDY_REGDATE')}"></span>
+                            </div>
+                        </div>
+                        <br>
+                        <!-- 스터디 상세 소개 -->
+                        <pre>
+                            <div class="card mb-4" style="min-height: 300px; font-size:16px;" th:text="${study.get('STUDY_INFO')}"/>
+                        </pre>
+                    </article>
+                    <div class="row" style="display: flex; justify-content: center;">
+                        <!-- 스터디원, 스터디리더가 아닌 경우 참가 신청 버튼 -->
+                        <div th:if="${role.equals('일반회원')}">
+                            <button type="button" class="btn btn-primary" id="apply-study" data-toggle="modal" data-target="#applyModal">참가 신청</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <br>
+        <hr>
+        <div id="studyCommentRoot">
+            <div th:replace="fragments/study-comment :: fragment-study-comment" id="studyCommentListView"></div>
+        </div>
+    </div>
+<!-- 본문 종료 -->
+<div th:replace="fragments/apply-modal.html :: fragment-applymodal"></div>
+<div th:replace="fragments/footer.html :: fragment-footer"></div>
+
+<script th:inline="javascript">
+    $(function(){
+        // 스터디 지원하기
+        $("#applyStudyBtn").click(function(){
+            if($("#applyContent").val()==""){
+                alert("소개글을 입력하고 신청을 해주세요!");
+                return;
+            }
+            if(!confirm("스터디 신청하시겠습니까?")){
+                return;
+            }
+            var applyJsonData = {
+                studyNo: /*[[${study.get("STUDY_NO")}]]*/ 'studyNo',
+                email : /*[[${session.member.email}]]*/ 'email',
+                applyContent : $("#applyContent").val()
+            };
+
+            $.ajax({
+                type:"post",
+                url:"/applyStudy",
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(applyJsonData),
+                success: function (result) {
+                    if(result==1){  //신청이 되었다면 return 1
+                        alert("신청완료되었습니다. 메인페이지로 이동합니다.");
+                    }else{
+                        alert("이미 신청되어있습니다. 메인페이지로 이동합니다.");
+                    }
+                    location.href = "/";
+                }
+            }); //ajax
+        });// applyStudyBtn.click
+
+        // 댓글 등록
+        $("#studyCommentRoot").on("click", "#studyCommentRegisterBtn", function() {
+            console.log(`댓글 등록`);
+            let data = {
+                studyCommentContent: $("#studyCommentContent").val(),
+                email: /*[[${member.email}]]*/,
+                studyNo: $("#studyCommentRegisterBtn").val()
+            };
+            console.log(data);
+
+            $.ajax({
+                type: 'POST',
+                url: '/api/registerStudyComment/' + /*[[${studyNo}]]*/,
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(data)
+            }).done(function (fragment) {
+                $("#studyCommentListView").replaceWith(fragment);
+            }).fail(function (error) {
+                alert(error.message());
+            });
+        });
+
+        // 댓글 수정
+        $("#studyCommentRoot").on("click", ".studyCommentUpdateBtn", function() {
+            console.log(`${$(this).val()} 댓글 수정`);
+
+            // 수정, 확인 버튼 토글
+            $(this).css('display', 'none');
+            $(this).siblings(".studyCommentUpdateSubmitBtn").css('display', 'inline');
+
+            // 삭제, 취소 버튼 토글
+            $(this).siblings(".studyCommentDeleteBtn").css('display', 'none');
+            $(this).siblings(".studyCommentCancelBtn").css('display', 'inline');
+
+            // p, input 태그 토글
+            $(this).parent().siblings().children('p').css('display', 'none');
+            $(this).parent().siblings().children('input').css('display', 'inline');
+
+            // p 태그 text를 input의 value로 넣어주기
+            $(this).parent().siblings().children('input')
+                .val($(this).parent().siblings().children('p').text());
+        });
+
+        // 댓글 수정 취소
+        $("#studyCommentRoot").on("click", ".studyCommentCancelBtn", function() {
+            console.log(`${$(this).val()} 댓글 수정 취소`);
+
+            // p, input 태그 토글
+            $(this).parent().siblings().children('input').css('display', 'none');
+            $(this).parent().siblings().children('p').css('display', 'inline');
+
+            // 수정, 확인 버튼 토글
+            $(this).siblings(".studyCommentUpdateSubmitBtn").css('display', 'none');
+            $(this).siblings(".studyCommentUpdateBtn").css('display', 'inline');
+
+            // 삭제, 취소 버튼 토글
+            $(this).css('display', 'none');
+            $(this).siblings(".studyCommentDeleteBtn").css('display', 'inline');
+        });
+
+        // 댓글 수정 제출
+        $("#studyCommentRoot").on("click", ".studyCommentUpdateSubmitBtn", function() {
+            console.log(`${$(this).val()} 댓글 수정 제출`);
+
+            // 수정, 확인 버튼 토글
+            $(this).css('display', 'none');
+            $(this).siblings(".studyCommentUpdateBtn").css('display', 'inline');
+
+            let data = {
+                studyCommentContent: $(this).parent().siblings().children('input').val(),
+                studyCommentNo: $(this).val()
+            };
+            console.log(data);
+
+            $.ajax({
+                type: 'PUT',
+                url: '/api/updateStudyComment/' + /*[[${studyNo}]]*/,
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(data)
+            }).done(function (fragment) {
+                $("#studyCommentListView").replaceWith(fragment);
+            }).fail(function (error) {
+                alert(error.message());
+            });
+        });
+
+        // 댓글 삭제
+        $("#studyCommentRoot").on("click", ".studyCommentDeleteBtn", function() {
+            console.log(`${$(this).val()} 댓글 삭제`);
+            if(!confirm("댓글을 삭제하시겠습니까?")) {
+                return;
+            }
+            let data = {
+                studyCommentNo: $(this).val()
+            };
+            console.log(data);
+
+            $.ajax({
+                type: 'DELETE',
+                url: '/api/deleteStudyComment/' + /*[[${studyNo}]]*/,
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(data)
+            }).done(function (fragment) {
+                $("#studyCommentListView").replaceWith(fragment);
+            }).fail(function (error) {
+                alert(error.message());
+            });
+        });
+    }); //ready
+</script>
+</body>
+
+</html>

@@ -29,16 +29,6 @@ public class StudyServiceImpl implements StudyService{
     }
 
     @Override
-    public List<Map<String, Object>> getStudyListByCategory(String categoryVal) {
-        return studyMapper.getStudyListByCategory(categoryVal);
-    }
-
-    @Override
-    public List<Map<String, Object>> getStudyListByStudyNameAndDesc(String searchWord) {
-        return studyMapper.getStudyListByStudyNameAndDesc(searchWord);
-    }
-
-    @Override
     public void registerStudy(Map<String, String> studyDTO) {
         studyMapper.registerStudy(studyDTO);
     }
@@ -61,6 +51,21 @@ public class StudyServiceImpl implements StudyService{
     @Override
     public void modifyStudy(Map<String, String> studyDTO) {
         studyMapper.modifyStudy(studyDTO);
+    }
+
+    @Override
+    public void deleteStudyByStudyNo(int studyNo) {
+        studyMapper.deleteStudyByStudyNo(studyNo);
+    }
+
+    @Override
+    public List<StudyMemberDTO> getMystudyListByEmail(String email) {
+        return studyMapper.getMystudyListByEmail(email);
+    }
+
+    @Override
+    public void updateState(int studyNo,String studyState) {
+        studyMapper.updateState(studyNo,studyState);
     }
 
 }

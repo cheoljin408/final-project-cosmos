@@ -11,4 +11,10 @@ public interface StudyCommentMapper {
     List<StudyCommentDTO> getAllStudyCommentList(int studyNo);
 
     void registerStudyComment(Map<String, Object> jsonDate);
+
+    void updateStudyComment(Map<String, Object> jsonData);
+
+    Map<String, Object> getStudyCommentByStudyCommentNo(int studyCommentNo);
+
+    void deleteStudyComment(Map<String, Object> jsonData);
 }

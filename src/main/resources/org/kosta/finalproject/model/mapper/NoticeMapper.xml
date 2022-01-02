@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.kosta.finalproject.model.mapper.NoticeMapper">
+
+    <!-- resultMap -->
+    <resultMap id="noticeDTOMap" type="org.kosta.finalproject.model.domain.NoticeDTO">
+        <id property="noticeNo" column="notice_no"/>
+        <result property="noticeTitle" column="notice_title"/>
+        <result property="noticeContent" column="notice_content"/>
+        <result property="noticeRegdate" column="notice_regdate"/>
+        <result property="noticeHits" column="notice_hits"/>
+        <association property="studyMemberDTO" resultMap="studyMemberDTOMap" columnPrefix="sm_"/>
+    </resultMap>
+
+    <resultMap id="studyMemberDTOMap" type="org.kosta.finalproject.model.domain.StudyMemberDTO">
+        <association property="memberDTO" resultMap="memberDTOMap" columnPrefix="m_"/>
+        <association property="studyDTO" resultMap="studyDTOMap" columnPrefix="s_"/>
+    </resultMap>
+
+    <resultMap id="memberDTOMap" type="org.kosta.finalproject.model.domain.MemberDTO">
+        <id property="email" column="email"/>
+        <result property="name" column="name"/>
+        <result property="picture" column="picture"/>
+    </resultMap>
+
+    <resultMap id="studyDTOMap" type="org.kosta.finalproject.model.domain.StudyDTO">
+        <id property="studyNo" column="study_no"/>
+    </resultMap>
+
+    <!-- 특정 공지사항 상세보기 페이지를 위한 정보를 불러옴 -->
+    <select id="getNoticeDetailByNoticeNo" resultType="hashMap">
+        select n.notice_no,
+               n.notice_title,
+               DBMS_LOB.SUBSTR(n.notice_content, dbms_LoB.GETLENGTH(n.NOTICE_CONTENT)) as notice_content,
+               n.notice_regdate,
+               n.notice_hits,
+               n.address,
+               m.email,
+               m.name,
+               m.picture,
+               s.study_no,
+               s.study_name
+        from member m,
+             study s,
+             notice n
+        where m.email = n.email
+          and s.study_no = n.study_no
+          and n.notice_no = #{value}
+    </select>
+
+    <!-- 조회수 증가-->
+    <update id="updateHits">
+        update notice
+        set notice_hits = notice_hits + 1
+        where notice_no = #{noticeNo}
+          and study_no = #{studyNo}
+    </update>
+
+    <!-- 공지사항 수정 -->
+    <update id="updateNoticeByNoticeNo">
+        update notice
+        set notice_title   = #{noticeTitle},
+            notice_content = #{noticeContent}
+        where notice_no = #{noticeNo}
+    </update>
+
+    <!-- 공지사항 삭제-->
+    <delete id="deleteNotice" parameterType="int">
+        delete
+        from notice
+        where notice_no = #{value}
+    </delete>
+
+    <select id="getRecentNoticeList" parameterType="int" resultMap="noticeDTOMap">
+        select v.NOTICE_NO, v.NOTICE_TITLE, v.NOTICE_CONTENT, v.NOTICE_REGDATE, v.NOTICE_HITS, v.ADDRESS
+        from (
+                 select NOTICE_NO, NOTICE_TITLE, NOTICE_CONTENT, NOTICE_REGDATE, NOTICE_HITS, ADDRESS
+                 from NOTICE
+                 where STUDY_NO = #{value}
+                 order by NOTICE_REGDATE desc
+             ) v
+        where <![CDATA[ROWNUM <= 3
+        ]]>
+    </select>
+
+    <!-- 공지사항 작성 -->
+    <insert id="registerNotice">
+        insert into NOTICE(NOTICE_NO, NOTICE_TITLE, NOTICE_CONTENT, NOTICE_REGDATE, EMAIL, STUDY_NO)
+        values (NOTICE_SEQ.nextval, #{noticeTitle}, #{noticeContent}, sysdate, #{email}, #{studyNo})
+    </insert>
+
+    <!-- 공지사항 번호 조회 -->
+    <select id="getNoticeNoWhenRegister" resultType="int">
+        select notice_seq.currval
+        from dual
+    </select>
+
+    <!-- 파일 업로드 -->
+    <insert id="registerAttachFile">
+        INSERT INTO NOTICE_FILE
+        VALUES (NOTICE_FILE_SEQ.nextval, #{attachFile.uploadFileName}, #{attachFile.storeFileName}, #{type},
+                #{noticeNo})
+    </insert>
+
+    <!-- 이미지 업로드 -->
+    <insert id="registerStoreImage">
+        INSERT INTO NOTICE_FILE
+        VALUES (NOTICE_FILE_SEQ.nextval, #{storeImage.uploadFileName}, #{storeImage.storeFileName}, #{type},
+                #{noticeNo})
+    </insert>
+
+
+    <select id="findFilesById" resultType="org.kosta.finalproject.model.domain.UploadFile">
+        select NOTICE_UPLOAD_FILE_NAME, NOTICE_STORE_FILE_NAME
+        from NOTICE_FILE
+        where notice_file_type = #{fileType}
+          and notice_no = #{noticeNo}
+    </select>
+
+    <!--공지사항 no 에 해당하는 파일들을 삭제하는 query -->
+    <delete id="deleteNoticeFileByNoticeNo">
+        delete
+        from notice_file
+        where notice_no = #{value}
+    </delete>
+
+    <select id="getTotalCountOfNoticeList" resultType="int">
+        select count(*)
+        from NOTICE
+        where STUDY_NO = #{value}
+    </select>
+
+    <select id="getNoticeListByPageNo" resultMap="noticeDTOMap">
+        select a.rnum,
+               a.notice_no,
+               a.notice_title,
+               a.notice_title,
+               a.notice_content,
+               a.notice_regdate,
+               a.NOTICE_HITS,
+               a.ADDRESS,
+               a.email    as sm_email,
+               a.name     as sm_m_name,
+               a.picture  as sm_m_picture,
+               a.study_no as sm_s_study_no
+        from (select row_number()        over(order by n.notice_no desc) as rnum, n.notice_no as notice_no,
+                     n.notice_title   as notice_title,
+                     n.notice_content as notice_content,
+                     n.notice_regdate as notice_regdate,
+                     n.notice_hits    as notice_hits,
+                     n.address        as address,
+                     sm.email         as email,
+                     m.name           as name,
+                     m.picture        as picture,
+                     s.study_no       as study_no
+              from notice n,
+                   study_member sm,
+                   study s,
+                   member m
+              where sm.email = m.email
+                and sm.study_no = n.study_no
+                and sm.study_no = s.study_no
+                and n.study_no = #{studyNo}
+                and sm.study_member_role = '스터디리더') a
+        where a.rnum between #{startRowNumber} and #{endRowNumber}
+    </select>
+
+
+</mapper>

@@ -27,4 +27,20 @@ public class StudyCommentServiceImpl implements StudyCommentService {
     public void registerStudyComment(Map<String, Object> jsonData) {
         studyCommentMapper.registerStudyComment(jsonData);
     }
+
+    @Override
+    public void updateStudyComment(Map<String, Object> jsonData) {
+        studyCommentMapper.updateStudyComment(jsonData);
+    }
+
+    @Override
+    public Map<String, Object> getStudyCommentByStudyCommentNo(int studyCommentNo) {
+        Map<String, Object> studyComment = studyCommentMapper.getStudyCommentByStudyCommentNo(studyCommentNo);
+        return studyComment;
+    }
+
+    @Override
+    public void deleteStudyComment(Map<String, Object> jsonData) {
+        studyCommentMapper.deleteStudyComment(jsonData);
+    }
 }

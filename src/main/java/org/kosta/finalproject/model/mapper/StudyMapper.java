@@ -1,7 +1,7 @@
 package org.kosta.finalproject.model.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.kosta.finalproject.model.domain.StudyDTO;
+import org.apache.ibatis.annotations.Param;
 import org.kosta.finalproject.model.domain.StudyMemberDTO;
 
 import java.util.List;
@@ -14,10 +14,6 @@ public interface StudyMapper {
 
     List<StudyMemberDTO> getAllStudyList();
 
-    List<Map<String, Object>> getStudyListByStudyNameAndDesc(String searchWord);
-
-    List<Map<String, Object>> getStudyListByCategory(String categoryVal);
-
     void registerStudy(Map<String, String> studyDTO);
 
     void registerStudyMemberRole(String email);
@@ -27,4 +23,22 @@ public interface StudyMapper {
     String findStudyMemberRoleByStudyNo(int studyNo, String email);
 
     void modifyStudy(Map<String, String> studyDTO);
+
+    void deleteStudyByStudyNo(int studyNo);
+
+    List<StudyMemberDTO> getMystudyListByEmail(String email);
+
+    int getTotalCountOfStudyList();
+
+    List<StudyMemberDTO> getStudyListByPageNo(@Param("startRowNumber") int startRowNumber, @Param("endRowNumber") int endRowNumber);
+
+    void updateState(@Param("studyNo")int studyNo,@Param("studyState")String studyState);
+
+    int getTotalCountOfStudyListByCategory(String category);
+
+    List<StudyMemberDTO> getStudyListByCategoryAndPageNo(@Param("category") String category, @Param("startRowNumber") int startRowNumber, @Param("endRowNumber") int endRowNumber);
+
+    int getTotalCountOfStudyListBySearch(String search);
+
+    List<StudyMemberDTO> getStudyListBySearch(@Param("search") String search, @Param("startRowNumber") int startRowNumber, @Param("endRowNumber") int endRowNumber);
 }

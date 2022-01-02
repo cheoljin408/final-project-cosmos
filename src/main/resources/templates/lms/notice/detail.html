@@ -1,0 +1,184 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments/html-head.html :: fragment-html-head"></div>
+    <style>
+        .notice_header_area {
+            font-size: 30px;
+            font-weight: 500;
+            border-bottom: 1px solid #ddd;
+            line-height: 30px;
+            padding-bottom: 30px;
+        }
+
+        th {
+            text-align: center;
+            background-color: #f5f8fa;
+            padding: 8px;
+            color: #437aa7;
+            border-right: #0390d9 solid 1px;
+        }
+
+        .th_c {
+            color: #474747;
+        }
+    </style>
+
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+</head>
+<body style="margin: 0;">
+
+<div th:replace="fragments/lms-header.html :: fragment-lms-header"></div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div th:replace="fragments/lms-sidebar.html :: fragment-lms-sidebar"></div>
+        <main role="main" class="container col-md-9 col-lg-10 col-sm-11" style="padding: 75px 175px">
+            <div>
+                <div class="border-bottom pb-2 mb-4">
+                    <h3>공지사항</h3>
+                </div>
+                <table class="table table-bordered pt-3 mb-5">
+                    <thead>
+                    <colgroup>
+                        <col width="25%">
+                        <col width="25%">
+                        <col width="25%">
+                        <col width="25%">
+                    </colgroup>
+                    <tr>
+                        <th class="th_c" colspan="6"><strong th:text="${notice.get('NOTICE_TITLE')}">공지사항</strong></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th>작성자</th>
+                        <td th:text="${notice.get('NAME')}">작성자</td>
+                        <th>조회수</th>
+                        <td th:text="${notice.get('NOTICE_HITS')}">조회수</td>
+                    </tr>
+                    <tr>
+                        <!--<th>스터디번호</th>
+                        <td th:text="${notice.get('STUDY_NO')}">스터디 번호</td>-->
+                        <th>스터디 이름</th>
+                        <td th:text="${notice.get('STUDY_NAME')}">스터디 이름</td>
+                        <th>등록일</th>
+                        <td th:text="${notice.get('NOTICE_REGDATE')}">등록일</td>
+                    </tr>
+                    <tr th:each="file, fileStat : ${files}" th:if="${files.get(0)}">
+                        <th th:text="|첨부파일${fileStat.count}|">첨부파일</th>
+                        <td colspan="5">
+                            <!-- 업로드된 첨부파일 출력 -->
+                            <a th:href="|/notice/attach/${notice.get('NOTICE_NO')}/${fileStat.index}|"
+                               th:text="${file.getUploadFileName()}"/>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <table class="table table-bordered pt-3 mb-5">
+                    <thead>
+                    <tr>
+                        <th>이미지</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td><img th:each="imageFile : ${images}"
+                                 th:src="|/notice/images/${imageFile.getStoreFileName()}|" width="300"
+                                 style="margin: 0px 30px 30px 30px"/></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <table class="table table-bordered pt-3 mb-6">
+                    <thead>
+                    <tr>
+                        <th>본문</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <div th:utext="${notice.get('NOTICE_CONTENT')}"></div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <!-- 본문 내용 -->
+                <button class="btn btn-primary"
+                        th:onclick="|window.location.href='/notice/list/${allStudyInfo.studyDTO.studyNo}'|">글 목록
+                </button>
+                <div th:if="${role.equals('스터디리더')}" style="float: right; margin-right: 2px;" class="row">
+                    <form method="post" th:action="@{/notice/update/form/{studyNo}(studyNo=${notice.get('STUDY_NO')})}" style="white-space: nowrap;"}>
+                        <input type="hidden" id="noticeNo" name="noticeNo" th:value="${notice.get('NOTICE_NO')}">
+                        <button class="btn btn-primary" id="notice-modify">수정</button> &nbsp;
+                    </form>
+                    <button class="btn btn-secondary" id="notice-delete">삭제</button>
+                </div>
+                <!-- 본문 내용 end -->
+            </div>
+        </main> <!-- Main end -->
+    </div>
+</div>
+<script th:inline="javascript" type="text/javascript">
+    $(document).ready(function () {
+        $("#notice-delete").click(function () {
+            console.log("삭제 버튼 클릭");
+            var notice_no = /*[[${notice.get('NOTICE_NO')}]]*/;
+            if (!confirm("해당 공지사항을 삭제하시겠습니까?")) {
+                return false;
+            }
+            $.ajax({
+                type: "post",
+                url: "/notice/delete",
+                data: "noticeNo=" + notice_no,
+                success: function () {
+                    location.replace("/notice/list/" + /*[[${notice.get('STUDY_NO')}]]*/);
+                }
+            });
+        });
+    });
+
+    <!--스터디 상태 변경 함수-->
+    function updateState(studyNo,studyState){
+        let form = document.createElement('form');
+
+        document.characterSet="utf-8";
+
+        let obj;
+        obj = document.createElement('input');
+        obj.setAttribute('type', 'hidden');
+        obj.setAttribute('name', 'studyNo');
+        obj.setAttribute('value', studyNo);
+
+        let obj2;
+        obj2 = document.createElement('input');
+        obj2.setAttribute('type', 'hidden');
+        obj2.setAttribute('name', 'studyState');
+        obj2.setAttribute('value', studyState);
+
+        form.appendChild(obj);
+        form.appendChild(obj2);
+        form.setAttribute('method', 'post');
+        form.setAttribute('action', '/updateState');
+        document.body.appendChild(form);
+        form.submit();
+    }
+
+    // 스터디 삭제
+    function deleteStudy() {
+
+        let studyState = /*[[${allStudyInfo.studyDTO.studyStateDTO.studyState}]]*/;
+        console.log(studyState);
+
+        if (studyState !== "종료") {
+            alert("스터디 삭제는 스터디 상태가 '종료'인 상태에서 가능합니다.");
+            return;
+        }
+        if (confirm("이 스터디를 정말 삭제하시겠습니까?")) {
+            $("#deleteStudyForm").submit();
+        }
+    }
+</script>
+</body>
+</html>
