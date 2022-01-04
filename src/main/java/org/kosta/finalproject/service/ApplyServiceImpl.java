@@ -32,7 +32,6 @@ public class ApplyServiceImpl implements ApplyService {
     @Override
     public void applyAccept(Map<String, Object> param) {
         applyMapper.applyAccept(Integer.parseInt((String)param.get("apply_no")));
-        System.out.println("completed");
         applyMapper.insertStudyMember((String)param.get("email"), (String)param.get("study_no"));
     }
 

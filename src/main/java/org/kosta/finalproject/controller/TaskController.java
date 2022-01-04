@@ -62,12 +62,12 @@ public class TaskController {
         emailAndStudyNo.put("email", member.getEmail());
         emailAndStudyNo.put("studyNo", studyNo);
         List<Map<String, Object>> studyNameList = studyMemberService.getStudyNameList(emailAndStudyNo);
-        // log.info("studyNameList: {}", studyNameList);
+        // log.debug("studyNameList: {}", studyNameList);
         model.addAttribute("studyNameList", studyNameList);
 
         // 해당 스터디에대한 전체 정보 가져오기
         StudyMemberDTO allStudyInfo = studyMemberService.getAllStudyInfo(studyNo);
-        // log.info("allStudyInfo: {}", allStudyInfo);
+        // log.debug("allStudyInfo: {}", allStudyInfo);
         model.addAttribute("allStudyInfo", allStudyInfo);
 
         return "lms/task/register";
@@ -78,23 +78,23 @@ public class TaskController {
     @PostMapping("/register/{studyNo}")
     public String registerNotice(@PathVariable int studyNo, @LoginUser SessionMember member, @ModelAttribute TaskFormDTO taskFormDTO, RedirectAttributes redirectAttributes) throws IOException {
 
-        // log.info("taskFormDTO: {}", taskFormDTO);
+        // log.debug("taskFormDTO: {}", taskFormDTO);
         // 파일에 저장
         // MultipartFile attachFile = form.getAttachFile();
         // UploadFile attachFile = fileStore.storeFile(attachFile);
 
-        // log.info("attach:{}", taskFormDTO.getAttachFiles());
+        // log.debug("attach:{}", taskFormDTO.getAttachFiles());
         List<UploadFile> attachFiles = fileStoreService.storeFiles(taskFormDTO.getAttachFiles());
-        // log.info("taskController, registerTask, attachFiles: {}", attachFiles);
+        // log.debug("taskController, registerTask, attachFiles: {}", attachFiles);
         // List<MultipartFile> imageFiles = form.getImageFiles();
         // List<UploadFile> storeImageFiles = fileStore.storeFiles(form.getImageFiles());
         List<UploadFile> storeImageFiles = fileStoreService.storeFiles(taskFormDTO.getImageFiles());
-        // log.info("taskController, registerTask, storeImageFiles: {}", storeImageFiles);
+        // log.debug("taskController, registerTask, storeImageFiles: {}", storeImageFiles);
 
         //데이터베이스에 저장
         int taskNo = taskService.registerTask(studyNo, member.getEmail(), taskFormDTO, attachFiles, storeImageFiles);
         // noticeNo = noticeService.registerNotice(studyNo, member.getEmail(), noticeFormDTO, attachFiles, storeImageFiles);
-        // log.info("taskNo: {}", taskNo);
+        // log.debug("taskNo: {}", taskNo);
 
         redirectAttributes.addAttribute("taskNo", taskNo);
         redirectAttributes.addAttribute("studyNo", studyNo);
@@ -107,7 +107,7 @@ public class TaskController {
 
         //paging 구현
         int totalCount = pagingService.getTotalCountOfTaskList(studyNo);
-        log.info("totalCount: {}", totalCount);
+        log.debug("totalCount: {}", totalCount);
 
         LMSPagingBean lmsPagingBean = null;
 
@@ -115,7 +115,7 @@ public class TaskController {
             lmsPagingBean = new LMSPagingBean(totalCount);
         } else {
             lmsPagingBean = new LMSPagingBean(totalCount, Integer.valueOf((String) pageNo));
-            log.info("Integer.valueOf((String)pageNo): {}", Integer.valueOf((String) pageNo));
+            log.debug("Integer.valueOf((String)pageNo): {}", Integer.valueOf((String) pageNo));
         }
 
         model.addAttribute("lmsPagingBean", lmsPagingBean);
@@ -128,12 +128,12 @@ public class TaskController {
         emailAndStudyNo.put("email", member.getEmail());
         emailAndStudyNo.put("studyNo", studyNo);
         List<Map<String, Object>> studyNameList = studyMemberService.getStudyNameList(emailAndStudyNo);
-        // log.info("studyNameList: {}", studyNameList);
+        // log.debug("studyNameList: {}", studyNameList);
         model.addAttribute("studyNameList", studyNameList);
 
         // 해당 스터디에대한 전체 정보 가져오기
         StudyMemberDTO allStudyInfo = studyMemberService.getAllStudyInfo(studyNo);
-        // log.info("allStudyInfo: {}", allStudyInfo);
+        // log.debug("allStudyInfo: {}", allStudyInfo);
         model.addAttribute("allStudyInfo", allStudyInfo);
 
         return "lms/task/list";
@@ -172,7 +172,7 @@ public class TaskController {
         // 과제 제출 댓글 리스트 가져오기
         List<HashMap<String, String>> submitCommentList = submitCommentService.getAllSubmitComment(studyNo, taskNo);
         model.addAttribute("submitCommentList", submitCommentList);
-        // log.info("submitCommentList: {}", submitCommentList);
+        // log.debug("submitCommentList: {}", submitCommentList);
         model.addAttribute("studyNo", studyNo);
 
         // 스터디 리더만 수정 / 삭제 버튼이 활성화 되도록 역활을 가져옴
@@ -192,18 +192,18 @@ public class TaskController {
     public String updateTaskForm(@RequestParam int taskNo, @PathVariable int studyNo,
                                  @LoginUser SessionMember member, Model model) {
         model.addAttribute("taskInfo", taskService.getTaskDetailByTaskNo(taskNo));
-        log.info("taskInfo: {}", taskService.getTaskDetailByTaskNo(taskNo));
+        log.debug("taskInfo: {}", taskService.getTaskDetailByTaskNo(taskNo));
         // 내가 속한 스터디 이름 리스트 가져오기
         Map<String, Object> emailAndStudyNo = new HashMap<String, Object>();
         emailAndStudyNo.put("email", member.getEmail());
         emailAndStudyNo.put("studyNo", studyNo);
         List<Map<String, Object>> studyNameList = studyMemberService.getStudyNameList(emailAndStudyNo);
-        log.info("studyNameList: {}", studyNameList);
+        log.debug("studyNameList: {}", studyNameList);
         model.addAttribute("studyNameList", studyNameList);
 
         // 해당 스터디에대한 전체 정보 가져오기
         StudyMemberDTO allStudyInfo = studyMemberService.getAllStudyInfo(studyNo);
-        log.info("allStudyInfo: {}", allStudyInfo);
+        log.debug("allStudyInfo: {}", allStudyInfo);
         model.addAttribute("allStudyInfo", allStudyInfo);
 
         return "lms/task/update";
@@ -218,11 +218,11 @@ public class TaskController {
                          Model model, @LoginUser SessionMember member, @RequestParam int taskNo,
                          RedirectAttributes redirectAttributes) throws IOException {
         // 1. Content와 Title 정보를 업데이트
-        log.info("content, title uploading");
+        log.debug("content, title uploading");
         taskService.updateTaskByTaskNo(taskFormDTO.getTaskTitle(),
                 taskFormDTO.getTaskContent(),
                 taskNo);
-        log.info("delete original images, files");
+        log.debug("delete original images, files");
         // 2. 기존의 이미지와 파일들을 삭제
         taskService.deleteTaskFileByTaskNo(taskNo);
 
@@ -270,8 +270,8 @@ public class TaskController {
 
         UrlResource resource = new UrlResource("file:" + fileStoreService.getFullPath(storeFileName));
 
-        // log.info("uploadFileName={}", uploadFileName);
-        // log.info("storeFileName={}", storeFileName);
+        // log.debug("uploadFileName={}", uploadFileName);
+        // log.debug("storeFileName={}", storeFileName);
 
         // 한글 깨짐 방지를 위한 인코딩
         String encodedUploadFileName = UriUtils.encode(uploadFileName, StandardCharsets.UTF_8);
@@ -295,8 +295,8 @@ public class TaskController {
 
         UrlResource resource = new UrlResource("file:" + fileStoreService.getFullPath(storeFileName));
 
-        // log.info("uploadFileName={}", uploadFileName);
-        // log.info("storeFileName={}", storeFileName);
+        // log.debug("uploadFileName={}", uploadFileName);
+        // log.debug("storeFileName={}", storeFileName);
 
         // 한글 깨짐 방지를 위한 인코딩
         String encodedUploadFileName = UriUtils.encode(uploadFileName, StandardCharsets.UTF_8);

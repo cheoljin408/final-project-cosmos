@@ -30,7 +30,6 @@ public class StudyCommentController {
         }
 
         List<StudyCommentDTO> allStudyCommentList = studyCommentService.getAllStudyCommentList(studyNo);
-        System.out.println("allStudyCommentList = " + allStudyCommentList);
         model.addAttribute("studyCommentList", allStudyCommentList);
 
         return "comment";

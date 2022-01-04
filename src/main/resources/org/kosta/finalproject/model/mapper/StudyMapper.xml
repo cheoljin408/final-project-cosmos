@@ -364,12 +364,12 @@
     <!-- 나의 스터디에 해당하는 내가 제출한 과제의 수 반환하기 -->
     <select id="getStudyMyTaskCount" resultType="int">
         select count(*)
-        from task_submit
+        from submit_comment
         where study_no = #{studyNo} and email = #{email}
     </select>
 
     <!-- 내 스터디에 올라온 과제의 수 -->
-    <select id="getAllStudyTaskCount" resultType="int">
+    <select id="getStudyAllTaskCount" resultType="int">
         select count(*)
         from task
         where study_no = #{studyNo}

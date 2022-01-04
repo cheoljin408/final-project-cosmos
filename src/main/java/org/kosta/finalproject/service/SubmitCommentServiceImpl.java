@@ -27,7 +27,7 @@ public class SubmitCommentServiceImpl implements SubmitCommentService {
 
     @Override
     public void deleteTaskComment(int submitNo) {
-        log.info("submitNo = {}", submitNo);
+        log.debug("submitNo = {}", submitNo);
         submitCommentMapper.deleteTaskComment(submitNo);
     }
 

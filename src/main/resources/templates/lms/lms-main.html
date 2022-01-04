@@ -33,7 +33,7 @@
                                 <div class="card-body">
                                     <h5 style="font-weight: 600;">나의 과제 현황</h5>
                                     <div class="text-center" style="color: #0056b3; font-size: 5rem; font-weight: 650; margin-top: 15px;">
-                                        <span>90</span>
+                                        <span id="percent">90</span>
                                         <span>%</span>
                                     </div>
                                 </div>
@@ -185,6 +185,15 @@
         if (confirm("이 스터디를 정말 삭제하시겠습니까?")) {
             $("#deleteStudyForm").submit();
         }
+    }
+
+    let total = /*[[${taskSubmitPercent.total}]]*/;
+    let num = /*[[${taskSubmitPercent.num}]]*/;
+
+    if(total === 0) {
+        $('#percent').text(0);
+    } else {
+        $('#percent').text((num/total)*100);
     }
 </script>
 </body>

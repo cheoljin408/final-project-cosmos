@@ -52,7 +52,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public void updateTaskByTaskNo(String taskTitle, String taskContent, int taskNo){
-        //log.info("title, content, noticeno = {}, {}, {}", taskTitle, taskContent, taskNo);
+        //log.debug("title, content, noticeno = {}, {}, {}", taskTitle, taskContent, taskNo);
         taskMapper.updateTaskByTaskNo(taskTitle, taskContent, taskNo);
     }
 
@@ -74,14 +74,12 @@ public class TaskServiceImpl implements TaskService {
         taskMapper.registerTask(studyNo, email, taskFormDTO.getTaskTitle(), taskFormDTO.getTaskContent());
         // 게시물 번호 조회
         int taskNo = taskMapper.getTaskNoWhenRegister();
-        System.out.println("taskNo: " + taskNo);
 
         // 2. 파일 저장
         if (attachFiles.size() != 0) {
             for (UploadFile attachFile : attachFiles) {
                 taskMapper.registerAttachFile(attachFile, "FILE", taskNo);
             }
-            System.out.println("파일 저장 완료");
         }
 
         // 3. 이미지 저장
@@ -89,7 +87,6 @@ public class TaskServiceImpl implements TaskService {
             for (UploadFile storeImage : storeImageFiles) {
                 taskMapper.registerStoreImage(storeImage, "IMG", taskNo);
             }
-            System.out.println("이미지 저장 완료");
         }
 
         return taskNo;
@@ -102,7 +99,6 @@ public class TaskServiceImpl implements TaskService {
             for (UploadFile attachFile : attachFiles) {
                 taskMapper.registerAttachFile(attachFile, "FILE", taskNo);
             }
-            System.out.println("파일 저장 완료");
         }
 
         // 3. 이미지 저장
@@ -110,7 +106,6 @@ public class TaskServiceImpl implements TaskService {
             for (UploadFile storeImage : storeImageFiles) {
                 taskMapper.registerStoreImage(storeImage, "IMG", taskNo);
             }
-            System.out.println("이미지 저장 완료");
         }
     }
 
