@@ -27,7 +27,6 @@ public class StudyCommentApiController {
         studyCommentService.registerStudyComment(jsonData);
 
         List<StudyCommentDTO> allStudyCommentList = studyCommentService.getAllStudyCommentList(studyNo);
-        System.out.println("allStudyCommentList = " + allStudyCommentList);
         model.addAttribute("studyCommentList", allStudyCommentList);
 
         return "fragments/study-comment :: fragment-study-comment";
@@ -38,7 +37,6 @@ public class StudyCommentApiController {
         studyCommentService.updateStudyComment(jsonData);
 
         List<StudyCommentDTO> allStudyCommentList = studyCommentService.getAllStudyCommentList(studyNo);
-        System.out.println("allStudyCommentList = " + allStudyCommentList);
         model.addAttribute("studyCommentList", allStudyCommentList);
 
         return "fragments/study-comment :: fragment-study-comment";
@@ -46,11 +44,9 @@ public class StudyCommentApiController {
 
     @DeleteMapping("/api/deleteStudyComment/{studyNo}")
     public String deleteStudyComment(@RequestBody Map<String, Object> jsonData, @PathVariable int studyNo, Model model) {
-        System.out.println("jsonData = " + jsonData);
         studyCommentService.deleteStudyComment(jsonData);
 
         List<StudyCommentDTO> allStudyCommentList = studyCommentService.getAllStudyCommentList(studyNo);
-        System.out.println("allStudyCommentList = " + allStudyCommentList);
         model.addAttribute("studyCommentList", allStudyCommentList);
 
         return "fragments/study-comment :: fragment-study-comment";

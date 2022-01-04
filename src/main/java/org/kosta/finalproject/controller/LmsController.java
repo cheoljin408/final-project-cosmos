@@ -46,23 +46,28 @@ public class LmsController {
         emailAndStudyNo.put("email", member.getEmail());
         emailAndStudyNo.put("studyNo", studyNo);
         List<Map<String, Object>> studyNameList = studyMemberService.getStudyNameList(emailAndStudyNo);
-        log.info("studyNameList: {}", studyNameList);
+        log.debug("studyNameList: {}", studyNameList);
         model.addAttribute("studyNameList", studyNameList);
 
         // 해당 스터디에대한 전체 정보 가져오기
         StudyMemberDTO allStudyInfo = studyMemberService.getAllStudyInfo(studyNo);
-        log.info("allStudyInfo: {}", allStudyInfo);
+        log.debug("allStudyInfo: {}", allStudyInfo);
         model.addAttribute("allStudyInfo", allStudyInfo);
 
         // 해당 스터디의 최근 공지사항 리스트 가져오기
         List<NoticeDTO> recentNoticeList = noticeService.getRecentNoticeList(studyNo);
-        log.info("recentNoticeList: {}", recentNoticeList);
+        log.debug("recentNoticeList: {}", recentNoticeList);
         model.addAttribute("recentNoticeList", recentNoticeList);
 
         // 해당 스터디의 최근 과제 게시판 리스트 가져오기
         List<TaskDTO> recentTaskList = taskService.getRecentTaskList(studyNo);
-        log.info("recentTaskList: {}", recentTaskList);
+        log.debug("recentTaskList: {}", recentTaskList);
         model.addAttribute("recentTaskList", recentTaskList);
+
+        // 과제 제출 관련 데이터
+        Map<String, Integer> studyCurrentSituation = studyService.getStudyCurrentSituation(member.getEmail(), studyNo);
+        log.debug("taskSubmitPercent: {}", studyCurrentSituation);
+        model.addAttribute("taskSubmitPercent", studyCurrentSituation);
 
         return "lms/lms-main";
     }
@@ -86,17 +91,17 @@ public class LmsController {
         emailAndStudyNo.put("email", member.getEmail());
         emailAndStudyNo.put("studyNo", studyNo);
         List<Map<String, Object>> studyNameList = studyMemberService.getStudyNameList(emailAndStudyNo);
-        log.info("studyNameList: {}", studyNameList);
+        log.debug("studyNameList: {}", studyNameList);
         model.addAttribute("studyNameList", studyNameList);
 
         // 해당 스터디에대한 전체 정보 가져오기
         StudyMemberDTO allStudyInfo = studyMemberService.getAllStudyInfo(studyNo);
-        log.info("allStudyInfo: {}", allStudyInfo);
+        log.debug("allStudyInfo: {}", allStudyInfo);
         model.addAttribute("allStudyInfo", allStudyInfo);
 
         // get studyDetail
         model.addAttribute("study", studyService.getStudyDetailByStudyNo(studyNo));
-        log.info("modify study name: {}", studyService.getStudyDetailByStudyNo(studyNo).get("STUDY_NAME"));
+        log.debug("modify study name: {}", studyService.getStudyDetailByStudyNo(studyNo).get("STUDY_NAME"));
         model.addAttribute(studyNo);
         return "lms/lms-update-study";
     }
@@ -106,7 +111,7 @@ public class LmsController {
     public int updateStudy(@PathVariable int studyNo, Model model, @RequestBody Map<String, String> jsonData) {
 
         jsonData.put("studyNo", String.valueOf(studyNo));
-        log.info("jsonData:{}", jsonData);
+        log.debug("jsonData:{}", jsonData);
         studyService.modifyStudy(jsonData);
         model.addAttribute("studyNo", studyNo);
         return 0;
@@ -126,7 +131,7 @@ public class LmsController {
     //스터디 상태 변경
     @PostMapping("/updateState")
     public String updateState(@RequestParam int studyNo, @RequestParam String studyState, @LoginUser SessionMember member){
-        log.info("findStudyMemberRoleByStudyNo : {}",studyService.findStudyMemberRoleByStudyNo(studyNo, member.getEmail()));
+        log.debug("findStudyMemberRoleByStudyNo : {}",studyService.findStudyMemberRoleByStudyNo(studyNo, member.getEmail()));
         if(studyService.findStudyMemberRoleByStudyNo(studyNo, member.getEmail()).equals("스터디리더")){
             studyService.updateState(studyNo,studyState);
         }
