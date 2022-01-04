@@ -51,7 +51,7 @@ public class StudyController {
         if(category == null && search == null) {
             // paging을 위한 스터디 리스트의 전체 수 조회
             int totalCount = pagingService.getTotalCountOfStudyList();
-            log.info("totalCount: {}", totalCount);
+            log.debug("totalCount: {}", totalCount);
 
             PagingBean pagingBean = null;
 
@@ -60,8 +60,8 @@ public class StudyController {
                 pagingBean = new PagingBean(totalCount);
             } else {
                 pagingBean = new PagingBean(totalCount,  Integer.valueOf((String)pageNo));
-                log.info("totalCount: {}", totalCount);
-                log.info("Integer.valueOf((String)pageNo): {}", Integer.valueOf((String)pageNo));
+                log.debug("totalCount: {}", totalCount);
+                log.debug("Integer.valueOf((String)pageNo): {}", Integer.valueOf((String)pageNo));
             }
 
             // pagingBean을 model에 할당
@@ -79,7 +79,7 @@ public class StudyController {
 
             // paging을 위한 스터디 리스트의 전체 수 조회
             int totalCount = pagingService.getTotalCountOfStudyListByCategory(category);
-            log.info("categoryTotalCount: {}", totalCount);
+            log.debug("categoryTotalCount: {}", totalCount);
 
             PagingBean pagingBean = null;
 
@@ -88,8 +88,8 @@ public class StudyController {
                 pagingBean = new PagingBean(totalCount);
             } else {
                 pagingBean = new PagingBean(totalCount,  Integer.valueOf((String)pageNo));
-                log.info("categoryTotalCount: {}", totalCount);
-                log.info("Integer.valueOf((String)pageNo): {}", Integer.valueOf((String)pageNo));
+                log.debug("categoryTotalCount: {}", totalCount);
+                log.debug("Integer.valueOf((String)pageNo): {}", Integer.valueOf((String)pageNo));
             }
 
             // pagingBean을 model에 할당
@@ -110,7 +110,7 @@ public class StudyController {
 
             // paging을 위한 스터디 리스트의 전체 수 조회
             int totalCount = pagingService.getTotalCountOfStudyListBySearch(search);
-            log.info("searchTotalCount: {}", totalCount);
+            log.debug("searchTotalCount: {}", totalCount);
 
             PagingBean pagingBean = null;
 
@@ -119,8 +119,8 @@ public class StudyController {
                 pagingBean = new PagingBean(totalCount);
             } else {
                 pagingBean = new PagingBean(totalCount,  Integer.valueOf((String)pageNo));
-                log.info("searchTotalCount: {}", totalCount);
-                log.info("Integer.valueOf((String)pageNo): {}", Integer.valueOf((String)pageNo));
+                log.debug("searchTotalCount: {}", totalCount);
+                log.debug("Integer.valueOf((String)pageNo): {}", Integer.valueOf((String)pageNo));
             }
 
             // pagingBean을 model에 할당
@@ -157,7 +157,7 @@ public class StudyController {
     @ResponseBody
     @PostMapping("/registerStudy")
     public int registerStudy(@LoginUser SessionMember member, @RequestBody HashMap<String, String> jsonData) {
-        // log.info("jsonData = {}", jsonData);
+        // log.debug("jsonData = {}", jsonData);
         studyService.registerStudy(jsonData);
         studyService.registerStudyMemberRole(member.getEmail());
         return 0;
@@ -177,7 +177,7 @@ public class StudyController {
             model.addAttribute("member", member);
         }
         model.addAttribute("study", studyService.getStudyDetailByStudyNo(studyNo));
-        // log.info("studyInfo:{}", studyService.getStudyDetailByStudyNo(studyNo));
+        // log.debug("studyInfo:{}", studyService.getStudyDetailByStudyNo(studyNo));
         // 스터디원 or 스터디리더 or 둘 다 아닌지 판단
         String role = studyService.findStudyMemberRoleByStudyNo(studyNo, member.getEmail());
         if (role == null) {
@@ -187,7 +187,6 @@ public class StudyController {
 
         // 댓글 데이터 불러오기
         List<StudyCommentDTO> allStudyCommentList = studyCommentService.getAllStudyCommentList(studyNo);
-        System.out.println("allStudyCommentList = " + allStudyCommentList);
         model.addAttribute("studyCommentList", allStudyCommentList);
 
         return "study/detail";
@@ -198,7 +197,6 @@ public class StudyController {
      */
     @GetMapping("/mystudy")
     public String mystudy(@LoginUser SessionMember member,Model model){
-        System.out.println("member.getEmail() = " + member.getEmail());
 
         model.addAttribute("studyList",studyService.getMystudyListByEmail(member.getEmail()));
 

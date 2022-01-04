@@ -36,8 +36,6 @@ public class NoticeServiceImpl implements NoticeService{
     @Override
     public void updateHits(int studyNo, int noticeNo) {
         noticeMapper.updateHits(studyNo, noticeNo);
-        System.out.println("studyNo = " + studyNo + ", noticeNo = " + noticeNo);
-        System.out.println("NoticeServiceImpl.updateHits");
     }
 
     @Override
@@ -58,14 +56,12 @@ public class NoticeServiceImpl implements NoticeService{
         noticeMapper.registerNotice(studyNo, email, noticeFormDTO.getNoticeTitle(), noticeFormDTO.getNoticeContent());
         // 게시물 번호 조회
         int noticeNo = noticeMapper.getNoticeNoWhenRegister();
-        System.out.println("noticeNo: " + noticeNo);
 
         // 2. 파일 저장
         if(attachFiles.size() != 0) {
             for (UploadFile attachFile : attachFiles) {
                 noticeMapper.registerAttachFile(attachFile, "FILE", noticeNo);
             }
-            System.out.println("파일 저장 완료");
         }
 
         // 3. 이미지 저장
@@ -73,7 +69,6 @@ public class NoticeServiceImpl implements NoticeService{
             for (UploadFile storeImage : storeImageFiles) {
                 noticeMapper.registerStoreImage(storeImage, "IMG", noticeNo);
             }
-            System.out.println("이미지 저장 완료");
         }
 
         return noticeNo;
@@ -94,7 +89,7 @@ public class NoticeServiceImpl implements NoticeService{
 
     @Override
     public void updateNoticeByNoticeNo(String noticeTitle, String noticeContent, int noticeNo){
-        log.info("title, content, noticeno = {}, {}, {}", noticeTitle, noticeContent, noticeNo);
+        log.debug("title, content, noticeno = {}, {}, {}", noticeTitle, noticeContent, noticeNo);
         noticeMapper.updateNoticeByNoticeNo(noticeTitle, noticeContent, noticeNo);
     }
 
@@ -110,7 +105,6 @@ public class NoticeServiceImpl implements NoticeService{
             for (UploadFile attachFile : attachFiles) {
                 noticeMapper.registerAttachFile(attachFile, "FILE", noticeNo);
             }
-            System.out.println("파일 저장 완료");
         }
 
         // 3. 이미지 저장
@@ -118,7 +112,6 @@ public class NoticeServiceImpl implements NoticeService{
             for (UploadFile storeImage : storeImageFiles) {
                 noticeMapper.registerStoreImage(storeImage, "IMG", noticeNo);
             }
-            System.out.println("이미지 저장 완료");
         }
     }
 }

@@ -35,7 +35,7 @@ public class SubmitCommentApiController {
     // 과제 제출 등록
     @PostMapping("/api/registerTaskComment/{studyNo}/{taskNo}")
     public String registerTaskComment(@LoginUser SessionMember member, @PathVariable int studyNo, @PathVariable int taskNo, @ModelAttribute SubmitCommentFormDTO submitCommentFormDTO, RedirectAttributes redirectAttributes) {
-        log.info("submitCommentFormDTO: {}", submitCommentFormDTO);
+        log.debug("submitCommentFormDTO: {}", submitCommentFormDTO);
         try {
             // 파일 저장 및 DB insert 세팅
             UploadFile attachFile = fileStoreService.storeFile(submitCommentFormDTO.getAttachFile());
@@ -64,7 +64,7 @@ public class SubmitCommentApiController {
     // 과제 제출 수정
     @PostMapping("/api/updateTaskComment/{studyNo}/{taskNo}/{submitNo}")
     public String updateTaskComment(@PathVariable int studyNo, @PathVariable int taskNo, @PathVariable int submitNo, @ModelAttribute SubmitCommentFormDTO submitCommentFormDTO, RedirectAttributes redirectAttributes) {
-        log.info("form: {}", submitCommentFormDTO);
+        log.debug("form: {}", submitCommentFormDTO);
         try {
             UploadFile attachFile = fileStoreService.storeFile(submitCommentFormDTO.getAttachFile());
 
@@ -74,7 +74,7 @@ public class SubmitCommentApiController {
             submitCommentDTO.setSubmitUploadFileName(attachFile.getUploadFileName());
             submitCommentDTO.setSubmitStoreFileName(attachFile.getStoreFileName());
 
-            log.info("DTO: {}", submitCommentDTO);
+            log.debug("DTO: {}", submitCommentDTO);
 
             submitCommentService.updateSubmitComment(submitCommentDTO);
 
@@ -95,11 +95,9 @@ public class SubmitCommentApiController {
                                     RedirectAttributes redirectAttributes) {
         int submitNo = Integer.valueOf(jsonData.get("submitNo").toString());
         int taskNo = Integer.valueOf(jsonData.get("taskNo").toString());
-        log.info("submitNo = {}", submitNo);
-        System.out.println("삭제전");
+        log.debug("submitNo = {}", submitNo);
         // (submitNo) 해당 댓글을 삭제
         submitCommentService.deleteTaskComment(submitNo);
-        System.out.println("삭제후");
         // 2. 댓글리스트를 가져옴 -> redirect: 후에 가져오는게 더 적절함
 //        List<SubmitCommentDTO> allTaskCommentList = submitCommentService.getAllTaskCommentList(taskNo);
 //        model.addAttribute("taskCommentList", allTaskCommentList);

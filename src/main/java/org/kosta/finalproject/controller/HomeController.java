@@ -36,7 +36,7 @@ public class HomeController {
         }
 
         List<StudyMemberDTO> studyList = studyService.getStudyList3();
-        log.info("studyList: {}", studyList);
+        log.debug("studyList: {}", studyList);
         model.addAttribute("studyList", studyList);
         return "index";
     }

@@ -97,19 +97,19 @@ public class NoticeController {
         model.addAttribute("files", files);
         model.addAttribute("notice", result);
 
-        // log.info("notice_content = {}", result.get("NOTICE_CONTENT").toString());
+        // log.debug("notice_content = {}", result.get("NOTICE_CONTENT").toString());
 
         // 내가 속한 스터디 이름 리스트 가져오기
         Map<String, Object> emailAndStudyNo = new HashMap<String, Object>();
         emailAndStudyNo.put("email", member.getEmail());
         emailAndStudyNo.put("studyNo", studyNo);
         List<Map<String, Object>> studyNameList = studyMemberService.getStudyNameList(emailAndStudyNo);
-        log.info("studyNameList: {}", studyNameList);
+        log.debug("studyNameList: {}", studyNameList);
         model.addAttribute("studyNameList", studyNameList);
 
         // 해당 스터디에대한 전체 정보 가져오기
         StudyMemberDTO allStudyInfo = studyMemberService.getAllStudyInfo(studyNo);
-        log.info("allStudyInfo: {}", allStudyInfo);
+        log.debug("allStudyInfo: {}", allStudyInfo);
         model.addAttribute("allStudyInfo", allStudyInfo);
 
         String role = studyService.findStudyMemberRoleByStudyNo(studyNo, member.getEmail());
@@ -126,7 +126,7 @@ public class NoticeController {
 
         //paging 구현
         int totalCount = pagingService.getTotalCountOfNoticeList(studyNo);
-        log.info("totalCount: {}", totalCount);
+        log.debug("totalCount: {}", totalCount);
 
         LMSPagingBean lmsPagingBean = null;
 
@@ -134,7 +134,7 @@ public class NoticeController {
             lmsPagingBean = new LMSPagingBean(totalCount);
         } else {
             lmsPagingBean = new LMSPagingBean(totalCount,  Integer.valueOf((String)pageNo));
-            log.info("Integer.valueOf((String)pageNo): {}", Integer.valueOf((String)pageNo));
+            log.debug("Integer.valueOf((String)pageNo): {}", Integer.valueOf((String)pageNo));
         }
 
         model.addAttribute("lmsPagingBean", lmsPagingBean);
@@ -147,12 +147,12 @@ public class NoticeController {
         emailAndStudyNo.put("email", member.getEmail());
         emailAndStudyNo.put("studyNo", studyNo);
         List<Map<String, Object>> studyNameList = studyMemberService.getStudyNameList(emailAndStudyNo);
-        log.info("studyNameList: {}", studyNameList);
+        log.debug("studyNameList: {}", studyNameList);
         model.addAttribute("studyNameList", studyNameList);
 
         // 해당 스터디에대한 전체 정보 가져오기
         StudyMemberDTO allStudyInfo = studyMemberService.getAllStudyInfo(studyNo);
-        log.info("allStudyInfo: {}", allStudyInfo);
+        log.debug("allStudyInfo: {}", allStudyInfo);
         model.addAttribute("allStudyInfo", allStudyInfo);
 
         return "lms/notice/list";
@@ -164,7 +164,7 @@ public class NoticeController {
     @PostMapping("/delete")
     @ResponseBody
     public String deleteNotice(@RequestParam int noticeNo) {
-        log.info("deleteNotice() starrr..");
+        log.debug("deleteNotice() starrr..");
         noticeService.deleteNotice(noticeNo);
         return null;
     }
@@ -182,12 +182,12 @@ public class NoticeController {
         emailAndStudyNo.put("email", member.getEmail());
         emailAndStudyNo.put("studyNo", studyNo);
         List<Map<String, Object>> studyNameList = studyMemberService.getStudyNameList(emailAndStudyNo);
-        log.info("studyNameList: {}", studyNameList);
+        log.debug("studyNameList: {}", studyNameList);
         model.addAttribute("studyNameList", studyNameList);
 
         // 해당 스터디에대한 전체 정보 가져오기
         StudyMemberDTO allStudyInfo = studyMemberService.getAllStudyInfo(studyNo);
-        log.info("allStudyInfo: {}", allStudyInfo);
+        log.debug("allStudyInfo: {}", allStudyInfo);
         model.addAttribute("allStudyInfo", allStudyInfo);
 
         return "lms/notice/update";
@@ -202,11 +202,11 @@ public class NoticeController {
                          Model model, @LoginUser SessionMember member, @RequestParam int noticeNo,
                          RedirectAttributes redirectAttributes) throws IOException {
         // 1. Content와 Title 정보를 업데이트
-        log.info("content, title uploading");
+        log.debug("content, title uploading");
         noticeService.updateNoticeByNoticeNo(noticeFormDTO.getNoticeTitle(),
                                              noticeFormDTO.getNoticeContent(),
                                              noticeNo);
-        log.info("delete original images, files");
+        log.debug("delete original images, files");
         // 2. 기존의 이미지와 파일들을 삭제
         noticeService.deleteNoticeFileByNoticeNo(noticeNo);
 
@@ -239,12 +239,12 @@ public class NoticeController {
         emailAndStudyNo.put("email", member.getEmail());
         emailAndStudyNo.put("studyNo", studyNo);
         List<Map<String, Object>> studyNameList = studyMemberService.getStudyNameList(emailAndStudyNo);
-        log.info("studyNameList: {}", studyNameList);
+        log.debug("studyNameList: {}", studyNameList);
         model.addAttribute("studyNameList", studyNameList);
 
         // 해당 스터디에대한 전체 정보 가져오기
         StudyMemberDTO allStudyInfo = studyMemberService.getAllStudyInfo(studyNo);
-        log.info("allStudyInfo: {}", allStudyInfo);
+        log.debug("allStudyInfo: {}", allStudyInfo);
         model.addAttribute("allStudyInfo", allStudyInfo);
 
         return "lms/notice/register";
@@ -254,23 +254,23 @@ public class NoticeController {
     @PostMapping("/register/{studyNo}")
     public String registerNotice(@PathVariable int studyNo, @LoginUser SessionMember member, @ModelAttribute NoticeFormDTO noticeFormDTO, RedirectAttributes redirectAttributes, Model model)  throws IOException {
 
-        log.info("noticeFormDTO: {}", noticeFormDTO);
+        log.debug("noticeFormDTO: {}", noticeFormDTO);
         // 파일에 저장
         // MultipartFile attachFile = form.getAttachFile();
         // UploadFile attachFile = fileStore.storeFile(attachFile);
 
-        log.info("attach:{}", noticeFormDTO.getAttachFiles());
+        log.debug("attach:{}", noticeFormDTO.getAttachFiles());
         List<UploadFile> attachFiles = fileStoreService.storeFiles(noticeFormDTO.getAttachFiles());
-        log.info("NoticeController, registerNotice, attachFiles: {}", attachFiles);
+        log.debug("NoticeController, registerNotice, attachFiles: {}", attachFiles);
         // List<MultipartFile> imageFiles = form.getImageFiles();
         // List<UploadFile> storeImageFiles = fileStore.storeFiles(form.getImageFiles());
         List<UploadFile> storeImageFiles = fileStoreService.storeFiles(noticeFormDTO.getImageFiles());
-        log.info("NoticeController, registerNotice, storeImageFiles: {}", storeImageFiles);
+        log.debug("NoticeController, registerNotice, storeImageFiles: {}", storeImageFiles);
 
         //데이터베이스에 저장
         int noticeNo = noticeService.registerNotice(studyNo, member.getEmail(), noticeFormDTO, attachFiles, storeImageFiles);
         // noticeNo = noticeService.registerNotice(studyNo, member.getEmail(), noticeFormDTO, attachFiles, storeImageFiles);
-        log.info("noticeNo: {}", noticeNo);
+        log.debug("noticeNo: {}", noticeNo);
 
         redirectAttributes.addAttribute("noticeNo", noticeNo);
         redirectAttributes.addAttribute("studyNo", studyNo);
@@ -299,8 +299,8 @@ public class NoticeController {
 
         UrlResource resource = new UrlResource("file:" + fileStoreService.getFullPath(storeFileName));
 
-        log.info("uploadFileName={}", uploadFileName);
-        log.info("storeFileName={}", storeFileName);
+        log.debug("uploadFileName={}", uploadFileName);
+        log.debug("storeFileName={}", storeFileName);
 
         // 한글이 깨질 수 있어서 encoding
         String encodedUploadFileName = UriUtils.encode(uploadFileName, StandardCharsets.UTF_8);
