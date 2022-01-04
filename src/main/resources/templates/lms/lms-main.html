@@ -12,7 +12,7 @@
         }
     </style>
 </head>
-<body style="margin: 0; min-height: 100vh;">
+<body style="margin: 0; min-height: 100vh; background-color: #f7fafc">
 
 <div th:replace="fragments/lms-header.html :: fragment-lms-header"></div>
 
@@ -24,6 +24,26 @@
                 <h4 th:text="${allStudyInfo.studyDTO.studyName}">studyName</h4>
                 <p th:text="${allStudyInfo.studyDTO.studyDesc}" style="margin-top: 20px;">studyDesc</p>
             </div>
+            <div style="margin-bottom: 40px;">
+                <div class="">
+                    <div class="">
+                        <div>
+                            <div class="card shadow-sm"
+                                 style="display: inline-block; width: 300px; height: 220px; margin-right: 20px; border-radius: 10px; border: none;">
+                                <div class="card-body">
+                                    <h5 style="font-weight: 600;">나의 과제 현황</h5>
+                                    <div class="text-center" style="color: #0056b3; font-size: 5rem; font-weight: 650; margin-top: 15px;">
+                                        <span>90</span>
+                                        <span>%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
             <div class="justify-content-between flex-wrap flex-md-nowrap align-items-center pb-4 pb-2 mb-3">
                 <div style="margin-bottom: 20px;">
                     <div style="display: inline-block;">
@@ -34,7 +54,7 @@
                     </div>
                 </div>
                 <div th:if="${#lists.size(recentNoticeList) == 0}">
-                    <div class="card" style=" margin-bottom: 20px;">
+                    <div class="card shadow-sm" style=" margin-bottom: 20px;">
                         <div class="card-body" style="text-align: center">
                             <div style="margin-top: 10px; font-size: 16px; margin-right: 2px;">
                                 <strong>
@@ -48,7 +68,7 @@
                     </div>
                 </div>
                 <div th:each="recentNotice: ${recentNoticeList}">
-                    <div class="card" style="margin-bottom: 20px;">
+                    <div class="card shadow-sm" style="margin-bottom: 20px;">
                         <div class="card-body"
                              th:onclick="|window.location.href='/notice/detail/${allStudyInfo.studyDTO.studyNo}/${recentNotice.noticeNo}'|"
                              style="cursor: pointer;">
@@ -75,7 +95,7 @@
                     </div>
                 </div>
                 <div th:if="${#lists.size(recentTaskList) == 0}">
-                    <div class="card" style=" margin-bottom: 20px;">
+                    <div class="card shadow-sm" style=" margin-bottom: 20px;">
                         <div class="card-body" style="text-align: center">
                             <div style="margin-top: 10px; font-size: 16px; margin-right: 2px;">
                                 <strong>
@@ -89,7 +109,7 @@
                     </div>
                 </div>
                 <div th:each="recentTask: ${recentTaskList}">
-                    <div class="card" style="margin-bottom: 20px;">
+                    <div class="card shadow-sm" style="margin-bottom: 20px;">
                         <div class="card-body"
                              th:onclick="|window.location.href='/task/detail/${allStudyInfo.studyDTO.studyNo}/${recentTask.taskNo}'|"
                              style="cursor: pointer;">
