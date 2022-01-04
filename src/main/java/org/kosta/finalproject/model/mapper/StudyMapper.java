@@ -41,4 +41,8 @@ public interface StudyMapper {
     int getTotalCountOfStudyListBySearch(String search);
 
     List<StudyMemberDTO> getStudyListBySearch(@Param("search") String search, @Param("startRowNumber") int startRowNumber, @Param("endRowNumber") int endRowNumber);
+
+    int getStudyAllTaskCount(@Param("studyNo")int studyNo);
+
+    int getStudyMyTaskCount(@Param("studyNo")int studyNo, @Param("email") String mentee);
 }

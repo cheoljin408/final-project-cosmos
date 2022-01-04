@@ -26,4 +26,6 @@ public interface StudyService {
     List<StudyMemberDTO> getMystudyListByEmail(String email);
 
     void updateState(int studyNo,String studyState);
+
+    Map<String, Integer> getStudyCurrentSituation(String mentee, int studyNo);
 }
