@@ -32,6 +32,7 @@ public class StudyServiceImpl implements StudyService{
     @Override
     public void registerStudy(Map<String, String> studyDTO) {
         studyMapper.registerStudy(studyDTO);
+        System.out.println("studyDTO = " + studyDTO);
     }
 
     @Override

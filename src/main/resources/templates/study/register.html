@@ -23,7 +23,7 @@
         <!-- 카테고리 -->
         <div class="form-group">
             <select class="form-control" name="categoryTypeNo" id="categoryTypeNo" required="required">
-                <option value="" selected disabled hidden>스터디 유형</option>
+                <option value="">스터디 유형</option>
                 <option value="1">언어</option>
                 <option value="2">프로젝트</option>
                 <option value="3">면접</option>
@@ -37,7 +37,7 @@
             </select>
             <br>
             <select class="form-control" name="categoryLangNo" id="categoryLangNo" required="required">
-                <option value="" selected disabled hidden>사용 언어</option>
+                <option value="">사용 언어</option>
                 <option value="1">Java</option>
                 <option value="2">Python</option>
                 <option value="3">C</option>
@@ -79,6 +79,10 @@
         });
         $(document).ready(function () {
             $("#studyRegister").click(function () {
+                if($('#categoryTypeNo').val() === '' || $('#categoryLangNo').val() === '') {
+                    alert('스터디 유형과 사용 언어를 선택해주세요!');
+                    return;
+                }
                 var jsonData = {
                     studyName: $("#studyName").val(),
                     categoryTypeNo: $("#categoryTypeNo").val(),
