@@ -2,6 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <div th:replace="fragments/html-head.html :: fragment-html-head"></div>
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
     <style>
         .st-modify {
             color: gray;
@@ -88,6 +90,13 @@
 
 <script th:inline="javascript">
     $(document).ready(function () {
+        $('#studyInfo').summernote({
+            height: 300,                  // 에디터 높이
+            minHeight: null,              // 최소 높이
+            maxHeight: null,              // 최대 높이
+            focus: true,                  // 에디터 로딩후 포커스를 맞출지 여부
+            lang: "ko-KR",            // 한글 설정
+        });
         $("#study-modify").click(function () {
             if(!confirm("스터디 정보를 수정하시겠습니까?")) {
                 return false;
