@@ -56,7 +56,6 @@ public class ApplyController {
         }
         model.addAttribute("alarmListOkAndNo", alarmListOkAndNo);
         model.addAttribute("alarmListWait", alarmListWait);
-        System.out.println(alarmListWait);
         return "studyapplyalarm/apply-alarm";
 
     }
@@ -69,15 +68,13 @@ public class ApplyController {
     @PostMapping("/apply/refuse")
     @ResponseBody
     public int applyRefuse(@RequestParam String applyNo){
-        System.out.println("applyNo = " + applyNo);
-        System.out.println("ApplyController.applyRefuse");
         applyService.applyRefuse(Integer.parseInt(applyNo));
         return 0;
     }
     @PostMapping("/apply/accept")
     @ResponseBody
     public int applyAccept(@RequestBody Map<String, Object> param){
-        log.info("param[email] = {}, param[study_no] = {}, param[apply_no] = {}", param.get("email"), param.get("study_no"), param.get("apply_no"));
+        log.debug("param[email] = {}, param[study_no] = {}, param[apply_no] = {}", param.get("email"), param.get("study_no"), param.get("apply_no"));
         applyService.applyAccept(param);
         return 1;
     }

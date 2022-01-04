@@ -96,6 +96,7 @@
                    and s.category_lang_no = clt.category_lang_no
                    and s.category_type_no = ctt.category_type_no
                    and sm.STUDY_MEMBER_ROLE = '스터디리더'
+                   and sst.study_state != '종료'
                  order by study_no desc
              ) s
         where <![CDATA[ROWNUM <= 6
@@ -237,6 +238,7 @@
                    and s.category_lang_no = clt.category_lang_no
                    and s.category_type_no = ctt.category_type_no
                    and sm.STUDY_MEMBER_ROLE = '스터디리더'
+                   and sst.study_state != '종료'
                  order by study_no desc
              ) s
         where s.rnum between #{startRowNumber} and #{endRowNumber}
