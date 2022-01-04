@@ -163,7 +163,7 @@
     <update id="modifyStudy" parameterType="HashMap">
         UPDATE STUDY
         SET STUDY_NAME       = #{studyName},
-            STUDY_DESC       = #{studyInfo},
+            STUDY_DESC       = #{studyDesc},
             STUDY_INFO       = #{studyInfo},
             CATEGORY_TYPE_NO = #{categoryTypeNo},
             CATEGORY_LANG_NO = #{categoryLangNo}

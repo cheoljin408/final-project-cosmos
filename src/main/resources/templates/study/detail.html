@@ -2,6 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <div th:replace="fragments/html-head.html :: fragment-html-head"></div>
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
 </head>
 <body style="margin: 0; overflow-x:hidden;">
 <div th:replace="fragments/header.html :: fragment-header"></div>
@@ -34,7 +36,7 @@
                         <!-- 스터디 요약 -->
                         <div class="row">
                             <div class="col mt-3">
-                                <h4 class="mb-2" th:text="${study.get('STUDY_DESC')}">스터디 요약</h4>
+                                <h4 class="mb-2" th:utext="${study.get('STUDY_DESC')}">스터디 요약</h4>
                             </div>
                         </div>
                         <div class="row mt-3 mb-3">
@@ -58,7 +60,7 @@
                         <br>
                         <!-- 스터디 상세 소개 -->
                         <pre>
-                            <div class="card mb-4" style="min-height: 300px; font-size:16px;" th:text="${study.get('STUDY_INFO')}"/>
+                            <div class="card mb-4" style="min-height: 300px; font-size:16px;" th:utext="${study.get('STUDY_INFO')}"/>
                         </pre>
                     </article>
                     <div class="row" style="display: flex; justify-content: center;">
