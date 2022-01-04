@@ -5,6 +5,7 @@ import org.kosta.finalproject.model.mapper.StudyMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -68,4 +69,15 @@ public class StudyServiceImpl implements StudyService{
         studyMapper.updateState(studyNo,studyState);
     }
 
+    @Override
+    public Map<String, Integer> getStudyCurrentSituation(String mentee, int studyNo) {
+        int total = studyMapper.getStudyAllTaskCount(studyNo);
+        int num = studyMapper.getStudyMyTaskCount(studyNo, mentee);
+
+        Map<String, Integer> map = new HashMap<String, Integer>();
+        map.put("total", total);
+        map.put("num", num);
+
+        return map;
+    }
 }
