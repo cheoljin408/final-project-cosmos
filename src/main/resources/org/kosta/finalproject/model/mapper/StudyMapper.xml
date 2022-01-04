@@ -164,7 +164,7 @@
     <update id="modifyStudy" parameterType="HashMap">
         UPDATE STUDY
         SET STUDY_NAME       = #{studyName},
-            STUDY_DESC       = #{studyInfo},
+            STUDY_DESC       = #{studyDesc},
             STUDY_INFO       = #{studyInfo},
             CATEGORY_TYPE_NO = #{categoryTypeNo},
             CATEGORY_LANG_NO = #{categoryLangNo}
@@ -361,6 +361,20 @@
                  order by s.STUDY_NO desc
              ) s
         where s.rnum between #{startRowNumber} and #{endRowNumber}
+    </select>
+
+    <!-- 나의 스터디에 해당하는 내가 제출한 과제의 수 반환하기 -->
+    <select id="getStudyMyTaskCount" resultType="int">
+        select count(*)
+        from submit_comment
+        where study_no = #{studyNo} and email = #{email}
+    </select>
+
+    <!-- 내 스터디에 올라온 과제의 수 -->
+    <select id="getStudyAllTaskCount" resultType="int">
+        select count(*)
+        from task
+        where study_no = #{studyNo}
     </select>
 
 </mapper>

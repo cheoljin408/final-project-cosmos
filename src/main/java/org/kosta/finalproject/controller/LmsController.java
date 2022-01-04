@@ -64,6 +64,11 @@ public class LmsController {
         log.debug("recentTaskList: {}", recentTaskList);
         model.addAttribute("recentTaskList", recentTaskList);
 
+        // 과제 제출 관련 데이터
+        Map<String, Integer> studyCurrentSituation = studyService.getStudyCurrentSituation(member.getEmail(), studyNo);
+        log.debug("taskSubmitPercent: {}", studyCurrentSituation);
+        model.addAttribute("taskSubmitPercent", studyCurrentSituation);
+
         return "lms/lms-main";
     }
 
