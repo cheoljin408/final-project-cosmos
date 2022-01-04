@@ -257,9 +257,14 @@
                                 </g>
                             </svg>
                         </div>
+                        <!-- 스터디 상태 코드 뱃지 컬러 수정 -->
                         <div style="display: inline-block; float: right;">
-                        <span th:text="${study.studyDTO.studyStateDTO.studyState}"
-                              class="badge badge-pill badge-secondary">Success</span>
+                        <span th:if="${study.studyDTO.studyStateDTO.studyState} == '모집중'" th:text="${study.studyDTO.studyStateDTO.studyState}"
+                              class="badge badge-pill badge-success">Success</span>
+                            <span th:if="${study.studyDTO.studyStateDTO.studyState} == '진행중'" th:text="${study.studyDTO.studyStateDTO.studyState}"
+                                  class="badge badge-pill badge-primary">Success</span>
+                            <span th:if="${study.studyDTO.studyStateDTO.studyState} == '종료'" th:text="${study.studyDTO.studyStateDTO.studyState}"
+                                  class="badge badge-pill badge-danger">Success</span>
                         </div>
                     </div>
                     <div>
