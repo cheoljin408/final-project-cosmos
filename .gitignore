@@ -41,3 +41,6 @@ application-oauth.properties
 
 # sql
 test.sql
+
+# config
+/config
