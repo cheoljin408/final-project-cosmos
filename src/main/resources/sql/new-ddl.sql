@@ -1,0 +1,265 @@
+-- 단위 테이블 MEMBER, STUDY_STATE_TABLE, APPLY_STATE_TABLE, CATEGORY
+CREATE TABLE MEMBER
+(
+    EMAIL                 VARCHAR2(200)  PRIMARY KEY,
+    NAME                  VARCHAR2(200)  NOT NULL ,
+    PICTURE               VARCHAR2(200)  NOT NULL ,
+    ROLE				  VARCHAR2(200)  DEFAULT 'GUEST'
+);
+
+-- APPLY_STATE_CODE ('WAIT', 'OK', 'NO')
+-- APPLY_STATE ('수락대기', '수락완료', '신청거부')
+CREATE TABLE APPLY_STATE_TABLE
+(
+    APPLY_STATE_CODE      VARCHAR2(200)  PRIMARY KEY ,
+    APPLY_STATE           VARCHAR2(200)  NOT NULL
+);
+
+
+-- STUDY_STATE_CODE ('REC', 'ING', 'FIN')
+-- STUDY_STATE ('모집중', '진행중', '종료')
+CREATE TABLE STUDY_STATE_TABLE
+(
+    STUDY_STATE_CODE      VARCHAR2(200)  PRIMARY KEY ,
+    STUDY_STATE           VARCHAR2(200)  NOT NULL
+);
+
+
+CREATE TABLE CATEGORY_TYPE_TABLE(
+                                    CATEGORY_TYPE_NO NUMBER PRIMARY KEY,
+                                    CATEGORY_TYPE VARCHAR2(200) NOT NULL
+);
+
+
+CREATE TABLE CATEGORY_LANG_TABLE(
+                                    CATEGORY_LANG_NO NUMBER PRIMARY KEY,
+                                    CATEGORY_LANG VARCHAR2(200) NOT NULL
+);
+
+
+-----------------------------------------------------------
+
+-- STUDY
+CREATE TABLE STUDY
+(
+    STUDY_NO              NUMBER  PRIMARY KEY ,
+    STUDY_NAME            VARCHAR2(200)  NOT NULL ,
+    STUDY_DESC			  VARCHAR2(200)	 NOT NULL ,
+    STUDY_INFO            CLOB  NOT NULL ,
+    STUDY_REGDATE         DATE  NOT NULL ,
+    STUDY_STATE_CODE      VARCHAR2(200)  DEFAULT 'REC' ,
+    CATEGORY_TYPE_NO      NUMBER NOT NULL ,
+    CATEGORY_LANG_NO      NUMBER NOT NULL ,
+    CONSTRAINT FK_STUDY_CATEGORY_LANG FOREIGN KEY(CATEGORY_LANG_NO) REFERENCES CATEGORY_LANG_TABLE(CATEGORY_LANG_NO) ON DELETE CASCADE,
+    CONSTRAINT FK_STUDY_CATEGORY_TYPE FOREIGN KEY(CATEGORY_TYPE_NO) REFERENCES CATEGORY_TYPE_TABLE(CATEGORY_TYPE_NO) ON DELETE CASCADE,
+    CONSTRAINT FK_STUDY_STUDY_STATE_CODE FOREIGN KEY(STUDY_STATE_CODE) REFERENCES STUDY_STATE_TABLE(STUDY_STATE_CODE) ON DELETE CASCADE
+);
+-- sequence
+CREATE SEQUENCE STUDY_SEQ;
+
+
+-- STUDY_COMMENT
+CREATE TABLE STUDY_COMMENT
+(
+    STUDY_COMMENT_NO      NUMBER  PRIMARY KEY ,
+    STUDY_COMMENT_CONTENT  VARCHAR2(200)  NOT NULL ,
+    STUDY_COMMENT_REGDATE  DATE  NOT NULL ,
+    EMAIL                 VARCHAR2(200)  NOT NULL ,
+    STUDY_NO              NUMBER  NOT NULL ,
+    CONSTRAINT FK_STUDY_COMMENT_EMAIL FOREIGN KEY(EMAIL) REFERENCES MEMBER(EMAIL) ON DELETE CASCADE,
+    CONSTRAINT FK_STUDY_COMMENT_STUDY_NO FOREIGN KEY(STUDY_NO) REFERENCES STUDY(STUDY_NO) ON DELETE CASCADE
+
+);
+-- sequence
+CREATE SEQUENCE STUDY_COMMENT_SEQ;
+
+
+-- APPLY
+CREATE TABLE APPLY
+(
+    APPLY_NO              NUMBER  PRIMARY KEY ,
+    STUDY_NO              NUMBER  NOT NULL ,
+    APPLY_REGDATE         VARCHAR2(200)  NOT NULL ,
+    APPLY_CONTENT         VARCHAR2(200)  NOT NULL ,
+    EMAIL                 VARCHAR2(200)  NOT NULL ,
+    APPLY_STATE_CODE      VARCHAR2(200)  DEFAULT 'WAIT' ,
+    CONSTRAINT FK_APPLY_EMAIL FOREIGN KEY(EMAIL) REFERENCES MEMBER(EMAIL) ON DELETE CASCADE,
+    CONSTRAINT FK_APPLY_STUDY_NO FOREIGN KEY(STUDY_NO) REFERENCES STUDY(STUDY_NO) ON DELETE CASCADE,
+    CONSTRAINT FK_APPLY_APPLY_STATE_CODE FOREIGN KEY(APPLY_STATE_CODE) REFERENCES APPLY_STATE_TABLE(APPLY_STATE_CODE) ON DELETE CASCADE
+);
+-- sequence
+CREATE SEQUENCE APPLY_SEQ;
+
+
+-- STUDY_MEMBER
+CREATE TABLE STUDY_MEMBER
+(
+    EMAIL                 VARCHAR2(200)  NOT NULL ,
+    STUDY_NO              NUMBER  NOT NULL ,
+    STUDY_MEMBER_ROLE     VARCHAR2(200)  NOT NULL ,
+    CONSTRAINT FK_STUDY_MEMBER_EMAIL FOREIGN KEY(EMAIL) REFERENCES MEMBER(EMAIL) ON DELETE CASCADE,
+    CONSTRAINT FK_STUDY_MEMBER_STUDY_NO FOREIGN KEY(STUDY_NO) REFERENCES STUDY(STUDY_NO) ON DELETE CASCADE,
+    CONSTRAINT PK_STUDY_MEMBER PRIMARY KEY (EMAIL, STUDY_NO)
+);
+
+
+-- NOTICE
+CREATE TABLE NOTICE
+(
+    NOTICE_NO             NUMBER  PRIMARY KEY ,
+    NOTICE_TITLE          VARCHAR2(200)  NOT NULL ,
+    NOTICE_CONTENT        CLOB  NOT NULL ,
+    NOTICE_REGDATE        DATE  NOT NULL ,
+    NOTICE_HITS           NUMBER  DEFAULT 0 ,
+    EMAIL                 VARCHAR2(200)  NOT NULL ,
+    STUDY_NO              NUMBER  NOT NULL ,
+    ADDRESS               VARCHAR2(200)  NULL ,
+    CONSTRAINT FK_NOTICE_EMAIL_STUDY_NO FOREIGN KEY(EMAIL, STUDY_NO) REFERENCES STUDY_MEMBER(EMAIL, STUDY_NO) ON DELETE CASCADE
+);
+-- sequence
+CREATE SEQUENCE NOTICE_SEQ;
+
+
+-- TASK
+CREATE TABLE TASK
+(
+    TASK_NO               NUMBER  PRIMARY KEY ,
+    TASK_TITLE            VARCHAR2(200)  NOT NULL ,
+    TASK_CONTENT          CLOB  NOT NULL ,
+    TASK_REGDATE          DATE  NOT NULL ,
+    EMAIL                 VARCHAR2(200)  NOT NULL ,
+    STUDY_NO              NUMBER  NOT NULL ,
+    CONSTRAINT FK_TASK_EMAIL_STUDY_NO FOREIGN KEY(EMAIL, STUDY_NO) REFERENCES STUDY_MEMBER(EMAIL, STUDY_NO) ON DELETE CASCADE
+);
+-- sequence
+CREATE SEQUENCE TASK_SEQ;
+
+
+-- NOTICE_FILE
+CREATE TABLE NOTICE_FILE
+(
+    NOTICE_FILE_NO        NUMBER  PRIMARY KEY ,
+    NOTICE_UPLOAD_FILE_NAME      VARCHAR2(200)  NOT NULL ,
+    NOTICE_STORE_FILE_NAME   VARCHAR2(200)  NOT NULL ,
+    NOTICE_FILE_TYPE      VARCHAR2(200) NOT NULL,
+    NOTICE_NO             NUMBER  NOT NULL ,
+    CONSTRAINT FK_NOTICE_FILE_NOTICE_NO FOREIGN KEY(NOTICE_NO) REFERENCES NOTICE(NOTICE_NO) ON DELETE CASCADE
+);
+-- sequence
+CREATE SEQUENCE NOTICE_FILE_SEQ;
+
+
+-- TASK FILE
+CREATE TABLE TASK_FILE
+(
+    TASK_FILE_NO          NUMBER  PRIMARY KEY ,
+    TASK_UPLOAD_FILE_NAME        VARCHAR2(200)  NOT NULL ,
+    TASK_STORE_FILE_NAME     VARCHAR2(200)  NOT NULL ,
+    TASK_FILE_TYPE        VARCHAR2(200) NOT NULL,
+    TASK_NO               NUMBER  NOT NULL ,
+    CONSTRAINT FK_TASK_FILE_TASK_NO FOREIGN KEY(TASK_NO) REFERENCES TASK(TASK_NO) ON DELETE CASCADE
+);
+-- sequence
+CREATE SEQUENCE TASK_FILE_SEQ;
+
+
+-- TASK SUBMIT COMMENT
+CREATE TABLE SUBMIT_COMMENT
+(
+    SUBMIT_NO        NUMBER  PRIMARY KEY ,
+    SUBMIT_CONTENT   CLOB  NOT NULL ,
+    SUBMIT_REGDATE   DATE  NOT NULL ,
+    SUBMIT_UPLOAD_FILE_NAME        VARCHAR2(200)  NULL ,
+    SUBMIT_STORE_FILE_NAME     VARCHAR2(200)  NULL ,
+    TASK_NO          NUMBER  NOT NULL ,
+    EMAIL            VARCHAR2(200)  NOT NULL ,
+    STUDY_NO         NUMBER  NOT NULL ,
+    CONSTRAINT FK_TASK_SUBMIT_TASK_NO FOREIGN KEY(TASK_NO) REFERENCES TASK(TASK_NO)  ON DELETE CASCADE ,
+    CONSTRAINT FK_TASK_SUBMIT_EMAIL_STUDY_NO FOREIGN KEY(EMAIL, STUDY_NO) REFERENCES STUDY_MEMBER(EMAIL, STUDY_NO)  ON DELETE CASCADE
+);
+CREATE SEQUENCE SUBMIT_COMMENT_SEQ;
+
+
+------------ INSERT STATE ---------------
+-- 신청 상태 생성
+INSERT INTO APPLY_STATE_TABLE values('WAIT', '수락대기');
+INSERT INTO APPLY_STATE_TABLE values('OK', '수락완료');
+INSERT INTO APPLY_STATE_TABLE values('NO', '수락거절');
+
+
+-- 스터디 상태 코드
+insert into study_state_table values('REC', '모집중');
+insert into study_state_table values('ING', '진행중');
+insert into study_state_table values('FIN', '종료');
+
+
+-- 카테고리에서 SEQUENCE가 꼭 필요치 않음. 기존에 email(VARCHAR2)로도 PK를 지정한 적이 있기에
+-- 실제 DB에 값을 넣을 때에는 NUMBER로 1~10, 1~11까지 직접 값을 할당하는 것을 제안
+-- 카테고리 타입 insert
+insert into CATEGORY_TYPE_TABLE values(1,'언어');
+insert into CATEGORY_TYPE_TABLE values(2,'프로젝트');
+insert into CATEGORY_TYPE_TABLE values(3,'면접');
+insert into CATEGORY_TYPE_TABLE values(4,'알고리즘');
+insert into CATEGORY_TYPE_TABLE values(5,'프론트엔드');
+insert into CATEGORY_TYPE_TABLE values(6,'백엔드');
+insert into CATEGORY_TYPE_TABLE values(7,'웹');
+insert into CATEGORY_TYPE_TABLE values(8,'앱');
+insert into CATEGORY_TYPE_TABLE values(9,'CS');
+insert into CATEGORY_TYPE_TABLE values(10,'기타');
+
+
+-- 카테고리 언어 insert문
+insert into CATEGORY_LANG_TABLE values(1,'Java');
+insert into CATEGORY_LANG_TABLE values(2,'Python');
+insert into CATEGORY_LANG_TABLE values(3,'C');
+insert into CATEGORY_LANG_TABLE values(4,'C++');
+insert into CATEGORY_LANG_TABLE values(5,'Swift');
+insert into CATEGORY_LANG_TABLE values(6,'JavaScript');
+insert into CATEGORY_LANG_TABLE values(7,'Ruby');
+insert into CATEGORY_LANG_TABLE values(8,'HTML');
+insert into CATEGORY_LANG_TABLE values(9,'Go');
+insert into CATEGORY_LANG_TABLE values(10,'React');
+insert into CATEGORY_LANG_TABLE values(11,'PHP');
+
+
+------------- INSERT DATA ----------------
+
+-- 멤버 데이터 추가하기
+insert into member
+values ('test@test.com', 'test', 'test', 'GUEST');
+insert into member
+values ('test2@test.com', 'test2', 'test2', 'GUEST');
+insert into member
+values ('test3@test.com', 'test3', 'test3', 'GUEST');
+insert into member
+values ('test4@test.com', 'test4', 'test4', 'GUEST');
+
+
+-- 스터디 생성 및 스터디 멤버 추가하기 (스터디 생성과 동시에 팀장은 바로 등록이 되어야 함)
+insert into study(STUDY_NO, STUDY_NAME, STUDY_DESC, STUDY_INFO, STUDY_REGDATE, CATEGORY_LANG_NO, CATEGORY_TYPE_NO)
+values (STUDY_SEQ.nextval, 'test study', 'test desc', 'test info', sysdate, 1, 1);
+insert into study_member
+values ('test@test.com', STUDY_SEQ.currval, '스터디리더');
+
+insert into study(STUDY_NO, STUDY_NAME, STUDY_DESC, STUDY_INFO, STUDY_REGDATE, CATEGORY_LANG_NO, CATEGORY_TYPE_NO)
+values (STUDY_SEQ.nextval, 'test study22', 'test desc22', 'test info22', sysdate, 2, 2);
+insert into study_member
+values ('test2@test.com', STUDY_SEQ.currval, '스터디리더');
+
+insert into study(STUDY_NO, STUDY_NAME, STUDY_DESC, STUDY_INFO, STUDY_REGDATE, CATEGORY_LANG_NO, CATEGORY_TYPE_NO)
+values (STUDY_SEQ.nextval, 'test study33', 'test desc33', 'test info33', sysdate, 3, 3);
+insert into study_member
+values ('test3@test.com', STUDY_SEQ.currval, '스터디리더');
+
+insert into study(STUDY_NO, STUDY_NAME, STUDY_DESC, STUDY_INFO, STUDY_REGDATE, CATEGORY_LANG_NO, CATEGORY_TYPE_NO)
+values (STUDY_SEQ.nextval, 'test study44', 'test desc44', 'test info44', sysdate, 4, 4);
+insert into study_member
+values ('test4@test.com', STUDY_SEQ.currval, '스터디리더');
+
+
+-- 공지사항 작성
+INSERT INTO notice
+VALUES(NOTICE_SEQ.nextval, '공지사항제목4', '공지사항컨텐트4', sysdate, 0, 'nogy21@gmail.com', 108, '온라인');
+
+INSERT INTO NOTICE_FILE
+VALUES (NOTICE_FILE_SEQ.nextval, '업로드파일1', '스토어파일1', 'FILE', NOTICE_SEQ.currval);
