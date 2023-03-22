@@ -263,3 +263,13 @@ VALUES(NOTICE_SEQ.nextval, '공지사항제목4', '공지사항컨텐트4', sysd
 
 INSERT INTO NOTICE_FILE
 VALUES (NOTICE_FILE_SEQ.nextval, '업로드파일1', '스토어파일1', 'FILE', NOTICE_SEQ.currval);
+
+select * from APPLY_STATE_TABLE;
+
+select * from STUDY_STATE_TABLE;
+
+select * from CATEGORY_TYPE_TABLE;
+
+select * from CATEGORY_LANG_TABLE;
+
+select * from STUDY;
